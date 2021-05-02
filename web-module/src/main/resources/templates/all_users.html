@@ -15,9 +15,11 @@
             <tr>
                 <th scope="col">full name</th>
                 <th scope="col">email</th>
-                <th scope="col">roleName</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col">role</th>
+                <th scope="col">change password</th>
+                <th scope="col">change role</th>
+                <th scope="col">delete</th>
+
             </tr>
             </thead>
             <tbody>
@@ -26,7 +28,9 @@
                 <td th:text="${user.email}">user email</td>
                 <td th:text="${user.roleName}">user roleName</td>
                 <td><a th:href="@{/users/change-password/{id}(id=${user.uuid})}" href="#">Change password</a></td>
+                <td><a th:href="@{/users/change-role/{id}(id=${user.uuid})}" href="#">Change role</a></td>
                 <td><input type="checkbox" th:name="userIds" th:value="${user.uuid}"></td>
+
             </tr>
             </tbody>
         </table>
@@ -36,15 +40,21 @@
                     user</a>
             </div>
             <div class="col">
-                <button type="submit" class="btn btn-outline-primary btn-lg" >Delete</button>
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/feedback/1}" href="#" roleName="button">View
+                    feedback</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-outline-primary btn-lg">Delete</button>
             </div>
         </div>
     </form>
     <div class="row">
         <span>Page</span>
-        <a th:if="${currentPage} gt 1" th:href="@{/users/all/{page}(page=${currentPage - 1})}" href="#" th:text="${currentPage - 1}"></a>
+        <a th:if="${currentPage} gt 1" th:href="@{/users/all/{page}(page=${currentPage - 1})}" href="#"
+           th:text="${currentPage - 1}"></a>
         <span th:text="${currentPage}"></span>
-        <a th:if="${currentPage} lt ${numberOfPages}" th:href="@{/users/all/{page}(page=${currentPage + 1})}" href="#" th:text="${currentPage + 1}" ></a>
+        <a th:if="${currentPage} lt ${numberOfPages}" th:href="@{/users/all/{page}(page=${currentPage + 1})}" href="#"
+           th:text="${currentPage + 1}"></a>
     </div>
     <a class="btn btn-outline-primary" th:href="@{/logout}" href="#" roleName="button">Log out</a>
 </div>

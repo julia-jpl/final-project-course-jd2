@@ -10,7 +10,7 @@ public class RoleConverterImpl implements GeneralConverter<Role, RoleDTO> {
 
     @Override
     public Role convertDTOToObject(RoleDTO object) {
-        return null;
+        throw new UnsupportedOperationException("This method hasn't been implemented");
     }
 
     public RoleDTO convertObjectToDTO(Role role) {

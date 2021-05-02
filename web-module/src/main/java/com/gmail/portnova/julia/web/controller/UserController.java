@@ -75,6 +75,7 @@ public class UserController {
             return "redirect:/users/all/1";
         }
     }
+
     @PostMapping("/users/all/{page}")
     public String deleteUser(@RequestParam("userIds") List<String> userIds) {
         if (Objects.nonNull(userIds)) {
@@ -84,10 +85,39 @@ public class UserController {
         }
         return "redirect:/users/all/1";
     }
+
     @GetMapping("/users/change-password/{id}")
     public String changePassword(@PathVariable String id, Model model) {
         UserDTO user = userAddService.changePassword(id);
         model.addAttribute("user", user);
         return "change_password";
+    }
+
+    @GetMapping("/users/change-role/{id}")
+    public String getChangeUserRolePage(@PathVariable String id, Model model) {
+        UserDTO user = userService.findByUuid(id);
+        model.addAttribute("userToChangeRole", user);
+        List<RoleDTO> roles = roleService.findAll();
+        model.addAttribute("roles", roles);
+        return "change_role";
+    }
+
+    @PostMapping("/users/change-role/{id}")
+    public String changeUserRole(@PathVariable String id,
+                                 @ModelAttribute("newRole") String newRole,
+                                 Model model) {
+        UserDTO user = userService.changeUserRole(id, newRole);
+        if (Objects.nonNull(user)) {
+            model.addAttribute("isRoleChanged", true);
+            return "redirect:/users/change-role/{id}";
+        } else {
+            model.addAttribute("isRoleChanged", false);
+            return "change_role";
+        }
+    }
+
+    @GetMapping("/403")
+    public String getDeniedPage() {
+        return "denied_page";
     }
 }

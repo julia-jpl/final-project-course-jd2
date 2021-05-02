@@ -11,10 +11,12 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implements UserRepository {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+
     @Override
     public User findByEmail(String username) {
         String hql = "FROM User as u WHERE u.email =:usernameParam";
@@ -22,7 +24,7 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         query.setParameter("usernameParam", username);
         try {
             return (User) query.getSingleResult();
-        } catch (NonUniqueResultException| NoResultException e) {
+        } catch (NonUniqueResultException | NoResultException e) {
             logger.error(e.getMessage(), e);
             return null;
         }
@@ -46,13 +48,13 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
     }
 
     @Override
-    public User findByUuid(String id) {
+    public User findByUuid(UUID id) {
         String hql = "FROM User u WHERE u.uuid = :id";
         Query query = entityManager.createQuery(hql);
         query.setParameter("id", id);
         try {
             return (User) query.getSingleResult();
-        } catch (NonUniqueResultException| NoResultException e) {
+        } catch (NonUniqueResultException | NoResultException e) {
             logger.error(e.getMessage(), e);
             return null;
         }

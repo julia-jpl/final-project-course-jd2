@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>change role to user</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <h2>User information</h2>
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th scope="row">Last name</th>
+            <td th:text="${userToChangeRole.lastName}">last name</td>
+        </tr>
+        <tr>
+            <th scope="row">First name</th>
+            <td th:text="${userToChangeRole.firstName}">first name</td>
+        </tr>
+        <tr>
+            <th scope="row">Middle name</th>
+            <td th:text="${userToChangeRole.middleName}">Middle name</td>
+        </tr>
+        <tr>
+            <th scope="row">Email</th>
+            <td th:text="${userToChangeRole.email}">Email</td>
+        </tr>
+        <tr>
+            <th scope="row">Current role</th>
+            <td th:text="${userToChangeRole.roleName}">Current role</td>
+        </tr>
+
+        </tbody>
+    </table>
+    <h5 th:if="${isRoleChanged == false}">Role hasn't been changed. User or Role doesn't exist</h5>
+    <form action="#" th:action="@{/users/change-role/{id}(id=${userToChangeRole.uuid})}" method="post">
+        <div class="form-group row">
+            <div class="col-sm-2">Choose roleName:</div>
+            <div class="col-sm-10">
+                <select th:name="newRole" class="form-select" aria-label="Default select example">
+                    <option selected value="#">Open this select menu</option>
+                    <div th:each="role : ${roles}">
+                        <option th:if="${role.name != userToChangeRole.roleName}" th:value="${role.name}" value="#"
+                                th:text="${role.name}">role name
+                        </option>
+                    </div>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </div>
+    </form>
+    <a class="btn btn-outline-primary" th:href="@{/users/all/1}" href="#" roleName="button">Users</a>
+</div>
+
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

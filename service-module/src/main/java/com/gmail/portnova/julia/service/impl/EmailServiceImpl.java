@@ -4,6 +4,7 @@ import com.gmail.portnova.julia.service.EmailService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+
 import static com.gmail.portnova.julia.service.constant.EmailSendingConstant.*;
 
 @Component

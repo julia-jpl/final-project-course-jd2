@@ -12,4 +12,9 @@ public interface UserService {
     Long countPages(Integer maxResult);
 
     void deleteByUUID(String id);
+
+    UserDTO findByUuid(String id);
+
+    UserDTO changeUserRole(String id, String newRole);
+
 }

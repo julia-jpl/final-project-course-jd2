@@ -32,7 +32,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="unique_number" type="varchar(36)">
-            <constraints nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="last_name" type="varchar(40)">
                 <constraints nullable="false"/>
@@ -59,6 +59,57 @@
             <column name="email" value="admin@myhost.com"/>
             <column name="password" value="$2y$12$0fpDrfezgN2rr.K31HAWMu/r8p90sJonQYgeCSAiG1jcmVGjtI4hK"/>
             <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='ADMINISTRATOR')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="5" author="portnova.julia@gmail.com">
+        <createTable tableName="FEEDBACK">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="unique_number" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_displayed" type="TINYINT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_user_feedback" references="USER(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="portnova.julia@gmail.com">
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="29be0ee3-fe77-331e-a1bf-9494ec18c0ba"/>
+            <column name="text" value="text of feedback1"/>
+            <column name="is_displayed" value="0"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="33b06619-1ee7-3db5-827d-0dc85df1f759"/>
+            <column name="text" value="text of feedback2"/>
+            <column name="is_displayed" value="0"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="4896c91b-9e61-3129-87b6-8aa299028058"/>
+            <column name="text" value="text of feedback3"/>
+            <column name="is_displayed" value="0"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+
+    </changeSet>
+    <changeSet id="7" author="portnova.julia@gmail.com">
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130002"/>
+            <column name="text" value="text of feedback4"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

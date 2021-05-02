@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
 import static com.gmail.portnova.julia.web.constant.ValidationConstant.*;
+
 @Component
 public class UserValidator implements Validator {
     private final UserService userService;
@@ -28,7 +30,16 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "middleName", "user.middleName.empty", "middleName is required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "user.email.empty", "email is required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "roleName", "user.roleName.empty", "roleName is required");
-        UserDTO user = (UserDTO)  target;
+        UserDTO user = (UserDTO) target;
+        if (!user.getLastName().matches(LAST_AND_MIDDLE_NAME_PATTERN)) {
+            errors.rejectValue("lastName", "user.lastName.invalid", "last name doesn't match pattern");
+        }
+        if (!user.getFirstName().matches(FIRST_NAME_PATTERN)) {
+            errors.rejectValue("firstName", "user.firstname.invalid", "first name doesn't match pattern");
+        }
+        if (!user.getMiddleName().matches(LAST_AND_MIDDLE_NAME_PATTERN)) {
+            errors.rejectValue("middleName", "user.middleName.invalid", "middle name doesn't match pattern");
+        }
         if (!user.getEmail().matches(EMAIL_PATTERN)) {
             errors.rejectValue("email", "user.email.invalid", "email doesn't match pattern");
         }
@@ -36,9 +47,9 @@ public class UserValidator implements Validator {
         if (existedUser != null) {
             errors.rejectValue("email", "user.email.existed", "This email has already existed");
         }
-        if(!user.getRoleName().equals(RoleNameEnumDTO.ADMINISTRATOR.name()) &&
+        if (!user.getRoleName().equals(RoleNameEnumDTO.ADMINISTRATOR.name()) &&
                 !user.getRoleName().equals(RoleNameEnumDTO.SALE_USER.name()) &&
-        !user.getRoleName().equals(RoleNameEnumDTO.CUSTOMER_USER.name()) &&
+                !user.getRoleName().equals(RoleNameEnumDTO.CUSTOMER_USER.name()) &&
                 !user.getRoleName().equals(RoleNameEnumDTO.SECURE_REST_API.name())) {
             errors.rejectValue("roleName", "user.roleName.invalid", "This role doesn't exist");
         }

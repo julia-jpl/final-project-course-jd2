@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
@@ -26,13 +27,11 @@ public class RoleServiceImpl implements RoleService {
     public List<RoleDTO> findAll() {
         List<Role> roles = roleRepository.findAll();
         if (!roles.isEmpty()) {
-           return roles.stream().
+            return roles.stream().
                     map(roleConverter::convertObjectToDTO)
                     .collect(Collectors.toList());
         } else {
             return Collections.emptyList();
         }
     }
-
-
 }

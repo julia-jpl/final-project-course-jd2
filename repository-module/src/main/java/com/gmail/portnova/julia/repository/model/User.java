@@ -1,5 +1,8 @@
 package com.gmail.portnova.julia.repository.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -7,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"lastName", "password", "role", "feedback"})
 @Entity
 @Table(name = "USER")
 public class User {
@@ -34,76 +40,4 @@ public class User {
             cascade = CascadeType.ALL,
             mappedBy = "user")
     private List<Feedback> feedback = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public List<Feedback> getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(List<Feedback> feedback) {
-        this.feedback = feedback;
-    }
 }

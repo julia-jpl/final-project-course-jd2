@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>Fill the form to add item</h2>
+    <h2>Fill the form to add user</h2>
     <form action="#" th:action="@{/users/add}" th:object="${newUser}" method="post">
         <div class="form-group row">
             <label for="inputLastName" class="col-sm-2 col-form-label">Lastname</label>
@@ -48,20 +48,21 @@
         </div>
         <div class="col-sm-2">Choose roleName:</div>
         <div class="col-sm-10">
-        <select th:field="*{roleName}" class="form-select"  aria-label="Default select example">
-            <option selected value="#">Open this select menu</option>
-            <div th:each="role : ${roles}">
-            <option th:value="${role.name}" value="#" th:text="${role.name}">role name</option>
-            </div>
-        </select>
+            <select th:field="*{roleName}" class="form-select" aria-label="Default select example">
+                <option selected value="#">Open this select menu</option>
+                <div th:each="role : ${roles}">
+                    <option th:value="${role.name}" value="#" th:text="${role.name}">role name</option>
+                </div>
+            </select>
         </div>
-            <span th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}">Description Error</span>
+        <span th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}">Description Error</span>
         <div class="form-group row">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary btn-lg">Submit</button>
             </div>
         </div>
     </form>
+    <a class="btn btn-outline-primary" th:href="@{/users/all/1}" href="#" roleName="button">Users</a>
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>

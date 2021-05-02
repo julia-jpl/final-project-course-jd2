@@ -8,16 +8,15 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.generator.PasswordGenerator;
 import com.gmail.portnova.julia.service.model.UserDTO;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
 import java.util.Objects;
 import java.util.UUID;
 
 import static com.gmail.portnova.julia.service.constant.PasswordGenerationConstant.*;
+
 @Service
 public class UserAddServiceImpl implements UserAddService {
     private final PasswordGenerator passwordGenerator;
@@ -52,7 +51,8 @@ public class UserAddServiceImpl implements UserAddService {
     @Override
     @Transactional
     public UserDTO changePassword(String id) {
-        User user = userRepository.findByUuid(id);
+        UUID uuid = UUID.fromString(id);
+        User user = userRepository.findByUuid(uuid);
         if (Objects.nonNull(user)) {
             String password = passwordGenerator.generatePassword(PASSWORD_LENGTH,
                     FIRST_ASCII_CHARACTER_COD_USED_IN_PASSWORD,

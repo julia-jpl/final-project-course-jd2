@@ -1,7 +1,13 @@
 package com.gmail.portnova.julia.repository.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "ROLE")
 public class Role {
@@ -12,22 +18,6 @@ public class Role {
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
     private RoleNameEnum roleName;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public RoleNameEnum getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(RoleNameEnum roleName) {
-        this.roleName = roleName;
-    }
 
     @Override
     public boolean equals(Object o) {

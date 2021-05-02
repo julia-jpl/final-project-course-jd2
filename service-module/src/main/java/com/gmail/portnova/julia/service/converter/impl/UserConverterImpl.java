@@ -5,8 +5,11 @@ import com.gmail.portnova.julia.repository.model.Role;
 import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
+import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.UserDTO;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 
 @Component
@@ -33,18 +36,22 @@ public class UserConverterImpl implements GeneralConverter<User, UserDTO> {
 
     @Override
     public User convertDTOToObject(UserDTO userDTO) {
-        User user = new User();
-        user.setUuid(userDTO.getUuid());
-        user.setLastName(userDTO.getLastName());
-        user.setFirstName(userDTO.getFirstName());
-        user.setMiddleName(userDTO.getMiddleName());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        String roleString = userDTO.getRoleName();
-        RoleNameEnum roleName = RoleNameEnum.valueOf(roleString);
-        Role role = getRole(roleName);
-        user.setRole(role);
-        return user;
+        if (Objects.nonNull(userDTO)) {
+            User user = new User();
+            user.setUuid(userDTO.getUuid());
+            user.setLastName(userDTO.getLastName());
+            user.setFirstName(userDTO.getFirstName());
+            user.setMiddleName(userDTO.getMiddleName());
+            user.setEmail(userDTO.getEmail());
+            user.setPassword(userDTO.getPassword());
+            String roleString = userDTO.getRoleName();
+            RoleNameEnum roleName = RoleNameEnum.valueOf(roleString);
+            Role role = getRole(roleName);
+            user.setRole(role);
+            return user;
+        } else {
+            throw new UserNotFoundException("User doesn't exist");
+        }
     }
 
     private Role getRole(RoleNameEnum roleName) {
