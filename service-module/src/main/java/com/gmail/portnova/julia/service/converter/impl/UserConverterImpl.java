@@ -30,7 +30,11 @@ public class UserConverterImpl implements GeneralConverter<User, UserDTO> {
         userDTO.setMiddleName(user.getMiddleName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
-        userDTO.setRoleName(user.getRole().getRoleName().name());
+        Role role = user.getRole();
+        if (Objects.nonNull(role)) {
+            String roleName = role.getRoleName().name();
+            userDTO.setRoleName(roleName);
+        }
         return userDTO;
     }
 
@@ -45,9 +49,11 @@ public class UserConverterImpl implements GeneralConverter<User, UserDTO> {
             user.setEmail(userDTO.getEmail());
             user.setPassword(userDTO.getPassword());
             String roleString = userDTO.getRoleName();
-            RoleNameEnum roleName = RoleNameEnum.valueOf(roleString);
-            Role role = getRole(roleName);
-            user.setRole(role);
+            if (Objects.nonNull(roleString)) {
+                RoleNameEnum roleName = RoleNameEnum.valueOf(roleString);
+                Role role = getRole(roleName);
+                user.setRole(role);
+            }
             return user;
         } else {
             throw new UserNotFoundException("User doesn't exist");

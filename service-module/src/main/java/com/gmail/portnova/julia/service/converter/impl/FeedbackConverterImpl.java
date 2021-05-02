@@ -6,6 +6,8 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class FeedbackConverterImpl implements GeneralConverter<Feedback, FeedbackDTO> {
     @Override
@@ -17,9 +19,11 @@ public class FeedbackConverterImpl implements GeneralConverter<Feedback, Feedbac
         feedbackDTO.setCreatedAt(feedback.getCreatedAt());
         feedbackDTO.setDisplayed(feedback.getIsDisplayed());
         User user = feedback.getUser();
-        String userFullName = String.join(" ", user.getLastName(), user.getFirstName(), user.getMiddleName());
-        feedbackDTO.setUserFullName(userFullName);
-        feedbackDTO.setUserUuid(user.getUuid());
+        if (Objects.nonNull(user)) {
+            String userFullName = String.join(" ", user.getLastName(), user.getFirstName(), user.getMiddleName());
+            feedbackDTO.setUserFullName(userFullName);
+            feedbackDTO.setUserUuid(user.getUuid());
+        }
         return feedbackDTO;
     }
 
