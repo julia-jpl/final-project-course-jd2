@@ -112,4 +112,48 @@
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
         </insert>
     </changeSet>
+    <changeSet id="8" author="portnova.julia@gmail.com">
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130044"/>
+            <column name="text" value="text of feedback5"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac144002"/>
+            <column name="text" value="text of feedback6"/>
+            <column name="is_displayed" value="0"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130222"/>
+            <column name="text" value="text of feedback7"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130882"/>
+            <column name="text" value="text of feedback8"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130992"/>
+            <column name="text" value="text of feedback9"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac135502"/>
+            <column name="text" value="text of feedback10"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+        <insert tableName="FEEDBACK">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac134402"/>
+            <column name="text" value="text of feedback11"/>
+            <column name="is_displayed" value="1"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

@@ -3,20 +3,17 @@ package com.gmail.portnova.julia.web.validator;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.model.RoleNameEnumDTO;
 import com.gmail.portnova.julia.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import static com.gmail.portnova.julia.web.constant.ValidationConstant.*;
-
+@RequiredArgsConstructor
 @Component
 public class UserValidator implements Validator {
     private final UserService userService;
-
-    public UserValidator(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public boolean supports(Class<?> clazz) {

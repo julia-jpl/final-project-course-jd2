@@ -8,7 +8,7 @@
 <body>
 <div class="container">
   <h2>All feedback</h2>
-  <div th:if="${#lists.isEmpty(feedbackToDisplay)}">No feedback was found</div>
+  <div th:if="${#lists.isEmpty(commonPage.objects)}">No feedback was found</div>
     <table class="table table-striped">
       <thead>
       <tr>
@@ -18,21 +18,29 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="feedback : ${feedbackToDisplay}">
+      <tr th:each="feedback : ${commonPage.objects}">
         <td th:text="${feedback.userFullName}">user full name</td>
         <td th:text="${feedback.text}">user email</td>
         <td th:text="${feedback.createdAt}">user roleName</td>
       </tr>
       </tbody>
     </table>
-  <div class="row">
+  <div class="btn-group me-2" role="group">
     <span>Page</span>
-    <a th:if="${currentPage} gt 1" th:href="@{/feedback/{page}(page=${currentPage - 1})}" href="#"
-       th:text="${currentPage - 1}"></a>
-    <span th:text="${currentPage}"></span>
-    <a th:if="${currentPage} lt ${numberOfPages}" th:href="@{/feedback/{page}(page=${currentPage + 1})}" href="#"
-       th:text="${currentPage + 1}"></a>
+    <form action="#" th:action="@{/feedback}" method="get">
+      <th:block th:each="number: ${#numbers.sequence(1, page.totalPages)}">
+             <span th:if="${currentPage == number}">
+            <button type="button" class="btn btn-primary disabled" th:text="${number}"></button>
+                </span>
+        <span th:unless="${currentPage == number}">
+                 <input th:name="pageNumber" type="hidden" th:value="${number}"/>
+                <button type="submit" class="btn btn-primary" th:text="${number}"></button>
+
+     </span>
+      </th:block>
+    </form>
   </div>
+
   <a class="btn btn-outline-primary" th:href="@{/logout}" href="#" roleName="button">Log out</a>
 </div>
 

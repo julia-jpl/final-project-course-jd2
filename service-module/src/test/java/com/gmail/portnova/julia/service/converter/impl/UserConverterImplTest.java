@@ -25,6 +25,12 @@ class UserConverterImplTest {
     private UserConverterImpl userConverter;
 
     @Test
+    void shouldConvertUserToUserDTOWithNegativeResult() {
+        UserDTO userDTO = userConverter.convertObjectToDTO(null);
+        assertNull(userDTO);
+    }
+
+    @Test
     void shouldConvertUserDTOtoUserAndReturnRightFirstName() {
         UserDTO userDTO = new UserDTO();
         String firstName = "test first name";

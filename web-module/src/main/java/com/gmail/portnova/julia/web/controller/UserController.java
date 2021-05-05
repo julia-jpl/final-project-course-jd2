@@ -3,9 +3,11 @@ package com.gmail.portnova.julia.web.controller;
 import com.gmail.portnova.julia.service.RoleService;
 import com.gmail.portnova.julia.service.UserAddService;
 import com.gmail.portnova.julia.service.UserService;
+import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.RoleDTO;
 import com.gmail.portnova.julia.service.model.UserDTO;
 import com.gmail.portnova.julia.web.validator.UserValidator;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Objects;
-
+@RequiredArgsConstructor
 @Controller
 public class UserController {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
@@ -28,27 +30,17 @@ public class UserController {
     private final UserValidator userValidator;
     private final Integer maxResult = 10;
 
-    public UserController(UserService userService,
-                          UserAddService userAddService, RoleService roleService,
-                          UserValidator userValidator) {
-        this.userService = userService;
-        this.userAddService = userAddService;
-        this.roleService = roleService;
-        this.userValidator = userValidator;
-    }
-
-    @GetMapping("/users/all/{page}")
-    public String getAllUsers(@PathVariable Integer page,
+    @GetMapping("/users/all")
+    public String getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber,
+                              @RequestParam(name = "maxResult", defaultValue = "10") Integer maxResult,
                               Authentication authentication,
                               Model model) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         if (Objects.nonNull(userDetails)) {
             String email = userDetails.getUsername();
-            Long numberOfPages = userService.countPages(maxResult);
-            model.addAttribute("numberOfPages", numberOfPages);
-            model.addAttribute("currentPage", page);
-            List<UserDTO> users = userService.findAllUsersExceptCurrent(email, page, maxResult);
-            model.addAttribute("users", users);
+            PageDTO<UserDTO> page = userService.getUsersPage(email, pageNumber, maxResult);
+            model.addAttribute("page", page);
+            model.addAttribute("currentPage", pageNumber);
             return "all_users";
         } else {
             return "redirect:/login";
@@ -72,18 +64,18 @@ public class UserController {
         } else {
 
             userAddService.addUser(user);
-            return "redirect:/users/all/1";
+            return "redirect:/users/all";
         }
     }
 
-    @PostMapping("/users/all/{page}")
-    public String deleteUser(@RequestParam("userIds") List<String> userIds) {
+    @PostMapping("/users/all")
+    public String deleteUser(@RequestParam(name = "userIds", required = false) List<String> userIds) {
         if (Objects.nonNull(userIds)) {
             for (String id : userIds) {
                 userService.deleteByUUID(id);
             }
         }
-        return "redirect:/users/all/1";
+        return "redirect:/users/all";
     }
 
     @GetMapping("/users/change-password/{id}")

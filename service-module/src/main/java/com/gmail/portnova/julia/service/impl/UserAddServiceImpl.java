@@ -8,6 +8,7 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.generator.PasswordGenerator;
 import com.gmail.portnova.julia.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.gmail.portnova.julia.service.constant.PasswordGenerationConstant.*;
-
+@RequiredArgsConstructor
 @Service
 public class UserAddServiceImpl implements UserAddService {
     private final PasswordGenerator passwordGenerator;
@@ -24,14 +25,6 @@ public class UserAddServiceImpl implements UserAddService {
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final GeneralConverter<User, UserDTO> userConverter;
-
-    public UserAddServiceImpl(PasswordGenerator passwordGenerator, PasswordEncoder passwordEncoder, EmailService emailService, UserRepository userRepository, GeneralConverter<User, UserDTO> userConverter) {
-        this.passwordGenerator = passwordGenerator;
-        this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
-        this.userRepository = userRepository;
-        this.userConverter = userConverter;
-    }
 
     @Override
     @Transactional

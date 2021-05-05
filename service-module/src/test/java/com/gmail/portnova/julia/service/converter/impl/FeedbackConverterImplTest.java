@@ -2,6 +2,7 @@ package com.gmail.portnova.julia.service.converter.impl;
 
 import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
