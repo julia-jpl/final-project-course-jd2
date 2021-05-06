@@ -8,8 +8,8 @@
 <body>
 <div class="container">
     <h2>Users</h2>
-    <div th:if="${#lists.isEmpty(users)}">No users were found</div>
-    <form action="#" th:action="@{/users/all/{page}}" method="post">
+    <div th:if="${#lists.isEmpty(page.objects)}">No users were found</div>
+    <form action="#" th:action="@{/users/all}" method="post">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -23,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
+            <tr th:each="user : ${page.objects}">
                 <td th:text="${user.lastName} + ' ' + |${user.firstName} ${user.middleName}|">user full name</td>
                 <td th:text="${user.email}">user email</td>
                 <td th:text="${user.roleName}">user roleName</td>
@@ -36,11 +36,11 @@
         </table>
         <div class="row">
             <div class="col">
-                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/add}" href="#" roleName="button">Add new
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/add}" href="#" role="button">Add new
                     user</a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-primary btn-lg" th:href="@{/feedback/1}" href="#" roleName="button">View
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/feedback}" href="#" role="button">View
                     feedback</a>
             </div>
             <div class="col">
@@ -48,13 +48,20 @@
             </div>
         </div>
     </form>
-    <div class="row">
+    <div class="btn-group me-2" role="group">
         <span>Page</span>
-        <a th:if="${currentPage} gt 1" th:href="@{/users/all/{page}(page=${currentPage - 1})}" href="#"
-           th:text="${currentPage - 1}"></a>
-        <span th:text="${currentPage}"></span>
-        <a th:if="${currentPage} lt ${numberOfPages}" th:href="@{/users/all/{page}(page=${currentPage + 1})}" href="#"
-           th:text="${currentPage + 1}"></a>
+        <form action="#" th:action="@{/users/all}" method="get">
+            <th:block th:each="number: ${#numbers.sequence(1, page.totalPages)}">
+             <span th:if="${currentPage == number}">
+            <button type="button" class="btn btn-primary disabled" th:text="${number}"></button>
+                </span>
+                <span th:unless="${currentPage == number}">
+                 <input th:name="pageNumber" type="hidden" th:value="${number}"/>
+                <button type="submit" class="btn btn-primary" th:text="${number}"></button>
+
+     </span>
+            </th:block>
+        </form>
     </div>
     <a class="btn btn-outline-primary" th:href="@{/logout}" href="#" roleName="button">Log out</a>
 </div>

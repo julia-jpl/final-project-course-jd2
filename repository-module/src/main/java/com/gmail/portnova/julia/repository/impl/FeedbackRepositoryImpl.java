@@ -4,11 +4,13 @@ import com.gmail.portnova.julia.repository.FeedbackRepository;
 import com.gmail.portnova.julia.repository.model.Feedback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
+import java.awt.print.Pageable;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.UUID;
@@ -72,4 +74,5 @@ public class FeedbackRepositoryImpl extends GenericRepositoryImpl<Long, Feedback
         query.setParameter("trueStatus", true);
         return (Long) query.getSingleResult();
     }
+
 }

@@ -4,12 +4,18 @@ import com.gmail.portnova.julia.repository.FeedbackRepository;
 import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.FeedbackService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
+import com.gmail.portnova.julia.service.exception.FeedbackNotFoundException;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
+import com.gmail.portnova.julia.service.model.PageDTO;
+import com.gmail.portnova.julia.service.model.PageableFeedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,68 +26,111 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public List<FeedbackDTO> findAllFeedbackWithPagination(Integer page, Integer maxResult) {
-        int startPosition = maxResult * (page - 1);
-        List<Feedback> allFeedBack = feedbackRepository.findAllWithLimit(startPosition, maxResult);
-        if (!allFeedBack.isEmpty()) {
-            return allFeedBack.stream()
-                    .map(feedbackConverter::convertObjectToDTO)
-                    .collect(Collectors.toList());
-        } else {
-            return Collections.emptyList();
+    public List<FeedbackDTO> updateIsDisplayedStatus(List<String> idsAtPage, List<String> idsWithDisplayedTrue) {
+        List<Feedback> feedbackForDisplayedTrue = getFeedbackListById(idsWithDisplayedTrue);
+        List<String> idsWithDisplayedFalse = idsAtPage.stream()
+                .filter(id -> !idsWithDisplayedTrue.contains(id))
+                .collect(Collectors.toList());
+        List<Feedback> feedbackForDisplayedFalse = getFeedbackListById(idsWithDisplayedFalse);
+        for (Feedback feedback : feedbackForDisplayedTrue) {
+            if (!feedback.getIsDisplayed()) {
+                feedback.setIsDisplayed(true);
+            }
         }
+        for (Feedback feedback : feedbackForDisplayedFalse) {
+            if (feedback.getIsDisplayed()) {
+                feedback.setIsDisplayed(false);
+            }
+        }
+        List<Feedback> feedbackAtPage = new ArrayList<>();
+        feedbackAtPage.addAll(feedbackForDisplayedFalse);
+        feedbackAtPage.addAll(feedbackForDisplayedTrue);
+        return feedbackAtPage.stream()
+                .map(feedbackConverter::convertObjectToDTO)
+                .collect(Collectors.toList());
     }
 
-    @Override
     @Transactional
-    public Long countPages(Integer maxResult) {
-        Long numberOfRows = feedbackRepository.count();
-        return (numberOfRows / maxResult) + 1;
+    public List<FeedbackDTO> updateIsDisplayedStatus(List<String> idsAtPage) {
+        List<Feedback> feedbackForDisplayedFalse = getFeedbackListById(idsAtPage);
+        for (Feedback feedback : feedbackForDisplayedFalse) {
+            if (feedback.getIsDisplayed()) {
+                feedback.setIsDisplayed(false);
+            }
+        }
+        return feedbackForDisplayedFalse.stream()
+                .map(feedbackConverter::convertObjectToDTO)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional
-    public List<FeedbackDTO> updateIsDisplayedStatus(List<String> ids) {
-        feedbackRepository.setNotDisplayedStatusToAllFeedback();
-        List<FeedbackDTO> displayedFeedback = new ArrayList<>();
+    private List<Feedback> getFeedbackListById(List<String> ids) {
+        List<Feedback> feedbacks = new ArrayList<>();
         for (String id : ids) {
             UUID uuid = UUID.fromString(id);
             Feedback feedback = feedbackRepository.findByUuid(uuid);
             if (Objects.nonNull(feedback)) {
-                feedback.setIsDisplayed(true);
-                FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
-                displayedFeedback.add(feedbackDTO);
+                feedbacks.add(feedback);
             }
         }
-        return displayedFeedback;
+        return feedbacks;
     }
 
     @Override
     @Transactional
-    public void deleteByUuid(String uuidString) {
+    public FeedbackDTO deleteByUuid(String uuidString) {
         UUID uuid = UUID.fromString(uuidString);
         Feedback feedback = feedbackRepository.findByUuid(uuid);
         if (Objects.nonNull(feedback)) {
             feedbackRepository.remove(feedback);
-        }
-    }
-
-    @Override
-    public List<FeedbackDTO> findAllFeedbackWithStatusDisplayed(Integer page, Integer maxResult) {
-        int startPosition = maxResult * (page - 1);
-        List<Feedback> feedbackToDisplay = feedbackRepository.findAllWithStatusDisplayedForPagination(startPosition, maxResult);
-        if (!feedbackToDisplay.isEmpty()) {
-            return feedbackToDisplay.stream()
-                    .map(feedbackConverter::convertObjectToDTO)
-                    .collect(Collectors.toList());
+            return feedbackConverter.convertObjectToDTO(feedback);
         } else {
-            return Collections.emptyList();
+            throw new FeedbackNotFoundException(String.format("Feedback with uuid %s was not found", uuidString));
         }
     }
 
     @Override
-    public Long countIsDisplayedTrueFeedbackPages(Integer maxResult) {
+    @Transactional
+    public PageDTO<FeedbackDTO> getAllFeedbackPage(Integer page, Integer maxResult) {
+        Long numberOfRows = feedbackRepository.count();
+        PageableFeedback pageDTO = new PageableFeedback();
+        pageDTO.setTotalPages((numberOfRows / maxResult) + 1);
+        int startPosition = getStartPosition(page, maxResult);
+        List<Feedback> allFeedBack = feedbackRepository.findAllWithLimit(startPosition, maxResult);
+        setPageDTOList(pageDTO, allFeedBack);
+        return pageDTO;
+    }
+
+    @Override
+    @Transactional
+    public PageDTO<FeedbackDTO> getFeedbackByDisplayedTruePage(Integer pageNumber, Integer maxResult) {
         Long numberOfRows = feedbackRepository.countFeedbackIdDisplayedTrue();
-        return (numberOfRows / maxResult) + 1;
+        PageableFeedback pageDTO = new PageableFeedback();
+        pageDTO.setTotalPages(getNumberOfPages(numberOfRows, maxResult));
+        int startPosition = getStartPosition(pageNumber, maxResult);
+        List<Feedback> allFeedbackByDisplayedTrue = feedbackRepository.findAllWithStatusDisplayedForPagination(startPosition, maxResult);
+        setPageDTOList(pageDTO, allFeedbackByDisplayedTrue);
+        return pageDTO;
+    }
+
+    private void setPageDTOList(PageableFeedback pageDTO, List<Feedback> feedback) {
+        List<FeedbackDTO> feedbackDTO = new ArrayList<>();
+        if (!feedback.isEmpty()) {
+            feedbackDTO.addAll(feedback.stream()
+                    .map(feedbackConverter::convertObjectToDTO)
+                    .collect(Collectors.toList()));
+        }
+        pageDTO.getObjects().addAll(feedbackDTO);
+    }
+
+    private int getStartPosition(Integer page, Integer maxResult) {
+        return maxResult * (page - 1);
+    }
+
+    private Long getNumberOfPages(Long numberOfRows, Integer maxResult) {
+        if (numberOfRows % maxResult == 0) {
+            return numberOfRows / maxResult;
+        } else {
+            return numberOfRows / maxResult + 1;
+        }
     }
 }

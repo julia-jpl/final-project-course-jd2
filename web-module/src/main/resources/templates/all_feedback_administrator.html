@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <h2>All feedback</h2>
-    <div th:if="${#lists.isEmpty(allFeedback)}">No feedback was found</div>
+    <div th:if="${#lists.isEmpty(page.objects)}">No feedback was found</div>
     <form action="#" th:action="@{/users/feedback/update}" id="checkbox-form-update" method="post">
         <table class="table table-striped">
             <thead>
@@ -17,21 +17,22 @@
                 <th scope="col">Feedback</th>
                 <th scope="col">Post date</th>
                 <th scope="col">Displayed</th>
-                <th scope="col">Delete</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="feedback : ${allFeedback}">
+            <tr th:each="feedback : ${page.objects}">
                 <td th:text="${feedback.userFullName}">user full name</td>
                 <td th:text="${feedback.text}">user email</td>
                 <td th:text="${feedback.createdAt}">user roleName</td>
-                <td><input type="checkbox" th:checked="${feedback.displayed}"
+                <td><input type="hidden" th:name="feedbackIds" th:value="${feedback.uuid}">
+                    <input type="checkbox" th:checked="${feedback.displayed}"
                            th:name="feedbackIdsToUpdate" th:value="${feedback.uuid}"></td>
                 <td>
                 <td>
                     <form action="#" th:action="@{/users/feedback/delete/{uuid}(uuid=${feedback.uuid})}" method="post">
                         <input type="hidden" th:value="${feedback.uuid}"/>
-                        <input type="submit" value="delete">
+                        <input class="btn btn-outline-primary" type="submit" value="delete">
                     </form>
                 </td>
             </tr>
@@ -39,11 +40,11 @@
         </table>
         <div class="row">
             <div class="col">
-                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/add}" href="#" roleName="button">Add new
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/add}" href="#" role="button">Add new
                     user</a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/all/1}" href="#" roleName="button">All
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/all}" href="#" role="button">All
                     users</a>
             </div>
             <div class="col">
@@ -53,16 +54,29 @@
             </div>
         </div>
     </form>
-    <div class="row">
-        <span>Page</span>
-        <a th:if="${currentPage} gt 1" th:href="@{/feedback/{page}(page=${currentPage - 1})}" href="#"
-           th:text="${currentPage - 1}"></a>
-        <span th:text="${currentPage}"></span>
-        <a th:if="${currentPage} lt ${numberOfPages}" th:href="@{/feedback/{page}(page=${currentPage + 1})}" href="#"
-           th:text="${currentPage + 1}"></a>
-    </div>
-    <a class="btn btn-outline-primary" th:href="@{/logout}" href="#" roleName="button">Log out</a>
 
+<br/>
+    <div class="btn-group me-2" role="group">
+        <h5>Page</h5>
+        <form action="#" th:action="@{/feedback}" method="get">
+            <th:block th:each="number: ${#numbers.sequence(1, page.totalPages)}">
+             <span th:if="${currentPage == number}">
+            <button type="button" class="btn btn-primary disabled" th:text="${number}"></button>
+                </span>
+                <span th:unless="${currentPage == number}">
+                 <input th:name="pageNumber" type="hidden" th:value="${number}"/>
+                <button type="submit" class="btn btn-primary" th:text="${number}"></button>
+
+     </span>
+            </th:block>
+        </form>
+    </div>
+
+<br/>
+   <div class="col-6">
+
+    <a class="btn btn-outline-primary btn-lg" th:href="@{/logout}" href="#" role="button">Log out</a>
+   </div>
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
