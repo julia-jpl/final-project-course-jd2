@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Add user</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Fill the form to add user</h2>
+    <form action="#" th:action="@{/users/add}" th:object="${newUser}" method="post">
+        <div class="form-group row">
+            <label for="inputLastName" class="col-sm-2 col-form-label">Lastname</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:field="*{lastName}" id="inputLastName"
+                       placeholder="Enter the lastName"
+                       maxlength="40" minlength="2" required>
+                <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Description Error</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputFirstName" class="col-sm-2 col-form-label">Firstame</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:field="*{firstName}" id="inputFirstName"
+                       placeholder="Enter the firstName"
+                       maxlength="20" minlength="2" required>
+                <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Description Error</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputMiddleName" class="col-sm-2 col-form-label">Middlename</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:field="*{middleName}" id="inputMiddleName"
+                       placeholder="Enter the middleName"
+                       maxlength="40" minlength="2" required>
+                <span th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}">Description Error</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputEmail" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" th:field="*{email}" id="inputEmail"
+                       placeholder="Enter your email"
+                       required pattern="([A-z0-9]+)([_.-]?)([A-z0-9]+)@([A-z0-9_.-]+).([A-z]{2,8})"
+                       maxlength="50">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Description Error</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="selectRole" class="col-sm-2 col-form-label">Choose roleName:</label>
+        <div class="col-sm-10">
+            <select th:field="*{roleName}" class="form-select" id="selectRole">
+                <option selected value="#">Open this select menu</option>
+                <div th:each="role : ${roles}">
+                    <option th:value="${role.name}" value="#" th:text="${role.name}">role name</option>
+                </div>
+            </select>
+        </div>
+        <span th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}">Description Error</span>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </div>
+    </form>
+    <a class="btn btn-outline-primary btn-lg" th:href="@{/users/all}" href="#" role="button">Users</a>
+</div>
+
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
