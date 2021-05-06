@@ -9,7 +9,7 @@ public interface FeedbackService {
 
     List<FeedbackDTO> updateIsDisplayedStatus(List<String> idsAtPage, List<String> idsWithDisplayedTrue);
 
-    void deleteByUuid(String uuidString);
+    FeedbackDTO deleteByUuid(String uuidString);
 
     PageDTO<FeedbackDTO> getAllFeedbackPage(Integer page, Integer maxResult);
 

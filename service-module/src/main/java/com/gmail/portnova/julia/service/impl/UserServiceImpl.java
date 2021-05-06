@@ -2,13 +2,16 @@ package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.RoleRepository;
 import com.gmail.portnova.julia.repository.UserRepository;
-import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.repository.model.Role;
 import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
-import com.gmail.portnova.julia.service.model.*;
+import com.gmail.portnova.julia.service.exception.UserNotFoundException;
+import com.gmail.portnova.julia.service.exception.UserRoleNotFoundException;
+import com.gmail.portnova.julia.service.model.PageDTO;
+import com.gmail.portnova.julia.service.model.PageableUser;
+import com.gmail.portnova.julia.service.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,10 +42,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteByUUID(String id) {
+    public UserDTO deleteByUUID(String id) {
         UUID uuid = UUID.fromString(id);
         User user = userRepository.findByUuid(uuid);
-        userRepository.remove(user);
+        if (Objects.nonNull(user)) {
+            userRepository.remove(user);
+            return userConverter.convertObjectToDTO(user);
+        } else {
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+        }
     }
 
     @Override
@@ -49,7 +58,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByUuid(String id) {
         UUID uuid = UUID.fromString(id);
         User user = userRepository.findByUuid(uuid);
-        return userConverter.convertObjectToDTO(user);
+        if (Objects.nonNull(user)) {
+            return userConverter.convertObjectToDTO(user);
+        } else {
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+        }
     }
 
     @Override
@@ -60,10 +73,14 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(user)) {
             RoleNameEnum roleName = RoleNameEnum.valueOf(newRole);
             Role role = roleRepository.findByName(roleName);
-            user.setRole(role);
-            return userConverter.convertObjectToDTO(user);
+            if (Objects.nonNull(role)) {
+                user.setRole(role);
+                return userConverter.convertObjectToDTO(user);
+            } else {
+                throw new UserRoleNotFoundException(String.format("Role with name %s was not found", newRole));
+            }
         } else {
-            return null;
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
         }
     }
 
@@ -78,6 +95,7 @@ public class UserServiceImpl implements UserService {
         setPageDTOList(page, users);
         return page;
     }
+
     private int getStartPosition(Integer page, Integer maxResult) {
         return maxResult * (page - 1);
     }
@@ -91,11 +109,12 @@ public class UserServiceImpl implements UserService {
         }
         page.getObjects().addAll(userDTOS);
     }
-    private Long getNumberOfPages(Long numberOfRows, Integer maxResult){
-         if (numberOfRows % maxResult == 0) {
-             return numberOfRows/maxResult;
-         } else {
-             return numberOfRows / maxResult + 1;
-         }
+
+    private Long getNumberOfPages(Long numberOfRows, Integer maxResult) {
+        if (numberOfRows % maxResult == 0) {
+            return numberOfRows / maxResult;
+        } else {
+            return numberOfRows / maxResult + 1;
+        }
     }
 }

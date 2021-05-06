@@ -1,4 +1,4 @@
-package com.gmail.portnova.julia.web.controller;
+package com.gmail.portnova.julia.web.controller.web;
 
 import com.gmail.portnova.julia.service.FeedbackService;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;

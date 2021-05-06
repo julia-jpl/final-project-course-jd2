@@ -17,7 +17,7 @@
                 <th scope="col">Feedback</th>
                 <th scope="col">Post date</th>
                 <th scope="col">Displayed</th>
-                <th scope="col">Delete</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
                 <td>
                     <form action="#" th:action="@{/users/feedback/delete/{uuid}(uuid=${feedback.uuid})}" method="post">
                         <input type="hidden" th:value="${feedback.uuid}"/>
-                        <input type="submit" value="delete">
+                        <input class="btn btn-outline-primary" type="submit" value="delete">
                     </form>
                 </td>
             </tr>
@@ -55,9 +55,9 @@
         </div>
     </form>
 
-
+<br/>
     <div class="btn-group me-2" role="group">
-        <span>Page</span>
+        <h5>Page</h5>
         <form action="#" th:action="@{/feedback}" method="get">
             <th:block th:each="number: ${#numbers.sequence(1, page.totalPages)}">
              <span th:if="${currentPage == number}">
@@ -72,10 +72,10 @@
         </form>
     </div>
 
-
+<br/>
    <div class="col-6">
 
-    <a class="btn btn-outline-primary" th:href="@{/logout}" href="#" role="button">Log out</a>
+    <a class="btn btn-outline-primary btn-lg" th:href="@{/logout}" href="#" role="button">Log out</a>
    </div>
 </div>
 

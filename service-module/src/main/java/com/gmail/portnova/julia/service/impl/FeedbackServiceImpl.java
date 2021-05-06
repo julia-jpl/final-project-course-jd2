@@ -4,6 +4,7 @@ import com.gmail.portnova.julia.repository.FeedbackRepository;
 import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.FeedbackService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
+import com.gmail.portnova.julia.service.exception.FeedbackNotFoundException;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
 import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.PageableFeedback;
@@ -67,18 +68,23 @@ public class FeedbackServiceImpl implements FeedbackService {
         for (String id : ids) {
             UUID uuid = UUID.fromString(id);
             Feedback feedback = feedbackRepository.findByUuid(uuid);
-            feedbacks.add(feedback);
+            if (Objects.nonNull(feedback)) {
+                feedbacks.add(feedback);
+            }
         }
         return feedbacks;
     }
 
     @Override
     @Transactional
-    public void deleteByUuid(String uuidString) {
+    public FeedbackDTO deleteByUuid(String uuidString) {
         UUID uuid = UUID.fromString(uuidString);
         Feedback feedback = feedbackRepository.findByUuid(uuid);
         if (Objects.nonNull(feedback)) {
             feedbackRepository.remove(feedback);
+            return feedbackConverter.convertObjectToDTO(feedback);
+        } else {
+            throw new FeedbackNotFoundException(String.format("Feedback with uuid %s was not found", uuidString));
         }
     }
 
