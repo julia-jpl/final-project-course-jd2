@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Users</h2>
+    <div th:if="${#lists.isEmpty(users)}">No users were found</div>
+    <form action="#" th:action="@{/users/all/{page}}" method="post">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">full name</th>
+                <th scope="col">email</th>
+                <th scope="col">role</th>
+                <th scope="col">change password</th>
+                <th scope="col">change role</th>
+                <th scope="col">delete</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.lastName} + ' ' + |${user.firstName} ${user.middleName}|">user full name</td>
+                <td th:text="${user.email}">user email</td>
+                <td th:text="${user.roleName}">user roleName</td>
+                <td><a th:href="@{/users/change-password/{id}(id=${user.uuid})}" href="#">Change password</a></td>
+                <td><a th:href="@{/users/change-role/{id}(id=${user.uuid})}" href="#">Change role</a></td>
+                <td><input type="checkbox" th:name="userIds" th:value="${user.uuid}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/users/add}" href="#" roleName="button">Add new
+                    user</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-primary btn-lg" th:href="@{/feedback/1}" href="#" roleName="button">View
+                    feedback</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-outline-primary btn-lg">Delete</button>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <span>Page</span>
+        <a th:if="${currentPage} gt 1" th:href="@{/users/all/{page}(page=${currentPage - 1})}" href="#"
+           th:text="${currentPage - 1}"></a>
+        <span th:text="${currentPage}"></span>
+        <a th:if="${currentPage} lt ${numberOfPages}" th:href="@{/users/all/{page}(page=${currentPage + 1})}" href="#"
+           th:text="${currentPage + 1}"></a>
+    </div>
+    <a class="btn btn-outline-primary" th:href="@{/logout}" href="#" roleName="button">Log out</a>
+</div>
+
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>l>
