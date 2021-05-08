@@ -5,6 +5,7 @@ import com.gmail.portnova.julia.repository.UserRepository;
 import com.gmail.portnova.julia.repository.model.Role;
 import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
+import com.gmail.portnova.julia.repository.model.UserDetail;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public PageDTO<UserDTO> getUsersPage(String email, Integer pageNumber, Integer maxResult) {
         Long numberOfRows = userRepository.count();
@@ -94,6 +96,72 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAllExceptCurrent(email, startPosition, maxResult);
         setPageDTOList(page, users);
         return page;
+    }
+
+    @Transactional
+    @Override
+    public UserDTO changeUserLastname(String lastName, String id) {
+        UUID uuid = UUID.fromString(id);
+        User user = userRepository.findByUuid(uuid);
+        if (Objects.nonNull(user)) {
+            user.setLastName(lastName);
+            return userConverter.convertObjectToDTO(user);
+        } else {
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+        }
+    }
+
+    @Transactional
+    @Override
+    public UserDTO changeUserFirstName(String firstName, String id) {
+        UUID uuid = UUID.fromString(id);
+        User user = userRepository.findByUuid(uuid);
+        if (Objects.nonNull(user)) {
+            user.setFirstName(firstName);
+            return userConverter.convertObjectToDTO(user);
+        } else {
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+        }
+    }
+
+    @Transactional
+    @Override
+    public void changeUserAddress(String address, String id) {
+        UUID uuid = UUID.fromString(id);
+        User user = userRepository.findByUuid(uuid);
+        if (Objects.nonNull(user)) {
+            UserDetail userDetail = user.getUserDetail();
+            if (Objects.nonNull(userDetail)) {
+                userDetail.setAddress(address);
+            } else {
+                UserDetail newUserDetail = new UserDetail();
+                newUserDetail.setAddress(address);
+                user.setUserDetail(newUserDetail);
+                newUserDetail.setUser(user);
+            }
+        } else {
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+        }
+    }
+
+    @Transactional
+    @Override
+    public void changeUserTelephone(String telephone, String id) {
+        UUID uuid = UUID.fromString(id);
+        User user = userRepository.findByUuid(uuid);
+        if (Objects.nonNull(user)) {
+            UserDetail userDetail = user.getUserDetail();
+            if (Objects.nonNull(userDetail)) {
+                userDetail.setTelephone(telephone);
+            } else {
+                UserDetail newUserDetail = new UserDetail();
+                newUserDetail.setTelephone(telephone);
+                user.setUserDetail(newUserDetail);
+                newUserDetail.setUser(user);
+            }
+        } else {
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+        }
     }
 
     private int getStartPosition(Integer page, Integer maxResult) {

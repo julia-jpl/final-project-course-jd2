@@ -1,6 +1,7 @@
 package com.gmail.portnova.julia.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GenericRepository<I, T> {
     void persist(T entity);
@@ -10,4 +11,6 @@ public interface GenericRepository<I, T> {
     List<T> findAll();
 
     void remove(T entity);
+
+    T findByUuid(UUID uuid);
 }

@@ -93,7 +93,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     public PageDTO<FeedbackDTO> getAllFeedbackPage(Integer page, Integer maxResult) {
         Long numberOfRows = feedbackRepository.count();
         PageableFeedback pageDTO = new PageableFeedback();
-        pageDTO.setTotalPages((numberOfRows / maxResult) + 1);
+        pageDTO.setTotalPages(getNumberOfPages(numberOfRows, maxResult));
         int startPosition = getStartPosition(page, maxResult);
         List<Feedback> allFeedBack = feedbackRepository.findAllWithLimit(startPosition, maxResult);
         setPageDTOList(pageDTO, allFeedBack);

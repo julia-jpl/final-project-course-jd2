@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"lastName", "password", "role", "feedback"})
+@EqualsAndHashCode(exclude = {"lastName", "password", "role", "feedback", "userDetail"})
 @Entity
 @Table(name = "USER")
 public class User {
@@ -36,8 +36,9 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
-    @OneToMany(orphanRemoval = true,
+    @OneToOne(fetch = FetchType.LAZY,
+            mappedBy = "user",
             cascade = CascadeType.ALL,
-            mappedBy = "user")
-    private List<Feedback> feedback = new ArrayList<>();
+            orphanRemoval = true)
+    private UserDetail userDetail;
 }
