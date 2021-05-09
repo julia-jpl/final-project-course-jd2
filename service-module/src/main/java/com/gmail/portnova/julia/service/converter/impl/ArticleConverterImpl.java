@@ -7,6 +7,7 @@ import com.gmail.portnova.julia.service.model.ArticleDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+
 @Component
 public class ArticleConverterImpl implements GeneralConverter<Article, ArticleDTO> {
     @Override
@@ -16,7 +17,7 @@ public class ArticleConverterImpl implements GeneralConverter<Article, ArticleDT
         articleDTO.setUuid(article.getUuid());
         articleDTO.setCreatedAt(article.getCreatedAt());
         articleDTO.setTitle(article.getTitle());
-        articleDTO.setSummary(article.getContent());
+        articleDTO.setContent(article.getContent());
         User user = article.getUser();
         if (Objects.nonNull(user)) {
             String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());

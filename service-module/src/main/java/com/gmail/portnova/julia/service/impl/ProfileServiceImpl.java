@@ -28,9 +28,4 @@ public class ProfileServiceImpl implements ProfileService {
             throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
         }
     }
-
-    @Override
-    public void changeUserProfile(String name, String uuid) {
-
-    }
 }

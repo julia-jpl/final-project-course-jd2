@@ -7,6 +7,7 @@ import com.gmail.portnova.julia.service.model.ProfileUserDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+
 @Component
 public class ProfileUserConverterImpl implements GeneralConverter<User, ProfileUserDTO> {
     @Override

@@ -244,7 +244,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="timestamp" defaultValueComputed="now()">
-                <constraints nullable="false"/>
             </column>
             <column name="user_id" type="bigint">
                 <constraints foreignKeyName="fk_user_opinion" references="USER(id)"/>
@@ -257,16 +256,30 @@
     <changeSet id="14" author="portnova.julia@gmail.com">
         <insert tableName="OPINION">
             <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac130222"/>
-            <column name="content" value="We have always known this is a historic building but having the menu in our hands has made it all feel real, something dating back to before the First World War"/>
+            <column name="content"
+                    value="We have always known this is a historic building but having the menu in our hands has made it all feel real, something dating back to before the First World War"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
-            <column name="article_id" valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
+            <column name="article_id"
+                    valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
         </insert>
         <insert tableName="OPINION">
             <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac199922"/>
-            <column name="content" value="Foreign dishes and the greater use of vegetables illustrated cosmopolitanism and, in turn, Liverpool's status as a major city of empire."/>
+            <column name="content"
+                    value="Foreign dishes and the greater use of vegetables illustrated cosmopolitanism and, in turn, Liverpool's status as a major city of empire."/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
-            <column name="article_id" valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
+            <column name="article_id"
+                    valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
         </insert>
     </changeSet>
-
+    <changeSet id="15" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b448-2900-4fd2-9183-8000de6f8343"/>
+            <column name="last_name" value="RestLastName"/>
+            <column name="first_name" value="RestFirstName"/>
+            <column name="middle_name" value="RestMiddleName"/>
+            <column name="email" value="rest@myhost.com"/>
+            <column name="password" value="$2y$12$Hbu6yaVtpk/MT3YmG3UIS.o2GAp4gMo5Y9lBh/zAxnYYnVzwRiq/K"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SECURE_REST_API')"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

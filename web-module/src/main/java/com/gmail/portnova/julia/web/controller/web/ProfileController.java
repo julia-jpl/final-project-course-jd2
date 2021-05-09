@@ -48,7 +48,7 @@ public class ProfileController {
 
     @PostMapping("profile/change-first-name/{uuid}")
     public String changeFirstName(@PathVariable("uuid") String uuid,
-                                 @RequestParam(name = "firstName", required = false) String firstName) {
+                                  @RequestParam(name = "firstName", required = false) String firstName) {
         if (!firstName.isEmpty() && firstName.matches(FIRST_NAME_PATTERN)) {
             userService.changeUserFirstName(firstName, uuid);
             return "redirect:/profile/{uuid}";
@@ -58,7 +58,7 @@ public class ProfileController {
 
     @PostMapping("profile/change-address/{uuid}")
     public String changeAddress(@PathVariable("uuid") String uuid,
-                                 @RequestParam(name = "address", required = false) String address) {
+                                @RequestParam(name = "address", required = false) String address) {
         if (!address.isEmpty() && (address.length() < ADDRESS_MAX_LENGTH_VALUE) && (address.length() > ADDRESS_MIN_LENGTH_VALUE)) {
             userService.changeUserAddress(address, uuid);
             return "redirect:/profile/{uuid}";
@@ -68,7 +68,7 @@ public class ProfileController {
 
     @PostMapping("profile/change-telephone/{uuid}")
     public String changeTelephone(@PathVariable("uuid") String uuid,
-                                 @RequestParam(name = "telephone", required = false) String telephone) {
+                                  @RequestParam(name = "telephone", required = false) String telephone) {
         if (!telephone.isEmpty() && telephone.matches(TELEPHONE_PATTERN)) {
             userService.changeUserTelephone(telephone, uuid);
             return "redirect:/profile/{uuid}";

@@ -6,8 +6,6 @@ import com.gmail.portnova.julia.repository.model.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

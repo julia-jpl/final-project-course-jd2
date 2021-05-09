@@ -12,16 +12,19 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class CommentDTO {
+public class ArticleApiDTO {
     private Long id;
-    private UUID commentUuid;
-    @NotNull(message = "Comment shouldn't be empty or blank")
-    @NotBlank(message = "Comment shouldn't be empty or blank")
-    @NotEmpty(message = "Comment shouldn't be empty or blank")
-    @Size(max = 200, message = "the length of comment should be under 200 letters")
+    private UUID uuid;
+    @NotNull
+    @NotBlank
+    @NotEmpty
+    @Size(max = 100)
+    private String title;
+    @NotNull
+    @NotBlank
+    @NotEmpty
+    @Size(max = 1000)
     private String content;
-    private String userLastAndFirstName;
     private LocalDateTime createdAt;
-    private String articleUuid;
     private UUID userUuid;
 }

@@ -13,6 +13,6 @@ public class ArticleDTO {
     private UUID uuid;
     private String title;
     private String userLastAndFirstName;
-    private String summary;
+    private String content;
     private LocalDateTime createdAt;
 }

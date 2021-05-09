@@ -11,7 +11,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
@@ -30,7 +31,8 @@
                 </li>
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{/profile/{id}(id=${#authentication.getPrincipal().getUuid})}">PROFILE</a>
+                        <a class="nav-link" href="#"
+                           th:href="@{/profile/{id}(id=${#authentication.getPrincipal().getUuid})}">PROFILE</a>
                     </li>
                 </div>
             </ul>
@@ -62,7 +64,7 @@
             <td th:text="${article.createdAt}"></td>
             <td th:text="${article.title}"></td>
             <td th:text="${article.userLastAndFirstName}"></td>
-            <td th:text="${article.summary}"></td>
+            <td th:text="${article.content}"></td>
             <td><a th:href="@{/articles/{id}(id=${article.uuid})}" href="#">details</a></td>
         </tr>
         </tbody>

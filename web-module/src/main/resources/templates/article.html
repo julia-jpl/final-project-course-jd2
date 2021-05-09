@@ -10,7 +10,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
@@ -29,7 +30,8 @@
                 </li>
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{/profile/{id}(id=${#authentication.getPrincipal().getUuid})}">PROFILE</a>
+                        <a class="nav-link" href="#"
+                           th:href="@{/profile/{id}(id=${#authentication.getPrincipal().getUuid})}">PROFILE</a>
                     </li>
                 </div>
             </ul>
@@ -37,8 +39,8 @@
             <span class="navbar-text">
         User:
       </span>
-            <span sec:authentication="name"></span>
-            <a class="btn btn-sm btn-outline" type="button" href="#" th:href="@{/logout}">Log out</a>
+                <span sec:authentication="name"></span>
+                <a class="btn btn-sm btn-outline" type="button" href="#" th:href="@{/logout}">Log out</a>
             </div>
         </div>
     </div>
@@ -51,13 +53,29 @@
 </div>
 <div class="container-fluid">
     <h5>Recent comments</h5>
-    <div class="card" th:each="comment : ${article.comments}">
+    <div class="card" th:each="comment : ${comments}">
         <div class="card-header" th:text="${comment.userLastAndFirstName}"></div>
         <div class="card-body">
             <p class="card-text" th:text="${comment.content}"></p>
         </div>
         <div class="card-footer" th:text="${comment.createdAt}"></div>
     </div>
+</div>
+<div class="container-fluid">
+    <h5>Add comment</h5>
+    <form action="#" th:action="@{/articles/comments/{uuid}(uuid=${article.uuid})}" method="post">
+        <div class="card" th:object="${userComment}">
+            <div class="card-header">your comment</div>
+            <div class="card-body">
+                <input type="text" class="form-control" th:field="*{content}" id="inputContent"
+                       maxlength="200" required>
+                <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Description Error</span>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-lg">Save comment</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>

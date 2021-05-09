@@ -3,25 +3,24 @@ package com.gmail.portnova.julia.service.impl;
 import com.gmail.portnova.julia.repository.ArticleRepository;
 import com.gmail.portnova.julia.repository.model.Article;
 import com.gmail.portnova.julia.service.ArticleService;
-import com.gmail.portnova.julia.service.comparator.CommentByDateComparator;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ArticleNotFoundException;
-import com.gmail.portnova.julia.service.model.*;
+import com.gmail.portnova.julia.service.model.ArticleDTO;
+import com.gmail.portnova.julia.service.model.PageableArticle;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final GeneralConverter<Article, ArticleDTO> articleConverter;
-    private final GeneralConverter<Article, ArticleWithCommentsDTO> articleWithCommentsConverter;
-    private final CommentByDateComparator commentByDateComparator;
 
     @Override
     @Transactional
@@ -37,21 +36,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleWithCommentsDTO findByUuid(String id) {
+    public ArticleDTO findByUuid(String id) {
         UUID uuid = UUID.fromString(id);
         Article article = articleRepository.findByUuid(uuid);
         if (Objects.nonNull(article)) {
-            ArticleWithCommentsDTO articleWithComments = articleWithCommentsConverter.convertObjectToDTO(article);
-            List<CommentDTO> comments = articleWithComments.getComments();
-            List<CommentDTO> sortedComments = comments.stream()
-                    .sorted(commentByDateComparator)
-                    .collect(Collectors.toList());
-            articleWithComments.setComments(sortedComments);
-            return articleWithComments;
+            ArticleDTO articleDTO = articleConverter.convertObjectToDTO(article);
+            return articleDTO;
         } else {
             throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", id));
         }
     }
+
 
     private void setPageDTOList(PageableArticle pageDTO, List<Article> articles) {
         List<ArticleDTO> articleDTOS = new ArrayList<>();
