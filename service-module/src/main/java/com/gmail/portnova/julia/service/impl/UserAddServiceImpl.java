@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.gmail.portnova.julia.service.constant.PasswordGenerationConstant.*;
+
 @RequiredArgsConstructor
 @Service
 public class UserAddServiceImpl implements UserAddService {
@@ -27,33 +28,51 @@ public class UserAddServiceImpl implements UserAddService {
     private final GeneralConverter<User, UserDTO> userConverter;
 
     @Override
-    @Transactional
     public UserDTO addUser(UserDTO user) {
+        UserDTO savedUser = addUserToDatabase(user);
+        emailService.sendSimpleMessage(savedUser.getEmail(), savedUser.getPassword());
+        String encodedPassword = passwordEncoder.encode(savedUser.getPassword());
+        savedUser.setPassword(encodedPassword);
+        return savedUser;
+    }
+
+    @Transactional
+    protected UserDTO addUserToDatabase(UserDTO user) {
         String password = passwordGenerator.generatePassword(PASSWORD_LENGTH,
                 FIRST_ASCII_CHARACTER_COD_USED_IN_PASSWORD,
                 LAST_ASCII_CHARACTER_COD_USED_IN_PASSWORD);
-        emailService.sendSimpleMessage(user.getEmail(), password);
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         user.setUuid(UUID.randomUUID());
         User newUser = userConverter.convertDTOToObject(user);
         userRepository.persist(newUser);
-        return user;
+        UserDTO savedUser = userConverter.convertObjectToDTO(newUser);
+        savedUser.setPassword(password);
+        return savedUser;
     }
 
     @Override
-    @Transactional
     public UserDTO changePassword(String id) {
+        UserDTO userWithNewPassword = saveNewPasswordInDatabase(id);
+        emailService.sendSimpleMessage(userWithNewPassword.getEmail(), userWithNewPassword.getPassword());
+        String encodedPassword = passwordEncoder.encode(userWithNewPassword.getPassword());
+        userWithNewPassword.setPassword(encodedPassword);
+        return userWithNewPassword;
+    }
+
+    @Transactional
+    protected UserDTO saveNewPasswordInDatabase(String id) {
         UUID uuid = UUID.fromString(id);
         User user = userRepository.findByUuid(uuid);
         if (Objects.nonNull(user)) {
             String password = passwordGenerator.generatePassword(PASSWORD_LENGTH,
                     FIRST_ASCII_CHARACTER_COD_USED_IN_PASSWORD,
                     LAST_ASCII_CHARACTER_COD_USED_IN_PASSWORD);
-            emailService.sendSimpleMessage(user.getEmail(), password);
             String encodedPassword = passwordEncoder.encode(password);
             user.setPassword(encodedPassword);
-            return userConverter.convertObjectToDTO(user);
+            UserDTO userWithNewPassword = userConverter.convertObjectToDTO(user);
+            userWithNewPassword.setPassword(password);
+            return userWithNewPassword;
         } else {
             throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
         }

@@ -15,6 +15,7 @@ import com.gmail.portnova.julia.service.model.PageableUser;
 import com.gmail.portnova.julia.service.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import static com.gmail.portnova.julia.service.util.PageUtil.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(user)) {
             return userConverter.convertObjectToDTO(user);
         } else {
-            return null;
+            throw new UserNotFoundException(String.format("User with username %s was not found", username));
         }
     }
 
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public PageDTO<UserDTO> getUsersPage(String email, Integer pageNumber, Integer maxResult) {
+    public PageDTO<UserDTO> getUsersPage(String email, int pageNumber, int maxResult) {
         Long numberOfRows = userRepository.count();
         Long numberOfRowsExceptCurrentUser = numberOfRows - 1;
         PageableUser page = new PageableUser();
@@ -164,10 +165,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private int getStartPosition(Integer page, Integer maxResult) {
-        return maxResult * (page - 1);
-    }
-
     private void setPageDTOList(PageableUser page, List<User> users) {
         List<UserDTO> userDTOS = new ArrayList<>();
         if (!users.isEmpty()) {
@@ -176,13 +173,5 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toList()));
         }
         page.getObjects().addAll(userDTOS);
-    }
-
-    private Long getNumberOfPages(Long numberOfRows, Integer maxResult) {
-        if (numberOfRows % maxResult == 0) {
-            return numberOfRows / maxResult;
-        } else {
-            return numberOfRows / maxResult + 1;
-        }
     }
 }

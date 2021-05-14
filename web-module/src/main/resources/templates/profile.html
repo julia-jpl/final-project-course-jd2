@@ -31,8 +31,7 @@
                 </li>
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#"
-                           th:href="@{/profile/{id}(id=${#authentication.getPrincipal().getUuid})}">PROFILE</a>
+                        <a class="nav-link active" aria-current="page" href="#">PROFILE</a>
                     </li>
                 </div>
             </ul>

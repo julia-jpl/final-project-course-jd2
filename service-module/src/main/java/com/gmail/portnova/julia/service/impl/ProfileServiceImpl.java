@@ -19,13 +19,12 @@ public class ProfileServiceImpl implements ProfileService {
     private final GeneralConverter<User, ProfileUserDTO> profileConverter;
 
     @Override
-    public ProfileUserDTO getUserProfile(String id) {
-        UUID uuid = UUID.fromString(id);
+    public ProfileUserDTO getUserProfile(UUID uuid) {
         User user = userRepository.findByUuid(uuid);
         if (Objects.nonNull(user)) {
             return profileConverter.convertObjectToDTO(user);
         } else {
-            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+            throw new UserNotFoundException(String.format("User with uuid %s was not found", uuid));
         }
     }
 }

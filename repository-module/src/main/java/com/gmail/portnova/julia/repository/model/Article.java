@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "ARTICLE")
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"content", "createdAt", "user", "comments"})
+@EqualsAndHashCode(exclude = {"content", "createdAt", "user"})
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

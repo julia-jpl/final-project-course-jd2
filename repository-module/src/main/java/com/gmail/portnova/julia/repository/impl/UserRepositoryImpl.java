@@ -39,24 +39,4 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         query.setMaxResults(maxResult);
         return query.getResultList();
     }
-
-    @Override
-    public Long count() {
-        String hql = "SELECT COUNT (u.id) FROM User u";
-        Query query = entityManager.createQuery(hql);
-        return (Long) query.getSingleResult();
-    }
-
-    @Override
-    public User findByUuid(UUID id) {
-        String hql = "FROM User u WHERE u.uuid = :id";
-        Query query = entityManager.createQuery(hql);
-        query.setParameter("id", id);
-        try {
-            return (User) query.getSingleResult();
-        } catch (NonUniqueResultException | NoResultException e) {
-            logger.error(e.getMessage(), e);
-            return null;
-        }
-    }
 }

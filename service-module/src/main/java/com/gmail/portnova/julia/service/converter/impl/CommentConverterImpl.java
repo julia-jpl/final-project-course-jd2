@@ -36,19 +36,23 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
 
     @Override
     public Comment convertDTOToObject(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        comment.setUuid(commentDTO.getCommentUuid());
-        comment.setContent(commentDTO.getContent());
-        comment.setCreatedAt(commentDTO.getCreatedAt());
-        User user = userRepository.findByUuid(commentDTO.getUserUuid());
-        if (Objects.nonNull(user)) {
-            comment.setUser(user);
-            String articleUuidString = commentDTO.getArticleUuid();
-            UUID articleUuid = UUID.fromString(articleUuidString);
-            Article article = articleRepository.findByUuid(articleUuid);
-            if (Objects.nonNull(article)) {
-                comment.setArticle(article);
-                return comment;
+        if (Objects.nonNull(commentDTO)) {
+            Comment comment = new Comment();
+            comment.setUuid(commentDTO.getCommentUuid());
+            comment.setContent(commentDTO.getContent());
+            comment.setCreatedAt(commentDTO.getCreatedAt());
+            User user = userRepository.findByUuid(commentDTO.getUserUuid());
+            if (Objects.nonNull(user)) {
+                comment.setUser(user);
+                String articleUuidString = commentDTO.getArticleUuid();
+                UUID articleUuid = UUID.fromString(articleUuidString);
+                Article article = articleRepository.findByUuid(articleUuid);
+                if (Objects.nonNull(article)) {
+                    comment.setArticle(article);
+                    return comment;
+                } else {
+                    return null;
+                }
             } else {
                 return null;
             }

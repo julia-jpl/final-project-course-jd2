@@ -31,7 +31,7 @@
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
                         <a class="nav-link" href="#"
-                           th:href="@{/profile/{id}(id=${#authentication.getPrincipal().getUuid})}">PROFILE</a>
+                           th:href="@{/profile}">PROFILE</a>
                     </li>
                 </div>
             </ul>

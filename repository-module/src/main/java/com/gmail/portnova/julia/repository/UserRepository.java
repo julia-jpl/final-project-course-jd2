@@ -9,8 +9,4 @@ public interface UserRepository extends GenericRepository<Long, User> {
     User findByEmail(String username);
 
     List<User> findAllExceptCurrent(String email, int startPosition, int maxResult);
-
-    Long count();
-
-    User findByUuid(UUID id);
 }

@@ -4,6 +4,7 @@ import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.model.UserDTO;
 import com.gmail.portnova.julia.service.model.UserLogin;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

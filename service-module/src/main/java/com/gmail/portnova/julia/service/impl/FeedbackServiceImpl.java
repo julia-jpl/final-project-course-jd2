@@ -10,6 +10,7 @@ import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.PageableFeedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import static com.gmail.portnova.julia.service.util.PageUtil.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public PageDTO<FeedbackDTO> getAllFeedbackPage(Integer page, Integer maxResult) {
+    public PageDTO<FeedbackDTO> getAllFeedbackPage(int page, int maxResult) {
         Long numberOfRows = feedbackRepository.count();
         PageableFeedback pageDTO = new PageableFeedback();
         pageDTO.setTotalPages(getNumberOfPages(numberOfRows, maxResult));
@@ -102,7 +103,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     @Transactional
-    public PageDTO<FeedbackDTO> getFeedbackByDisplayedTruePage(Integer pageNumber, Integer maxResult) {
+    public PageDTO<FeedbackDTO> getFeedbackByDisplayedTruePage(int pageNumber, int maxResult) {
         Long numberOfRows = feedbackRepository.countFeedbackIdDisplayedTrue();
         PageableFeedback pageDTO = new PageableFeedback();
         pageDTO.setTotalPages(getNumberOfPages(numberOfRows, maxResult));
@@ -120,17 +121,5 @@ public class FeedbackServiceImpl implements FeedbackService {
                     .collect(Collectors.toList()));
         }
         pageDTO.getObjects().addAll(feedbackDTO);
-    }
-
-    private int getStartPosition(Integer page, Integer maxResult) {
-        return maxResult * (page - 1);
-    }
-
-    private Long getNumberOfPages(Long numberOfRows, Integer maxResult) {
-        if (numberOfRows % maxResult == 0) {
-            return numberOfRows / maxResult;
-        } else {
-            return numberOfRows / maxResult + 1;
-        }
     }
 }
