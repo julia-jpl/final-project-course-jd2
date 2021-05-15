@@ -73,7 +73,7 @@ public class ProfileController {
     public String changeAddress(@PathVariable("uuid") String uuid,
                                 @RequestParam(name = "address", required = false) String address) {
         if (!address.isEmpty() && (address.length() < ADDRESS_MAX_LENGTH_VALUE) && (address.length() > ADDRESS_MIN_LENGTH_VALUE)) {
-            userService.changeUserAddress(address, uuid);
+            profileService.changeUserAddress(address, uuid);
             return "redirect:/profile";
         }
         return "redirect:/profile";
@@ -83,7 +83,7 @@ public class ProfileController {
     public String changeTelephone(@PathVariable("uuid") String uuid,
                                   @RequestParam(name = "telephone", required = false) String telephone) {
         if (!telephone.isEmpty() && telephone.matches(TELEPHONE_PATTERN)) {
-            userService.changeUserTelephone(telephone, uuid);
+            profileService.changeUserTelephone(telephone, uuid);
             return "redirect:/profile";
         }
         return "redirect:/profile";

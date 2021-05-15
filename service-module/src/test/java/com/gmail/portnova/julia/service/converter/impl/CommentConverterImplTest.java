@@ -89,28 +89,21 @@ class CommentConverterImplTest {
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertNotNull(commentDTO);
     }
-    @Test
-    void shouldConvertCommentDTOToCommentAndReturnRightId() {
-        CommentDTO commentDTO = new CommentDTO();
-        Long id = 1L;
-        commentDTO.setId(id);
-
-        Comment comment = new Comment();
-        User user = new User();
-        Article article = new Article();
-        comment.setUser(user);
-        comment.setArticle(article);
-        comment.setId(id);
-
-        Comment resultComment = commentConverter.convertDTOToObject(commentDTO);
-        assertEquals(comment.getId(), resultComment.getId());
-    }
 
     @Test
     void shouldConvertCommentDTOToCommentAndReturnRightUuid() {
         CommentDTO commentDTO = new CommentDTO();
         UUID uuid = UUID.randomUUID();
         commentDTO.setCommentUuid(uuid);
+        Article article = new Article();
+        article.setUuid(uuid);
+        commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
+        user.setUuid(uuid);
+        commentDTO.setUserUuid(uuid);
+
+        when(articleRepository.findByUuid(uuid)).thenReturn(article);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
 
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertEquals(uuid, comment.getUuid());
@@ -121,6 +114,16 @@ class CommentConverterImplTest {
         CommentDTO commentDTO = new CommentDTO();
         LocalDateTime date = LocalDateTime.now();
         commentDTO.setCreatedAt(date);
+        Article article = new Article();
+        UUID uuid = UUID.randomUUID();
+        article.setUuid(uuid);
+        commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
+        user.setUuid(uuid);
+        commentDTO.setUserUuid(uuid);
+
+        when(articleRepository.findByUuid(uuid)).thenReturn(article);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
 
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertEquals(date, comment.getCreatedAt());
@@ -131,6 +134,16 @@ class CommentConverterImplTest {
         CommentDTO commentDTO = new CommentDTO();
         String content = "content";
         commentDTO.setContent(content);
+        Article article = new Article();
+        UUID uuid = UUID.randomUUID();
+        article.setUuid(uuid);
+        commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
+        user.setUuid(uuid);
+        commentDTO.setUserUuid(uuid);
+
+        when(articleRepository.findByUuid(uuid)).thenReturn(article);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
 
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertEquals(content, comment.getContent());
@@ -139,11 +152,15 @@ class CommentConverterImplTest {
     @Test
     void shouldConvertCommentDTOToCommentAndReturnUserWithRightUuid() {
         CommentDTO commentDTO = new CommentDTO();
-        User user = new User();
+        Article article = new Article();
         UUID uuid = UUID.randomUUID();
+        article.setUuid(uuid);
+        commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
 
+        when(articleRepository.findByUuid(uuid)).thenReturn(article);
         when(userRepository.findByUuid(uuid)).thenReturn(user);
 
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
@@ -156,8 +173,12 @@ class CommentConverterImplTest {
         UUID uuid = UUID.randomUUID();
         article.setUuid(uuid);
         commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
+        user.setUuid(uuid);
+        commentDTO.setUserUuid(uuid);
 
         when(articleRepository.findByUuid(uuid)).thenReturn(article);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
 
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertEquals(uuid, comment.getArticle().getUuid());
@@ -165,6 +186,17 @@ class CommentConverterImplTest {
     @Test
     void shouldConvertCommentDTOToCommentAndReturnNotNullObject() {
         CommentDTO commentDTO = new CommentDTO();
+        Article article = new Article();
+        UUID uuid = UUID.randomUUID();
+        article.setUuid(uuid);
+        commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
+        user.setUuid(uuid);
+        commentDTO.setUserUuid(uuid);
+
+        when(articleRepository.findByUuid(uuid)).thenReturn(article);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
+
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertNotNull(comment);
     }

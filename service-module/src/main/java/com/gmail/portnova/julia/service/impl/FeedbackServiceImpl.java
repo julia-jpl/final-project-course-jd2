@@ -64,7 +64,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .collect(Collectors.toList());
     }
 
-    private List<Feedback> getFeedbackListById(List<String> ids) {
+    protected List<Feedback> getFeedbackListById(List<String> ids) {
         List<Feedback> feedbacks = new ArrayList<>();
         for (String id : ids) {
             UUID uuid = UUID.fromString(id);

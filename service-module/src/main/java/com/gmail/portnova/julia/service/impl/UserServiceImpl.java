@@ -2,17 +2,12 @@ package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.RoleRepository;
 import com.gmail.portnova.julia.repository.UserRepository;
-import com.gmail.portnova.julia.repository.model.Role;
-import com.gmail.portnova.julia.repository.model.RoleNameEnum;
-import com.gmail.portnova.julia.repository.model.User;
-import com.gmail.portnova.julia.repository.model.UserDetail;
+import com.gmail.portnova.julia.repository.model.*;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserRoleNotFoundException;
-import com.gmail.portnova.julia.service.model.PageDTO;
-import com.gmail.portnova.julia.service.model.PageableUser;
-import com.gmail.portnova.julia.service.model.UserDTO;
+import com.gmail.portnova.julia.service.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static com.gmail.portnova.julia.service.util.PageUtil.*;
@@ -22,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -95,7 +89,8 @@ public class UserServiceImpl implements UserService {
         page.setTotalPages(getNumberOfPages(numberOfRowsExceptCurrentUser, maxResult));
         int startPosition = getStartPosition(pageNumber, maxResult);
         List<User> users = userRepository.findAllExceptCurrent(email, startPosition, maxResult);
-        setPageDTOList(page, users);
+        List<UserDTO> userDTOS = getPageDTOList(users);
+        page.getObjects().addAll(userDTOS);
         return page;
     }
 
@@ -125,53 +120,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
-    @Override
-    public void changeUserAddress(String address, String id) {
-        UUID uuid = UUID.fromString(id);
-        User user = userRepository.findByUuid(uuid);
-        if (Objects.nonNull(user)) {
-            UserDetail userDetail = user.getUserDetail();
-            if (Objects.nonNull(userDetail)) {
-                userDetail.setAddress(address);
-            } else {
-                UserDetail newUserDetail = new UserDetail();
-                newUserDetail.setAddress(address);
-                user.setUserDetail(newUserDetail);
-                newUserDetail.setUser(user);
-            }
-        } else {
-            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
-        }
-    }
-
-    @Transactional
-    @Override
-    public void changeUserTelephone(String telephone, String id) {
-        UUID uuid = UUID.fromString(id);
-        User user = userRepository.findByUuid(uuid);
-        if (Objects.nonNull(user)) {
-            UserDetail userDetail = user.getUserDetail();
-            if (Objects.nonNull(userDetail)) {
-                userDetail.setTelephone(telephone);
-            } else {
-                UserDetail newUserDetail = new UserDetail();
-                newUserDetail.setTelephone(telephone);
-                user.setUserDetail(newUserDetail);
-                newUserDetail.setUser(user);
-            }
-        } else {
-            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
-        }
-    }
-
-    private void setPageDTOList(PageableUser page, List<User> users) {
+    protected List<UserDTO> getPageDTOList(List<User> users) {
         List<UserDTO> userDTOS = new ArrayList<>();
         if (!users.isEmpty()) {
-            userDTOS.addAll(users.stream()
-                    .map(userConverter::convertObjectToDTO)
-                    .collect(Collectors.toList()));
+            List<UserDTO> list = new ArrayList<>();
+            for (User user : users) {
+                UserDTO userDTO = userConverter.convertObjectToDTO(user);
+                list.add(userDTO);
+            }
+            userDTOS = list;
         }
-        page.getObjects().addAll(userDTOS);
+        return userDTOS;
     }
 }
