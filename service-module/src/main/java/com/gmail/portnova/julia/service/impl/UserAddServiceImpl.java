@@ -28,16 +28,16 @@ public class UserAddServiceImpl implements UserAddService {
     private final GeneralConverter<User, UserDTO> userConverter;
 
     @Override
-    public UserDTO addUser(UserDTO user) {
-        UserDTO savedUser = addUserToDatabase(user);
-        emailService.sendSimpleMessage(savedUser.getEmail(), savedUser.getPassword());
-        String encodedPassword = passwordEncoder.encode(savedUser.getPassword());
-        savedUser.setPassword(encodedPassword);
-        return savedUser;
+    public UserDTO sendEmail(UserDTO user) {
+        emailService.sendSimpleMessage(user.getEmail(), user.getPassword());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        return user;
     }
 
     @Transactional
-    protected UserDTO addUserToDatabase(UserDTO user) {
+    @Override
+    public UserDTO addUserToDatabase(UserDTO user) {
         String password = passwordGenerator.generatePassword(PASSWORD_LENGTH,
                 FIRST_ASCII_CHARACTER_COD_USED_IN_PASSWORD,
                 LAST_ASCII_CHARACTER_COD_USED_IN_PASSWORD);

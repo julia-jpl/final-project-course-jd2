@@ -27,7 +27,8 @@ public class UserApiController {
         if (result.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        userAddService.addUser(user);
+        UserDTO savedUser = userAddService.addUserToDatabase(user);
+        userAddService.sendEmail(savedUser);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

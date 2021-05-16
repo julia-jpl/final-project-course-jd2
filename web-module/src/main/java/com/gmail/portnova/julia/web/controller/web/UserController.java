@@ -61,8 +61,8 @@ public class UserController {
         if (results.hasErrors()) {
             return "add_user";
         } else {
-
-            userAddService.addUser(user);
+            UserDTO savedUser = userAddService.addUserToDatabase(user);
+            userAddService.sendEmail(savedUser);
             return "redirect:/users/all";
         }
     }

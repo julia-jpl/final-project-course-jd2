@@ -24,8 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +60,8 @@ class UserServiceTest {
         String email = "test@test.com";
         when(userRepository.findByEmail(email)).thenReturn(null);
 
-        assertThrows(UserNotFoundException.class, () -> userService.findUserByEmail(email));
+        UserDTO userDTO = userService.findUserByEmail(email);
+        assertNull(userDTO);
     }
 
     @Test

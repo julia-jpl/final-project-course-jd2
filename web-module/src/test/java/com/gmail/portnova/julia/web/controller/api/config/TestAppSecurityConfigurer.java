@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Profile("test")
-@Order(3)
 @Configuration
 public class TestAppSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override

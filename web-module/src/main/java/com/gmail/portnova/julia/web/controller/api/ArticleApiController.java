@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -37,14 +38,18 @@ public class ArticleApiController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String username = userDetails.getUsername();
-        UserDTO user = userService.findUserByEmail(username);
-        UUID userUuid = user.getUuid();
-        article.setUserUuid(userUuid);
-        articleApiService.addApiArticle(article);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
+        if
+        (Objects.nonNull(authentication)) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername();
+            UserDTO user = userService.findUserByEmail(username);
+            UUID userUuid = user.getUuid();
+            article.setUserUuid(userUuid);
+            articleApiService.addApiArticle(article);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/{id}")

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(user)) {
             return userConverter.convertObjectToDTO(user);
         } else {
-            throw new UserNotFoundException(String.format("User with username %s was not found", username));
+            return null;
         }
     }
 
