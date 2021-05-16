@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Add user</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/users/add}">ADD NEW USER</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"  href="#" th:href="@{/feedback}">FEEDBACK</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/users/all}" href="#">ALL USERS</a>
+                </li>
+            </ul>
+            <div class="col-auto">
+            <span class="navbar-text">
+        User:
+      </span>
+                <span sec:authentication="name"></span>
+                <a class="btn btn-sm btn-outline" type="button" href="#" th:href="@{/logout}">Log out</a>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <h2>Fill the form to add user</h2>
     <form action="#" th:action="@{/users/add}" th:object="${newUser}" method="post">
@@ -64,7 +94,6 @@
             </div>
         </div>
     </form>
-    <a class="btn btn-outline-primary btn-lg" th:href="@{/users/all}" href="#" role="button">Users</a>
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
