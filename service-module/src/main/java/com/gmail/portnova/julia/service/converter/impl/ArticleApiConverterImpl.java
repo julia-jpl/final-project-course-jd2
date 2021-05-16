@@ -17,28 +17,36 @@ public class ArticleApiConverterImpl implements GeneralConverter<Article, Articl
 
     @Override
     public ArticleApiDTO convertObjectToDTO(Article article) {
-        ArticleApiDTO articleApiDTO = new ArticleApiDTO();
-        articleApiDTO.setId(article.getId());
-        articleApiDTO.setUuid(article.getUuid());
-        articleApiDTO.setTitle(article.getTitle());
-        articleApiDTO.setContent(article.getContent());
-        articleApiDTO.setCreatedAt(article.getCreatedAt());
-        User user = article.getUser();
-        if (Objects.nonNull(user)) {
-            articleApiDTO.setUserUuid(user.getUuid());
+        if (Objects.nonNull(article)) {
+            ArticleApiDTO articleApiDTO = new ArticleApiDTO();
+            articleApiDTO.setId(article.getId());
+            articleApiDTO.setUuid(article.getUuid());
+            articleApiDTO.setTitle(article.getTitle());
+            articleApiDTO.setContent(article.getContent());
+            articleApiDTO.setCreatedAt(article.getCreatedAt());
+            User user = article.getUser();
+            if (Objects.nonNull(user)) {
+                articleApiDTO.setUserUuid(user.getUuid());
+            }
+            return articleApiDTO;
+        } else {
+            return null;
         }
-        return articleApiDTO;
     }
 
     @Override
     public Article convertDTOToObject(ArticleApiDTO articleApiDTO) {
-        Article article = new Article();
-        article.setUuid(articleApiDTO.getUuid());
-        article.setTitle(articleApiDTO.getTitle());
-        article.setContent(articleApiDTO.getContent());
-        article.setCreatedAt(articleApiDTO.getCreatedAt());
-        User user = userRepository.findByUuid(articleApiDTO.getUserUuid());
-        article.setUser(user);
-        return article;
+        if (Objects.nonNull(articleApiDTO)) {
+            Article article = new Article();
+            article.setUuid(articleApiDTO.getUuid());
+            article.setTitle(articleApiDTO.getTitle());
+            article.setContent(articleApiDTO.getContent());
+            article.setCreatedAt(articleApiDTO.getCreatedAt());
+            User user = userRepository.findByUuid(articleApiDTO.getUserUuid());
+            article.setUser(user);
+            return article;
+        } else {
+            return null;
+        }
     }
 }

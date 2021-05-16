@@ -11,9 +11,9 @@ public interface FeedbackService {
 
     FeedbackDTO deleteByUuid(String uuidString);
 
-    PageDTO<FeedbackDTO> getAllFeedbackPage(Integer page, Integer maxResult);
+    PageDTO<FeedbackDTO> getAllFeedbackPage(int page, int maxResult);
 
-    PageDTO<FeedbackDTO> getFeedbackByDisplayedTruePage(Integer pageNumber, Integer maxResult);
+    PageDTO<FeedbackDTO> getFeedbackByDisplayedTruePage(int pageNumber, int maxResult);
 
     List<FeedbackDTO> updateIsDisplayedStatus(List<String> idsAtPage);
 }

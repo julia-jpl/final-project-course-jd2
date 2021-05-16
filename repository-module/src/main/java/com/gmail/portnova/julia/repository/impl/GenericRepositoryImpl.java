@@ -55,4 +55,11 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
             return null;
         }
     }
+
+    @Override
+    public Long count() {
+        String hql = "SELECT COUNT (t.id) FROM " + entityClass.getName() + " t";
+        Query query = entityManager.createQuery(hql);
+        return (Long) query.getSingleResult();
+    }
 }

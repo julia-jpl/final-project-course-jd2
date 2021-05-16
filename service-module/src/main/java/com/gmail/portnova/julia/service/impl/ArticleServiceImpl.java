@@ -9,6 +9,7 @@ import com.gmail.portnova.julia.service.model.ArticleDTO;
 import com.gmail.portnova.julia.service.model.PageableArticle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import static com.gmail.portnova.julia.service.util.PageUtil.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -24,13 +25,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public PageableArticle getArticlesPage(Integer pageNumber, Integer maxResult) {
+    public PageableArticle getArticlesPage(int pageNumber, int maxResult) {
         Long numberOfRows = articleRepository.count();
         PageableArticle pageDTO = new PageableArticle();
-        pageDTO.setTotalPages(getNumberOfPages(numberOfRows, maxResult));
+        Long numberOfPages = getNumberOfPages(numberOfRows, maxResult);
+        pageDTO.setTotalPages(numberOfPages);
         int startPosition = getStartPosition(pageNumber, maxResult);
         List<Article> articles = articleRepository.findAllWithLimit(startPosition, maxResult);
-        setPageDTOList(pageDTO, articles);
+        List<ArticleDTO> articleDTOS = getArticleDTOList(articles);
+        pageDTO.getObjects().addAll(articleDTOS);
         return pageDTO;
     }
 
@@ -48,7 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
-    private void setPageDTOList(PageableArticle pageDTO, List<Article> articles) {
+    protected List<ArticleDTO> getArticleDTOList(List<Article> articles) {
         List<ArticleDTO> articleDTOS = new ArrayList<>();
         if (!articles.isEmpty()) {
             List<ArticleDTO> list = new ArrayList<>();
@@ -58,18 +61,6 @@ public class ArticleServiceImpl implements ArticleService {
             }
             articleDTOS = list;
         }
-        pageDTO.getObjects().addAll(articleDTOS);
-    }
-
-    private int getStartPosition(Integer page, Integer maxResult) {
-        return maxResult * (page - 1);
-    }
-
-    private Long getNumberOfPages(Long numberOfRows, Integer maxResult) {
-        if (numberOfRows % maxResult == 0) {
-            return numberOfRows / maxResult;
-        } else {
-            return numberOfRows / maxResult + 1;
-        }
+        return articleDTOS;
     }
 }

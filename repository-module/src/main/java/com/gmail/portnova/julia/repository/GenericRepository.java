@@ -13,4 +13,6 @@ public interface GenericRepository<I, T> {
     void remove(T entity);
 
     T findByUuid(UUID uuid);
+
+    Long count();
 }

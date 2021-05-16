@@ -12,17 +12,20 @@ import java.util.Objects;
 public class ProfileUserConverterImpl implements GeneralConverter<User, ProfileUserDTO> {
     @Override
     public ProfileUserDTO convertObjectToDTO(User user) {
-        ProfileUserDTO profileDTO = new ProfileUserDTO();
-        profileDTO.setId(user.getId());
-        profileDTO.setUuid(user.getUuid());
-        profileDTO.setLastName(user.getLastName());
-        profileDTO.setFirstName(user.getFirstName());
-        UserDetail userDetail = user.getUserDetail();
-        if (Objects.nonNull(userDetail)) {
-            profileDTO.setAddress(userDetail.getAddress());
-            profileDTO.setTelephone(userDetail.getTelephone());
+        if (Objects.nonNull(user)) {
+            ProfileUserDTO profileDTO = new ProfileUserDTO();
+            profileDTO.setId(user.getId());
+            profileDTO.setUuid(user.getUuid());
+            profileDTO.setLastName(user.getLastName());
+            profileDTO.setFirstName(user.getFirstName());
+            UserDetail userDetail = user.getUserDetail();
+            if (Objects.nonNull(userDetail)) {
+                profileDTO.setAddress(userDetail.getAddress());
+                profileDTO.setTelephone(userDetail.getTelephone());
+            }
+            return profileDTO;
         }
-        return profileDTO;
+        return null;
     }
 
     @Override

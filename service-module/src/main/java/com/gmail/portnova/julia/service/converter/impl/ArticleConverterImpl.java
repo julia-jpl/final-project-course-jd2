@@ -12,18 +12,22 @@ import java.util.Objects;
 public class ArticleConverterImpl implements GeneralConverter<Article, ArticleDTO> {
     @Override
     public ArticleDTO convertObjectToDTO(Article article) {
-        ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setId(article.getId());
-        articleDTO.setUuid(article.getUuid());
-        articleDTO.setCreatedAt(article.getCreatedAt());
-        articleDTO.setTitle(article.getTitle());
-        articleDTO.setContent(article.getContent());
-        User user = article.getUser();
-        if (Objects.nonNull(user)) {
-            String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
-            articleDTO.setUserLastAndFirstName(userLastAndFirstName);
+        if(Objects.nonNull(article)) {
+            ArticleDTO articleDTO = new ArticleDTO();
+            articleDTO.setId(article.getId());
+            articleDTO.setUuid(article.getUuid());
+            articleDTO.setCreatedAt(article.getCreatedAt());
+            articleDTO.setTitle(article.getTitle());
+            articleDTO.setContent(article.getContent());
+            User user = article.getUser();
+            if (Objects.nonNull(user)) {
+                String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
+                articleDTO.setUserLastAndFirstName(userLastAndFirstName);
+            }
+            return articleDTO;
+        } else {
+            return null;
         }
-        return articleDTO;
     }
 
     @Override

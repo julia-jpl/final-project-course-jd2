@@ -1,9 +1,8 @@
 package com.gmail.portnova.julia.web.controller.web;
 
 import com.gmail.portnova.julia.service.FeedbackService;
-import com.gmail.portnova.julia.service.model.FeedbackDTO;
-import com.gmail.portnova.julia.service.model.PageDTO;
-import com.gmail.portnova.julia.service.model.RoleNameEnumDTO;
+import com.gmail.portnova.julia.service.UserService;
+import com.gmail.portnova.julia.service.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,20 +17,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
 public class FeedbackController {
     private final FeedbackService feedbackService;
+    private final UserService userService;
 
     @PostMapping("/feedback")
-    public String getStartPage(@RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber) {
+    public String getStartPage(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber) {
         return "redirect:/feedback";
     }
 
     @GetMapping("/feedback")
-    public String getFeedbackPage(@RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber,
-                                  @RequestParam(name = "maxResult", defaultValue = "10") Integer maxResult,
+    public String getFeedbackPage(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+                                  @RequestParam(name = "maxResult", defaultValue = "10") int maxResult,
                                   Model model, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         if (Objects.nonNull(userDetails)) {
@@ -47,6 +48,12 @@ public class FeedbackController {
                     PageDTO<FeedbackDTO> commonPage = feedbackService.getFeedbackByDisplayedTruePage(pageNumber, maxResult);
                     model.addAttribute("commonPage", commonPage);
                     model.addAttribute("currentPage", pageNumber);
+                    String username = userDetails.getUsername();
+                    UserDTO user = userService.findUserByEmail(username);
+                    if (Objects.nonNull(user)) {
+                        UUID uuid = user.getUuid();
+                        model.addAttribute("userUuid", uuid);
+                    }
                     return "all_feedback_common_page";
                 }
             }

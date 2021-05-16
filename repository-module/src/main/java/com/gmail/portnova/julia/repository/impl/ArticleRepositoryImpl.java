@@ -15,15 +15,9 @@ import java.util.UUID;
 @Repository
 @Log4j2
 public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> implements ArticleRepository {
-    @Override
-    public Long count() {
-        String hql = "SELECT COUNT (a.id) FROM Article a";
-        Query query = entityManager.createQuery(hql);
-        return (Long) query.getSingleResult();
-    }
 
     @Override
-    public List<Article> findAllWithLimit(int startPosition, Integer maxResult) {
+    public List<Article> findAllWithLimit(int startPosition, int maxResult) {
         String hql = "SELECT a.id, a.uuid, a.createdAt, a.title, SUBSTRING(a.content, 1, 200), a.user FROM Article a ORDER BY a.createdAt DESC";
         Query query = entityManager.createQuery(hql);
         query.setFirstResult(startPosition);

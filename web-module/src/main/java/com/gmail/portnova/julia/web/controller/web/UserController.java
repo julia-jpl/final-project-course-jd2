@@ -28,11 +28,10 @@ public class UserController {
     private final UserAddService userAddService;
     private final RoleService roleService;
     private final UserValidator userValidator;
-    private final Integer maxResult = 10;
 
     @GetMapping("/users/all")
-    public String getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber,
-                              @RequestParam(name = "maxResult", defaultValue = "10") Integer maxResult,
+    public String getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+                              @RequestParam(name = "maxResult", defaultValue = "10") int maxResult,
                               Authentication authentication,
                               Model model) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -62,8 +61,8 @@ public class UserController {
         if (results.hasErrors()) {
             return "add_user";
         } else {
-
-            userAddService.addUser(user);
+            UserDTO savedUser = userAddService.addUserToDatabase(user);
+            userAddService.sendEmail(savedUser);
             return "redirect:/users/all";
         }
     }
