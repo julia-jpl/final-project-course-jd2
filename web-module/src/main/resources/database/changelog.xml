@@ -156,4 +156,130 @@
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
         </insert>
     </changeSet>
+    <changeSet id="9" author="portnova.julia@gmail.com">
+        <createTable tableName="ARTICLE">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="unique_number" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_user_article" references="USER(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="10" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b498-2460-4fd2-9183-8000de6f8443"/>
+            <column name="last_name" value="CustomerLastName"/>
+            <column name="first_name" value="CustomerFirstName"/>
+            <column name="middle_name" value="CustomerMiddleName"/>
+            <column name="email" value="portnova.julia@gmail.com"/>
+            <column name="password" value="$2y$12$Dm26lT0cVeSwqQJGTwb6AuCjHYlB2j/nE/.m1Pvj4ES0t/Ie8AiXC"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='CUSTOMER_USER')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="11" author="portnova.julia@gmail.com">
+        <insert tableName="ARTICLE">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0442ac137044"/>
+            <column name="title" value="A bottle of French wine has been orbited the Earth for more than a year"/>
+            <column name="content" value="A bottle of French wine that orbited the Earth for more than a year has been put up for sale.
+            The bottle of Pétrus 2000 - made from merlot grapes in the Bordeaux region - spent 14 months in orbit as part of a privately funded research study on food and agriculture. On Tuesday Christie's announced the wine is now available through its private sales.
+            The auction house estimates a sale price of $1m (£720,000; €830,000).
+            Tim Triptree, a Master of Wine who works at Christie's, told the BBC a regular bottle of Pétrus 2000 will also be sold alongside the space-aged bottle,so the lucky buyer will be able to compare the two.
+            Space Cargo Unlimited sent 12 bottles of the wine to the International Space Station (ISS) in November 2019.
+            After more than 400 days in space, travelling around 300 million km (186 million miles) in zero gravity, the wine returned to Earth in January 2021."/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+        </insert>
+        <insert tableName="ARTICLE">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0272ac144002"/>
+            <column name="title" value="Liverpool cafe finds menu from 1913 during refurb"/>
+            <column name="content" value="From Irish stew to grilled kidneys and boiled fowl, a menu dating back more than 100 years has been found during renovation work at a cafe.
+            Workmen peeling back old walls discovered the delicate piece of culinary history at the eatery in Liverpool.
+            The menu, from Wednesday 15 January 1913, is from the former Yamen Cafe in Bold Street.
+            Staff at the cafe standing at the same site said it had blown their minds.
+            The menu offers a selection of appetising refreshments, luncheons and afternoon teas.
+            The cafe which is currently based at the site, called LEAF, now plans to recreate some of the dishes in tribute to the Yamen."/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+        </insert>
+        <insert tableName="ARTICLE">
+            <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0262ac130222"/>
+            <column name="title" value="How the busiest people do 'deep work'"/>
+            <column name="content" value="For busy people, finding time for uninterrupted work may feel utterly unrealistic. But there are methods we can use to optimise what limited ‘deep work’ time we have.
+            Like many parents, when schools shut down due to Covid-19, Elizabeth Hunter found herself with more caregiving responsibilities as her three children transitioned to 100% remote classes.
+           Hunter started getting everyone to bed early and working late into the night to eke out some quiet time for creative work composing her curriculum, while tackling the more practical tasks during the day."/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="12" author="portnova.julia@gmail.com">
+        <createTable tableName="USER_DETAIL">
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true" foreignKeyName="fk_user_detail_user_id" references="USER(id)"/>
+            </column>
+            <column name="address" type="varchar(100)">
+            </column>
+            <column name="telephone" type="varchar(20)">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="13" author="portnova.julia@gmail.com">
+        <createTable tableName="OPINION">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="unique_number" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_user_opinion" references="USER(id)"/>
+            </column>
+            <column name="article_id" type="bigint">
+                <constraints foreignKeyName="fk_article_opinion" references="ARTICLE(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="14" author="portnova.julia@gmail.com">
+        <insert tableName="OPINION">
+            <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac130222"/>
+            <column name="content"
+                    value="We have always known this is a historic building but having the menu in our hands has made it all feel real, something dating back to before the First World War"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="article_id"
+                    valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
+        </insert>
+        <insert tableName="OPINION">
+            <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac199922"/>
+            <column name="content"
+                    value="Foreign dishes and the greater use of vegetables illustrated cosmopolitanism and, in turn, Liverpool's status as a major city of empire."/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="article_id"
+                    valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="15" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b448-2900-4fd2-9183-8000de6f8343"/>
+            <column name="last_name" value="RestLastName"/>
+            <column name="first_name" value="RestFirstName"/>
+            <column name="middle_name" value="RestMiddleName"/>
+            <column name="email" value="rest@myhost.com"/>
+            <column name="password" value="$2y$12$Hbu6yaVtpk/MT3YmG3UIS.o2GAp4gMo5Y9lBh/zAxnYYnVzwRiq/K"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SECURE_REST_API')"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+
 @RequiredArgsConstructor
 @Configuration
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -29,6 +30,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/users/**")
                 .hasAuthority(RoleNameEnumDTO.ADMINISTRATOR.name())
+                .antMatchers("/articles/**", "/profile/**")
+                .hasAuthority(RoleNameEnumDTO.CUSTOMER_USER.name())
+                .antMatchers("/feedback")
+                .hasAnyAuthority(RoleNameEnumDTO.ADMINISTRATOR.name(), RoleNameEnumDTO.CUSTOMER_USER.name())
                 .antMatchers("/login", "/403", "/logout")
                 .permitAll()
                 .and()

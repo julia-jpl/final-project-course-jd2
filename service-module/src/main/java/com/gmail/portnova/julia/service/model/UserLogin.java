@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class UserLogin implements UserDetails {
     private final UserDTO user;
@@ -52,4 +53,9 @@ public class UserLogin implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public UUID getUuid() {
+        return user.getUuid();
+    }
+
 }

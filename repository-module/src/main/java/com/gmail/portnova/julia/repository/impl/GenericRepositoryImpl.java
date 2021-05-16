@@ -1,13 +1,14 @@
 package com.gmail.portnova.julia.repository.impl;
 
 import com.gmail.portnova.julia.repository.GenericRepository;
+import lombok.extern.log4j.Log4j2;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.UUID;
 
+@Log4j2
 public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
     @PersistenceContext
     protected EntityManager entityManager;
@@ -40,5 +41,18 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
     @Override
     public void remove(T entity) {
         entityManager.remove(entity);
+    }
+
+    @Override
+    public T findByUuid(UUID uuid) {
+        String hql = "SELECT t FROM " + entityClass.getName() + " t WHERE t.uuid = :uuid";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("uuid", uuid);
+        try {
+            return (T) query.getSingleResult();
+        } catch (NonUniqueResultException | NoResultException e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
     }
 }

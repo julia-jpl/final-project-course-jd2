@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
 <head>
     <meta charset="UTF-8">
-    <title>All feedback</title>
+    <title>Article</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
@@ -21,7 +20,7 @@
                     <a class="nav-link" href="#" th:href="@{/articles}">NEWS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/feedback}">FEEDBACK</a>
+                    <a class="nav-link" href="#" th:href="@{/feedback}">FEEDBACK</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">CATALOG</a>
@@ -46,40 +45,37 @@
         </div>
     </div>
 </nav>
-<div class="container">
-    <h2>All feedback</h2>
-    <div th:if="${#lists.isEmpty(commonPage.objects)}">No feedback was found</div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">User full name</th>
-            <th scope="col">Feedback</th>
-            <th scope="col">Post date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="feedback : ${commonPage.objects}">
-            <td th:text="${feedback.userFullName}">user full name</td>
-            <td th:text="${feedback.text}">user email</td>
-            <td th:text="${feedback.createdAt}">user roleName</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="btn-group me-2" role="group">
-        <span>Page</span>
-        <form action="#" th:action="@{/feedback}" method="get">
-            <th:block th:each="number: ${#numbers.sequence(1, commonPage.totalPages)}">
-             <span th:if="${currentPage == number}">
-            <button type="button" class="btn btn-primary disabled" th:text="${number}"></button>
-                </span>
-                <span th:unless="${currentPage == number}">
-                 <input th:name="pageNumber" type="hidden" th:value="${number}"/>
-                <button type="submit" class="btn btn-primary" th:text="${number}"></button>
-
-     </span>
-            </th:block>
-        </form>
+<div class="container-fluid">
+    <h3 th:text="${article.title}"></h3>
+    <p class="text-start fs-6" th:text="${article.createdAt}"></p>
+    <p class="text-md-start fs-5" th:text="${article.userLastAndFirstName}"></p>
+    <p class="text-md-start" th:text="${article.content}"></p>
+</div>
+<div class="container-fluid">
+    <h5>Recent comments</h5>
+    <div class="card" th:each="comment : ${comments}">
+        <div class="card-header" th:text="${comment.userLastAndFirstName}"></div>
+        <div class="card-body">
+            <p class="card-text" th:text="${comment.content}"></p>
+        </div>
+        <div class="card-footer" th:text="${comment.createdAt}"></div>
     </div>
+</div>
+<div class="container-fluid">
+    <h5>Add comment</h5>
+    <form action="#" th:action="@{/articles/comments/{uuid}(uuid=${article.uuid})}" method="post">
+        <div class="card" th:object="${userComment}">
+            <div class="card-header">your comment</div>
+            <div class="card-body">
+                <input type="text" class="form-control" th:field="*{content}" id="inputContent"
+                       maxlength="200" required>
+                <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Description Error</span>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-lg">Save comment</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
