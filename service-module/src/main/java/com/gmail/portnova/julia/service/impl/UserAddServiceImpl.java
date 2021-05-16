@@ -51,17 +51,9 @@ public class UserAddServiceImpl implements UserAddService {
         return savedUser;
     }
 
-    @Override
-    public UserDTO changePassword(String id) {
-        UserDTO userWithNewPassword = saveNewPasswordInDatabase(id);
-        emailService.sendSimpleMessage(userWithNewPassword.getEmail(), userWithNewPassword.getPassword());
-        String encodedPassword = passwordEncoder.encode(userWithNewPassword.getPassword());
-        userWithNewPassword.setPassword(encodedPassword);
-        return userWithNewPassword;
-    }
-
     @Transactional
-    protected UserDTO saveNewPasswordInDatabase(String id) {
+    @Override
+    public UserDTO saveNewPasswordInDatabase(String id) {
         UUID uuid = UUID.fromString(id);
         User user = userRepository.findByUuid(uuid);
         if (Objects.nonNull(user)) {

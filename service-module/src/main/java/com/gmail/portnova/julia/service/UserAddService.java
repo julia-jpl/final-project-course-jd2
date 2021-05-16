@@ -7,5 +7,5 @@ public interface UserAddService {
 
     UserDTO addUserToDatabase(UserDTO user);
 
-    UserDTO changePassword(String id);
+    UserDTO saveNewPasswordInDatabase(String id);
 }

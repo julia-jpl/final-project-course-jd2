@@ -51,7 +51,7 @@ class UserAddServiceTest {
         userDTO.setPassword(encodedPassword);
         when(userConverter.convertObjectToDTO(user)).thenReturn(userDTO);
 
-        UserDTO resultUser = userAddService.changePassword(uuidString);
+        UserDTO resultUser = userAddService.saveNewPasswordInDatabase(uuidString);
         assertEquals(encodedPassword, resultUser.getPassword());
     }
     @Test
@@ -59,7 +59,7 @@ class UserAddServiceTest {
         String uuidString = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
         UUID uuid = UUID.fromString(uuidString);
         when(userRepository.findByUuid(uuid)).thenReturn(null);
-        assertThrows(UserNotFoundException.class, ()->userAddService.changePassword(uuidString));
+        assertThrows(UserNotFoundException.class, ()->userAddService.saveNewPasswordInDatabase(uuidString));
     }
 
 }
