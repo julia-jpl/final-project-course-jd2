@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/articles}">NEWS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/feedback}">FEEDBACK</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">CATALOG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">ORDERS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/sale/articles/add}">ADD ARTICLE</a>
+                </li>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles}">USER'S NEWS</a>
+                    </li>
+                </div>
+            </ul>
+            <div class="col-auto">
+            <span class="navbar-text">
+        User:
+      </span>
+                <span sec:authentication="name"></span>
+                <a class="btn btn-sm btn-outline" type="button" href="#" th:href="@{/logout}">Log out</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <form action="#" th:object="${editedArticle}" th:action="@{/sale/articles/update/{uuid}(uuid=${article.uuid})}"
+          method="post">
+        <table class="table table-striped">
+            <thead>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="col">Post date</th>
+                <td class="col" th:text="${article.createdAt}"></td>
+                <td class="col"></td>
+            </tr>
+            <tr th:if="${article.updatedAt != null}">
+                <th scope="col">Updated</th>
+                <td class="col" th:text="${article.updatedAt}"></td>
+                <td class="col"></td>
+            </tr>
+            <tr>
+                <th scope="col">Author</th>
+                <td class="col" th:text="${article.userLastAndFirstName}"></td>
+                <td class="col"></td>
+            </tr>
+            <tr>
+                <th scope="col">Title</th>
+                <td th:text="${article.title}"></td>
+                <td style="min-width: 700px"><input type="text" class="form-control" th:field="${editedArticle.title}"
+                                                    th:placeholder="${article.title}"
+                                                    maxlength="100">
+                    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Description Error</span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Content</th>
+                <td th:text="${article.content}"></td>
+                <td style="min-width: 700px"><textarea rows="10" style="height:100%;" type="text" class="form-control"
+                                                       th:field="${editedArticle.content}"
+                                                       th:placeholder="${article.content}"
+                                                       maxlength="1000"></textarea>
+                    <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Description Error</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary btn-lg">Submit changes</button>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <h5>Recent comments</h5>
+    <div th:if="${#lists.isEmpty(comments)}">There is no comments yet</div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Author</th>
+            <th scope="col">Comment</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.createdAt}"></td>
+            <td th:text="${comment.userLastAndFirstName}"></td>
+            <td th:text="${comment.content}"></td>
+            <td>
+                <form action="#"
+                      th:action="@{/sale/articles/{uuid}/comments/delete/{commentUuid}(uuid=${article.uuid}, commentUuid=${comment.commentUuid})}"
+                      method="post">
+                    <input type="hidden" th:value="${comment.commentUuid}"/>
+                    <input class="btn btn-outline-primary" type="submit" value="delete">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

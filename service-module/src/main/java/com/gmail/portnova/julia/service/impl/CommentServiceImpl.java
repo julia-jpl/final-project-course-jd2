@@ -1,10 +1,12 @@
 package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.CommentRepository;
+import com.gmail.portnova.julia.repository.model.Article;
 import com.gmail.portnova.julia.repository.model.Comment;
 import com.gmail.portnova.julia.service.CommentService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ArticleNotFoundException;
+import com.gmail.portnova.julia.service.exception.CommentNotFoundException;
 import com.gmail.portnova.julia.service.exception.CommentPersistException;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.CommentDTO;
@@ -16,6 +18,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Log4j2
@@ -54,6 +57,19 @@ public class CommentServiceImpl implements CommentService {
             log.error(e.getMessage(), e);
             throw new CommentPersistException(String.format("Comment couldn't be saved because article with uuid %s " +
                     "or User with uuid %s doesn't exist", commentDTO.getArticleUuid(), commentDTO.getUserUuid().toString()));
+        }
+    }
+
+    @Override
+    @Transactional
+    public CommentDTO deleteCommentByUuid(String uuidString) {
+        UUID uuid = UUID.fromString(uuidString);
+        Comment comment = commentRepository.findByUuid(uuid);
+        if (Objects.nonNull(comment)) {
+            commentRepository.remove(comment);
+            return commentConverter.convertObjectToDTO(comment);
+        } else {
+            throw new CommentNotFoundException(String.format("Comment with uuid %s was not found", uuidString));
         }
     }
 }

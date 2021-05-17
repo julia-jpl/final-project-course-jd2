@@ -35,10 +35,17 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/users/**")
                 .hasAuthority(RoleNameEnumDTO.ADMINISTRATOR.name())
-                .antMatchers("/articles/**", "/profile/**")
+                .antMatchers( "/profile/**", "/customer/**")
                 .hasAuthority(RoleNameEnumDTO.CUSTOMER_USER.name())
+                .antMatchers("/sale/**")
+                .hasAuthority(RoleNameEnumDTO.SALE_USER.name())
+                .antMatchers("/articles/**")
+                .hasAnyAuthority(RoleNameEnumDTO.CUSTOMER_USER.name(),
+                        RoleNameEnumDTO.SALE_USER.name())
                 .antMatchers("/feedback")
-                .hasAnyAuthority(RoleNameEnumDTO.ADMINISTRATOR.name(), RoleNameEnumDTO.CUSTOMER_USER.name())
+                .hasAnyAuthority(RoleNameEnumDTO.ADMINISTRATOR.name(),
+                        RoleNameEnumDTO.CUSTOMER_USER.name(),
+                        RoleNameEnumDTO.SALE_USER.name())
                 .antMatchers("/login", "/403", "/logout")
                 .permitAll()
                 .and()

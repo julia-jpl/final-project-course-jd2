@@ -35,6 +35,18 @@
                            th:href="@{/profile}">PROFILE</a>
                     </li>
                 </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles/add}">ADD ARTICLE</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles}">USER'S NEWS</a>
+                    </li>
+                </div>
             </ul>
             <div class="col-auto">
             <span class="navbar-text">

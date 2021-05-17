@@ -8,4 +8,6 @@ public interface CommentService {
     List<CommentDTO> findByArticleUuid(String id);
 
     CommentDTO addComment(CommentDTO comment);
+
+    CommentDTO deleteCommentByUuid(String uuid);
 }

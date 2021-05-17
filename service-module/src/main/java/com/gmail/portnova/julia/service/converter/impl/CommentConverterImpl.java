@@ -12,6 +12,7 @@ import com.gmail.portnova.julia.service.model.CommentDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.*;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -34,6 +35,8 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
         if (Objects.nonNull(user)) {
             String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
             commentDTO.setUserLastAndFirstName(userLastAndFirstName);
+        } else {
+            commentDTO.setUserLastAndFirstName(comment.getAuthor());
         }
         return commentDTO;
     }
@@ -48,6 +51,8 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
             User user = userRepository.findByUuid(commentDTO.getUserUuid());
             if (Objects.nonNull(user)) {
                 comment.setUser(user);
+                String author = String.join(" ", user.getLastName(), user.getFirstName());
+                comment.setAuthor(author);
                 String articleUuidString = commentDTO.getArticleUuid();
                 if (Objects.nonNull(articleUuidString)) {
                     UUID articleUuid = UUID.fromString(articleUuidString);
@@ -56,13 +61,13 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
                         comment.setArticle(article);
                         return comment;
                     } else {
-                        throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", articleUuidString));
+                        throw new ArticleNotFoundException(String.format(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE, articleUuidString));
                     }
                 } else {
-                    throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", commentDTO.getArticleUuid()));
+                    throw new ArticleNotFoundException(String.format(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE, commentDTO.getArticleUuid()));
                 }
             } else {
-                throw new UserNotFoundException(String.format("User with uuid %s was not found", commentDTO.getUserUuid()));
+                throw new UserNotFoundException(String.format(USER_NOT_FOUND_EXCEPTION_MESSAGE, commentDTO.getUserUuid()));
             }
         } else {
             return null;

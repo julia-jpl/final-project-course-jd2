@@ -5,6 +5,7 @@ import com.gmail.portnova.julia.repository.UserRepository;
 import com.gmail.portnova.julia.repository.model.Article;
 import com.gmail.portnova.julia.repository.model.Comment;
 import com.gmail.portnova.julia.repository.model.User;
+import com.gmail.portnova.julia.service.model.ArticleDTO;
 import com.gmail.portnova.julia.service.model.CommentDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,7 +70,7 @@ class CommentConverterImplTest {
     }
 
     @Test
-    void shouldConvertCommentToCommentDTOAndReturnRightUserName() {
+    void shouldConvertCommentToCommentDTOAndReturnRightUserNameWhenUserIsNotNull() {
         Comment comment = new Comment();
         User user = new User();
         String firstName = "first";
@@ -200,5 +201,40 @@ class CommentConverterImplTest {
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertNotNull(comment);
     }
+    @Test
+    void shouldConvertCommentDTOToCommentAndReturnRightAuthorWhenUserIsNotNull() {
+        CommentDTO commentDTO = new CommentDTO();
+        Article article = new Article();
+        UUID uuid = UUID.randomUUID();
+        article.setUuid(uuid);
+        commentDTO.setArticleUuid(uuid.toString());
+        User user = new User();
+        user.setUuid(uuid);
+        commentDTO.setUserUuid(uuid);
 
+        String lastname = "last";
+        user.setLastName(lastname);
+        String firstname = "first";
+        user.setFirstName(firstname);
+
+        String author = String.join(" ", lastname, firstname);
+
+        when(articleRepository.findByUuid(uuid)).thenReturn(article);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
+
+        Comment comment = commentConverter.convertDTOToObject(commentDTO);
+        assertEquals(author, comment.getAuthor());
+    }
+
+    @Test
+    void shouldConvertCommentToCommentDTOAndReturnRightUserNameWhenUserIsNull() {
+        Comment comment = new Comment();
+        String firstName = "first";
+        String lastName = "last";
+        String author = String.join(" ", lastName, firstName);
+        comment.setAuthor(author);
+
+        CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
+        assertEquals(author, commentDTO.getUserLastAndFirstName());
+    }
 }

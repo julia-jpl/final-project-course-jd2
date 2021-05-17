@@ -24,6 +24,8 @@ public class Comment {
     private UUID uuid;
     @Column
     private String content;
+    @Column
+    String author;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @ManyToOne(fetch = FetchType.LAZY)
