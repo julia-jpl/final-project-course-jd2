@@ -351,4 +351,227 @@
                     valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a452-aaaa-18eb-bcbc-0442ac137044')"/>
         </insert>
     </changeSet>
+    <changeSet id="19" author="portnova.julia@gmail.com">
+        <createTable tableName="ITEM_GROUP">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="group_name" type="ENUM ('ELECTRONICS', 'FASHION', 'SPORTS', 'HEALTH_BEAUTY')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20" author="portnova.julia@gmail.com">
+        <createTable tableName="ITEM">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unique_number" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(200)">
+                <constraints nullable="false"/>"
+            </column>
+            <column name="group_id" type="bigint">
+                <constraints foreignKeyName="fk_item_group_item_id" references="ITEM_GROUP(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="21" author="portnova.julia@gmail.com">
+        <createTable tableName="ITEM_DETAIL">
+            <column name="item_id" type="bigint">
+                <constraints primaryKey="true" foreignKeyName="fk_item_detail_item_id" references="ITEM(id)"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="22" author="portnova.julia@gmail.com">
+        <createTable tableName="ITEM_USER">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="item_id" type="bigint">
+                <constraints primaryKey="true" foreignKeyName="fk_item_id" references="ITEM(id)"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_sold_item" references="USER(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="23" id="portnova.julia@gmail.com">
+        <insert tableName="ITEM_GROUP">
+            <column name="group_name" value="ELECTRONICS"/>
+        </insert>
+        <insert tableName="ITEM_GROUP">
+            <column name="group_name" value="FASHION"/>
+        </insert>
+        <insert tableName="ITEM_GROUP">
+            <column name="group_name" value="SPORTS"/>
+        </insert>
+        <insert tableName="ITEM_GROUP">
+            <column name="group_name" value="HEALTH_BEAUTY"/>
+        </insert>
+    </changeSet>
+    <changeSet id="24" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3422b448-2900-4fd2-9183-6780de6f8343"/>
+            <column name="unique_number" value="EL-912345678901235"/>
+            <column name="name" value="TV_Samsung-55_09"/>
+            <column name="description" value="Dolby Vison HDR Dolby Vision. TV supports HDR10+ and HLG high dynamic range formats.
+            4K Ultra HD With over 8 million pixels, 4 times the resolution of 1080p."/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="25" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="354.54"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="26" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="27" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3422b448-9830-4fd2-9183-6780de6f8343"/>
+            <column name="unique_number" value="EL-912345678901205"/>
+            <column name="name" value="TV_SONY-55_09"/>
+            <column name="description" value="Dolby Vison HDR Dolby Vision. TV supports HDR10+ and HLG high dynamic range formats.
+            4K Ultra HD With over 8 million pixels, 4 times the resolution of 1080p."/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="28" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="499.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-9830-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="29" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-9830-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="30" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3999b448-2900-4fd2-9183-6780de6f8343"/>
+            <column name="unique_number" value="EL-912345678901222"/>
+            <column name="name" value="TV_LG-43_09"/>
+            <column name="description" value="Full HD 1080p Resolution - Enjoy a viewing experience that is 2x the clarity of standard HD TVs.
+            Smart TV - Get to your entertainment more intelligent way."/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="31" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="229.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="32" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="33" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3999b448-2900-4fd2-9183-6780de6f1233"/>
+            <column name="unique_number" value="SP-912345678987654"/>
+            <column name="name" value="Marcy Magnetic Upright Bike"/>
+            <column name="description" value="PREMIUM STEEL CONSTRUCTION, ADJUSTABLE SEAT POSITIONING, SMOOTH MAGNETIC RESISTANCE SYSTEM"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='SPORTS')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="34" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="199.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f1233')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="35" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f1233')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="36" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3999b448-2900-4fd2-9183-1230de6f8343"/>
+            <column name="unique_number" value="FA-912345678903322"/>
+            <column name="name" value="Skinny Jeans with Hole"/>
+            <column name="description" value="MOST POPULAR STYLE-BOYFRIEND STYLE:Zip fly with button closure,classic cut just like that pair you used to steal from your boyfriend's closet,boyfriend trendy jeans make you look and feel amazing"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="37" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="49.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-1230de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="38" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-1230de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="39" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3123b448-2900-4fd2-9183-6780de6f8343"/>
+            <column name="unique_number" value="HB-912345678966422"/>
+            <column name="name" value="Dove Soothing Care Body Wash for Sensitive Skin"/>
+            <column name="description" value="This body wash is PETA-certified cruelty-free and made in 100% recycled plastic bottles, so you can feel good about switching from everyday shower soap to Dove body wash"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='HEALTH_BEAUTY')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="40" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="4.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="41" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="42" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b111-2860-4fd2-9163-8000de6f8343"/>
+            <column name="last_name" value="Ivanov"/>
+            <column name="first_name" value="Petr"/>
+            <column name="middle_name" value="Ivanovich"/>
+            <column name="email" value="sale1@myhost.com"/>
+            <column name="password" value="$2y$12$cHF/ufpp9ShPzuCRPdmRlu3aZ22G4RCWpl/QobqsHTGIOIoyxrnpS"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="43" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-1230de6f8343')"/>
+        </insert>
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

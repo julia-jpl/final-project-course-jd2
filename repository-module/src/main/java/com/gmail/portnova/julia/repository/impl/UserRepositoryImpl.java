@@ -1,6 +1,7 @@
 package com.gmail.portnova.julia.repository.impl;
 
 import com.gmail.portnova.julia.repository.UserRepository;
+import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

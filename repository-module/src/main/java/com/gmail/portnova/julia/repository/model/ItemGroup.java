@@ -5,19 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "ROLE")
+@Getter
 @EqualsAndHashCode
-public class Role {
+@Setter
+@Table(name = "ITEM_GROUP")
+public class ItemGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @Column(name = "role_name")
+    @Column(name = "group_name")
     @Enumerated(EnumType.STRING)
-    private RoleNameEnum roleName;
+    private ItemGroupNameEnum itemGroupNameEnum;
 }

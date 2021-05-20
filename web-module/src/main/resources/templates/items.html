@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>All feedback</title>
+    <title>News</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
@@ -18,13 +18,13 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/articles}">NEWS</a>
+                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/articles}">NEWS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/feedback}">FEEDBACK</a>
+                    <a class="nav-link" href="#" th:href="@{/feedback}">FEEDBACK</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/items}">CATALOG</a>
+                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/items}">CATALOG</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">ORDERS</a>
@@ -59,43 +59,76 @@
     </div>
 </nav>
 <div class="container">
-    <h2>All feedback</h2>
-    <div th:if="${#lists.isEmpty(commonPage.objects)}">No feedback was found</div>
+    <h2>News</h2>
+    <div th:if="${#lists.isEmpty(itemPage.objects)}">No items were found</div>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">User full name</th>
-            <th scope="col">Feedback</th>
-            <th scope="col">Post date</th>
+            <th scope="col">Name</th>
+            <th scope="col">Number</th>
+            <th scope="col">Price</th>
+            <th scope="col">Details</th>
+            <div sec:authorize="hasAuthority('SALE_USER')">
+                <th scope="col"></th>
+            </div>
+            <div sec:authorize="hasAuthority('SALE_USER')">
+                <th scope="col"></th>
+            </div>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="feedback : ${commonPage.objects}">
-            <td th:text="${feedback.userFullName}">user full name</td>
-            <td th:text="${feedback.text}">user email</td>
-            <td th:text="${feedback.createdAt}">user roleName</td>
+        <tr th:each="item : ${itemPage.objects}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.uniqueNumber}"></td>
+            <td th:text="${item.price}"></td>
+            <td>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <a th:href="@{/items/{id}(id=${item.uuid})}" href="#">details</a>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <a th:href="@{sale/items/{id}(id=${item.uuid})}" href="#">details</a>
+                </div>
+
+            </td>
+            <div sec:authorize="hasAuthority('SALE_USER')">
+                <td>
+                    <form action="#" th:action="@{/sale/items/delete/{uuid}(uuid=${item.uuid})}" method="post">
+                        <input type="hidden" th:value="${item.uuid}"/>
+                        <input class="btn btn-outline-primary" type="submit" value="delete">
+                    </form>
+                </td>
+            </div>
+            <div sec:authorize="hasAuthority('SALE_USER')">
+                <td>
+                    <form action="#" th:action="@{/sale/items/copy/{uuid}(uuid=${item.uuid})}" method="post">
+                        <input type="hidden" th:value="${item.uuid}"/>
+                        <input class="btn btn-outline-primary" type="submit" value="copy">
+                    </form>
+                </td>
+            </div>
         </tr>
         </tbody>
     </table>
     <div class="btn-group me-2" role="group">
-        <span>Page</span>
-        <form action="#" th:action="@{/feedback}" method="get">
-            <th:block th:each="number: ${#numbers.sequence(1, commonPage.totalPages)}">
+        <h5>Page</h5>
+        <form action="#" th:action="@{/items}" method="get">
+            <th:block th:each="number: ${#numbers.sequence(1, itemPage.totalPages)}">
              <span th:if="${currentPage == number}">
             <button type="button" class="btn btn-primary disabled" th:text="${number}"></button>
                 </span>
                 <span th:unless="${currentPage == number}">
                  <input th:name="pageNumber" type="hidden" th:value="${number}"/>
                 <button type="submit" class="btn btn-primary" th:text="${number}"></button>
-
      </span>
             </th:block>
         </form>
     </div>
+
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
+
 </html>

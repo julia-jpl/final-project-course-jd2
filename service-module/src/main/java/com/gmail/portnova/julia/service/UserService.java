@@ -4,6 +4,8 @@ import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.ProfileUserDTO;
 import com.gmail.portnova.julia.service.model.UserDTO;
 
+import java.util.List;
+
 public interface UserService {
     UserDTO findUserByEmail(String username);
 

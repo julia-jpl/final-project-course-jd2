@@ -39,7 +39,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority(RoleNameEnumDTO.CUSTOMER_USER.name())
                 .antMatchers("/sale/**")
                 .hasAuthority(RoleNameEnumDTO.SALE_USER.name())
-                .antMatchers("/articles/**")
+                .antMatchers("/articles/**", "/items/**")
                 .hasAnyAuthority(RoleNameEnumDTO.CUSTOMER_USER.name(),
                         RoleNameEnumDTO.SALE_USER.name())
                 .antMatchers("/feedback")
