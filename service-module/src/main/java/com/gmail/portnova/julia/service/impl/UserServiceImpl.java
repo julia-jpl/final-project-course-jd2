@@ -1,23 +1,31 @@
 package com.gmail.portnova.julia.service.impl;
 
+import com.gmail.portnova.julia.repository.ArticleRepository;
+import com.gmail.portnova.julia.repository.ItemRepository;
 import com.gmail.portnova.julia.repository.RoleRepository;
 import com.gmail.portnova.julia.repository.UserRepository;
-import com.gmail.portnova.julia.repository.model.*;
+import com.gmail.portnova.julia.repository.model.Item;
+import com.gmail.portnova.julia.repository.model.Role;
+import com.gmail.portnova.julia.repository.model.RoleNameEnum;
+import com.gmail.portnova.julia.repository.model.User;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserRoleNotFoundException;
-import com.gmail.portnova.julia.service.model.*;
+import com.gmail.portnova.julia.service.model.PageDTO;
+import com.gmail.portnova.julia.service.model.PageableUser;
+import com.gmail.portnova.julia.service.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import static com.gmail.portnova.julia.service.util.PageUtil.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static com.gmail.portnova.julia.service.util.PageUtil.getNumberOfPages;
+import static com.gmail.portnova.julia.service.util.PageUtil.getStartPosition;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final GeneralConverter<User, UserDTO> userConverter;
     private final RoleRepository roleRepository;
+    private final ArticleRepository articleRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     @Transactional
@@ -68,6 +78,15 @@ public class UserServiceImpl implements UserService {
         UUID uuid = UUID.fromString(id);
         User user = userRepository.findByUuid(uuid);
         if (Objects.nonNull(user)) {
+            if (user.getRole().getRoleName().equals(RoleNameEnum.SALE_USER)) {
+                List<Item> items = itemRepository.findByUserUuid(user.getUuid());
+                if (!items.isEmpty()) {
+                    for (Item item : items) {
+                        List<User> users = item.getUsers();
+                        users.remove(user);
+                    }
+                }
+            }
             RoleNameEnum roleName = RoleNameEnum.valueOf(newRole);
             Role role = roleRepository.findByName(roleName);
             if (Objects.nonNull(role)) {

@@ -5,6 +5,7 @@ import com.gmail.portnova.julia.repository.model.Item;
 import com.gmail.portnova.julia.repository.model.User;
 import com.gmail.portnova.julia.service.ItemService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
+import com.gmail.portnova.julia.service.exception.ItemNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.ItemDTO;
 import com.gmail.portnova.julia.service.model.PageDTO;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.USER_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.gmail.portnova.julia.service.util.PageUtil.getNumberOfPages;
 import static com.gmail.portnova.julia.service.util.PageUtil.getStartPosition;
@@ -67,18 +69,28 @@ public class ItemServiceImpl implements ItemService {
     public List<UserDTO> deleteItemFromSaleUserCatalog(String uuid, UUID currentUserUuid) {
         UUID itemUuid = UUID.fromString(uuid);
         Item item = itemRepository.findByUuid(itemUuid);
-        List<User> itemUsers = item.getUsers();
-        Optional<User> optionalUser = itemUsers.stream()
-                .filter(user -> user.getUuid().equals(currentUserUuid))
-                .findFirst();
-        try {
-            User user = optionalUser.get();
-            itemUsers.remove(user);
-            return itemUsers.stream()
-                    .map(userConverter::convertObjectToDTO).collect(Collectors.toList());
-        } catch (NoSuchElementException e) {
-            log.error(e.getMessage());
-            throw new UserNotFoundException(String.format(USER_NOT_FOUND_EXCEPTION_MESSAGE, currentUserUuid));
+        if (Objects.nonNull(item)) {
+            List<User> itemUsers = item.getUsers();
+            if (itemUsers.size() > 1) {
+                Optional<User> optionalUser = itemUsers.stream()
+                        .filter(user -> user.getUuid().equals(currentUserUuid))
+                        .findFirst();
+                try {
+                    User user = optionalUser.get();
+                    itemUsers.remove(user);
+                    return itemUsers.stream()
+                            .map(userConverter::convertObjectToDTO).collect(Collectors.toList());
+                } catch (NoSuchElementException e) {
+                    log.error(e.getMessage());
+                    throw new UserNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, User.class, currentUserUuid));
+                }
+            } else {
+                itemUsers.clear();
+                itemRepository.remove(item);
+                return Collections.emptyList();
+            }
+        } else {
+            throw new ItemNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, uuid));
         }
     }
 

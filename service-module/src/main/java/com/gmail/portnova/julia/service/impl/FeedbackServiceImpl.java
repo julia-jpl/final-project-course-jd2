@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 import static com.gmail.portnova.julia.service.util.PageUtil.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +60,19 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackForDisplayedFalse.stream()
                 .map(feedbackConverter::convertObjectToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public FeedbackDTO addFeedbackToDatabase(FeedbackDTO feedbackDTO) {
+        UUID uuid = UUID.randomUUID();
+        feedbackDTO.setUuid(uuid);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        feedbackDTO.setCreatedAt(localDateTime);
+        feedbackDTO.setDisplayed(false);
+        Feedback feedback = feedbackConverter.convertDTOToObject(feedbackDTO);
+        feedbackRepository.persist(feedback);
+        return null;
     }
 
     protected List<Feedback> getFeedbackListById(List<String> ids) {

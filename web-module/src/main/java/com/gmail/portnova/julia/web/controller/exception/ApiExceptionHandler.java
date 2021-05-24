@@ -2,18 +2,14 @@ package com.gmail.portnova.julia.web.controller.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmail.portnova.julia.service.exception.EntityNotFoundException;
-import com.gmail.portnova.julia.service.exception.ImpossibleToDeleteItemException;
+import com.gmail.portnova.julia.service.exception.EntityWithUuidNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice(basePackages = {"com.gmail.portnova.julia.web.controller.api"})
 @RequiredArgsConstructor
@@ -28,18 +24,11 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(exceptionValue, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException e) throws JsonProcessingException {
+    @ExceptionHandler(EntityWithUuidNotFoundException.class)
+    public ResponseEntity<String> handleEntityNotFoundException(EntityWithUuidNotFoundException e) throws JsonProcessingException {
         String exceptionValue = objectMapper.writeValueAsString(e.getMessage());
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(exceptionValue, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(ImpossibleToDeleteItemException.class)
-    public ResponseEntity<String> handleImpossibleToDeleteItemException(ImpossibleToDeleteItemException e) throws JsonProcessingException {
-        String exceptionValue = objectMapper.writeValueAsString(e.getMessage());
-        log.error(e.getMessage(), e);
-        return new ResponseEntity<>(exceptionValue, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

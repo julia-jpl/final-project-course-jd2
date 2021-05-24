@@ -24,6 +24,8 @@ public class Feedback {
     private UUID uuid;
     @Column
     private String text;
+    @Column
+    private String author;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name = "is_displayed")

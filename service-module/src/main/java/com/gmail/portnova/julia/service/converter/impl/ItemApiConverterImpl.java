@@ -4,7 +4,7 @@ import com.gmail.portnova.julia.repository.ItemGroupRepository;
 import com.gmail.portnova.julia.repository.UserRepository;
 import com.gmail.portnova.julia.repository.model.*;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
-import com.gmail.portnova.julia.service.exception.EntityNotFoundException;
+import com.gmail.portnova.julia.service.exception.ImpossibleToSaveItemRelatedToUser;
 import com.gmail.portnova.julia.service.exception.ItemGroupNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.ItemApiDTO;
@@ -62,16 +62,19 @@ public class ItemApiConverterImpl implements GeneralConverter<Item, ItemApiDTO> 
         item.setUniqueNumber(itemApiDTO.getUniqueNumber());
         item.setName(itemApiDTO.getName());
         item.setDescription(itemApiDTO.getDescription());
+        item.setIsDeleted(itemApiDTO.getDeleted());
         ItemDetail itemDetail = getItemDetail(itemApiDTO);
         item.setItemDetail(itemDetail);
         itemDetail.setItem(item);
         String itemGroupName = itemApiDTO.getItemGroup();
-        ItemGroupNameEnum itemGroupNameEnum = ItemGroupNameEnum.valueOf(itemGroupName);
-        ItemGroup itemGroup = itemGroupRepository.findByName(itemGroupNameEnum);
-        if (Objects.nonNull(itemGroup)) {
-            item.setItemGroup(itemGroup);
-        } else {
-            throw new ItemGroupNotFoundException(String.format(ITEM_GROUP_NOT_FOUND_EXCEPTION_MESSAGE, itemGroupName));
+        if (Objects.nonNull(itemGroupName)) {
+            ItemGroupNameEnum itemGroupNameEnum = ItemGroupNameEnum.valueOf(itemGroupName);
+            ItemGroup itemGroup = itemGroupRepository.findByName(itemGroupNameEnum);
+            if (Objects.nonNull(itemGroup)) {
+                item.setItemGroup(itemGroup);
+            } else {
+                throw new ItemGroupNotFoundException(String.format(ENTITY_WITH_NAME_NOT_FOUND_EXCEPTION_MESSAGE, ItemGroup.class, itemGroupName));
+            }
         }
         List<User> users = getUsers(itemApiDTO);
         item.getUsers().addAll(users);
@@ -85,11 +88,14 @@ public class ItemApiConverterImpl implements GeneralConverter<Item, ItemApiDTO> 
             UUID userUuid = UUID.fromString(userUuidString);
             User user = userRepository.findByUuid(userUuid);
             if (Objects.nonNull(user)) {
-                if (user.getRole().getRoleName().equals(RoleNameEnum.CUSTOMER_USER)) {
+                if (user.getRole().getRoleName().equals(RoleNameEnum.SALE_USER)) {
                     users.add(user);
+                } else {
+                    throw new ImpossibleToSaveItemRelatedToUser(String.format("Item could not be saved because " +
+                            "user with uuid %s is not SALE_USER", userUuidString));
                 }
             } else {
-                throw new EntityNotFoundException(String.format(ENTITY_NOT_FOUND_EXCEPTION_MESSAGE, User.class, userUuidString));
+                throw new UserNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, User.class, userUuidString));
             }
         }
         return users;

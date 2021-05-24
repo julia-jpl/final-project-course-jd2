@@ -29,6 +29,6 @@ public class ItemSaleConverterImpl implements GeneralConverter<Item, ItemSaleDTO
 
     @Override
     public Item convertDTOToObject(ItemSaleDTO object) {
-        return null;
+        throw new UnsupportedOperationException("This method hasn't been implemented");
     }
 }

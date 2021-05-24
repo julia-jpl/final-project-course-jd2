@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Item</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/articles}">NEWS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/feedback}">FEEDBACK</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/items}">CATALOG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">ORDERS</a>
+                </li>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/profile}">PROFILE</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles/add}">ADD ARTICLE</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles}">USER'S NEWS</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/customer/feedback/add}">LEAVE FEEDBACK</a>
+                    </li>
+                </div>
+            </ul>
+            <div class="col-auto">
+            <span class="navbar-text">
+        User:
+      </span>
+                <span sec:authentication="name"></span>
+                <a class="btn btn-sm btn-outline" type="button" href="#" th:href="@{/logout}">Log out</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <h2>Form of order</h2>
+    <form action="#" id="form-order" th:object="${formOrder}" th:action="@{/customer/order/{id}(id=${item.uuid})}" method="post">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <th scope="row">Name of item</th>
+                <td th:text="${item.name}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Price</th>
+                <td th:text="${item.price}"></td>
+            </tr>
+            <div th:if="${#lists.isEmpty(item.sellers)}"><h6>Sorry but this item is currently not available</h6></div>
+            <div th:unless="${#lists.isEmpty(item.sellers)}">
+                <tr>
+                    <th scope="row">Enter quantity</th>
+                    <td><input type="number" class="form-control" th:field="${formOrder.itemQuantity}" id="inputQuantity"
+                               min="1" max="10" required>
+                        <span th:if="${#fields.hasErrors('itemQuantity')}" th:errors="${formOrder.itemQuantity}">Description Error</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Choose the seller</th>
+                    <td>
+                        <div class="form-check" th:each="seller : ${item.sellers}">
+                            <input class="form-check-input" type="radio" th:field="*{sellerUuid}"
+                                   th:value="${seller.uuid}" required>
+                            <label class="form-check-label" th:text="${seller.sellerName}">
+                                Default radio
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <div th:if="${telephone} == null">
+                <tr>
+                    <th scope="row">Enter telephone</th>
+                    <td><input type="text" class="form-control" th:field="*{customerTel}" id="inputTelephone"
+                                pattern="[+][0-9]{1,3}-[0-9]{2,3}-[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+                        <span th:if="${#fields.hasErrors('customerTel')}" th:errors="*{customerTel}">Description Error</span>
+                    </td>
+                </tr>
+                </div>
+            </div>
+            </tbody>
+        </table>
+        <div th:unless="${#lists.isEmpty(item.sellers)}">
+        <button type="submit" class="btn btn-primary btn-lg">Save order</button>
+        </div>
+    </form>
+</div>
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

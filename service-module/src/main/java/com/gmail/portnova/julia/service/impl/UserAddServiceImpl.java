@@ -44,6 +44,7 @@ public class UserAddServiceImpl implements UserAddService {
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         user.setUuid(UUID.randomUUID());
+        user.setDeleted(false);
         User newUser = userConverter.convertDTOToObject(user);
         userRepository.persist(newUser);
         UserDTO savedUser = userConverter.convertObjectToDTO(newUser);

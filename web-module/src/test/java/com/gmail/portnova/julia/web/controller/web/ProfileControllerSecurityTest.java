@@ -34,26 +34,6 @@ class ProfileControllerSecurityTest {
     @MockBean
     private UserService userService;
 
-    @WithMockUser(authorities = {"CUSTOMER_USER"})
-    @Test
-    void whenUserWithRoleCustomerUserTryToGetAccessThenReturn200status() throws Exception {
-        UUID uuid = UUID.randomUUID();
-        String lastname = "lastname";
-        String firstname = "firstname";
-        ProfileUserDTO userProfile = new ProfileUserDTO();
-        userProfile.setUuid(uuid);
-        userProfile.setLastName(lastname);
-        userProfile.setFirstName(firstname);
-
-
-        when(profileService.getUserProfile(uuid)).thenReturn(userProfile);
-
-        mockMvc.perform(
-                get("/profile")
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk()).andExpect(model().attribute("userProfile", userProfile));
-    }
-
     @WithMockUser(authorities = {"ADMINISTRATOR"})
     @Test
     void whenUserHasRoleAdministratorTryToGetAccessToProfileThenReturnRedirected() throws Exception {

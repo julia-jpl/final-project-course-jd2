@@ -89,7 +89,7 @@ public class ArticleController {
     @PostMapping("/sale/articles/delete/{uuid}")
     public String deleteArticle(@PathVariable String uuid) {
         articleService.deleteArticleByUuid(uuid);
-        return "redirect:/sale/articles/{uuid}";
+        return "redirect:/sale/articles";
     }
 
     @GetMapping("/sale/articles/add")

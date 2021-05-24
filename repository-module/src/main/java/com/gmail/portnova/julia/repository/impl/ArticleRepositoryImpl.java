@@ -49,8 +49,8 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
         query.setParameter("id", userUuid);
         List<Object> resultList = query.getResultList();
         List<Article> articles = new ArrayList<>();
-        for (Object o : resultList) {
-            Article article = getArticle((Object[]) o);
+        for (Object object : resultList) {
+            Article article = getArticle((Object[]) object);
             articles.add(article);
         }
         return articles;

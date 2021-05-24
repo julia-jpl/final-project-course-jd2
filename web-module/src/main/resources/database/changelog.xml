@@ -45,6 +45,8 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="password" type="varchar(100)"/>
+            <column name="is_deleted" type="TINYINT(1)">
+            </column>
             <column name="role_id" type="bigint">
                 <constraints foreignKeyName="fk_user_role" references="ROLE(id)"/>
             </column>
@@ -58,6 +60,7 @@
             <column name="middle_name" value="AdminMiddleName"/>
             <column name="email" value="admin@myhost.com"/>
             <column name="password" value="$2y$12$0fpDrfezgN2rr.K31HAWMu/r8p90sJonQYgeCSAiG1jcmVGjtI4hK"/>
+            <column name="is_deleted" value="0"/>
             <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='ADMINISTRATOR')"/>
         </insert>
     </changeSet>
@@ -78,6 +81,9 @@
             <column name="is_displayed" type="TINYINT(1)">
                 <constraints nullable="false"/>
             </column>
+            <column name="author" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="user_id" type="bigint">
                 <constraints foreignKeyName="fk_user_feedback" references="USER(id)"/>
             </column>
@@ -88,28 +94,31 @@
             <column name="unique_number" value="29be0ee3-fe77-331e-a1bf-9494ec18c0ba"/>
             <column name="text" value="text of feedback1"/>
             <column name="is_displayed" value="0"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="33b06619-1ee7-3db5-827d-0dc85df1f759"/>
             <column name="text" value="text of feedback2"/>
             <column name="is_displayed" value="0"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="4896c91b-9e61-3129-87b6-8aa299028058"/>
             <column name="text" value="text of feedback3"/>
             <column name="is_displayed" value="0"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
-
     </changeSet>
     <changeSet id="7" author="portnova.julia@gmail.com">
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130002"/>
             <column name="text" value="text of feedback4"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
     </changeSet>
     <changeSet id="8" author="portnova.julia@gmail.com">
@@ -117,43 +126,50 @@
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130044"/>
             <column name="text" value="text of feedback5"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac144002"/>
             <column name="text" value="text of feedback6"/>
             <column name="is_displayed" value="0"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130222"/>
             <column name="text" value="text of feedback7"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130882"/>
             <column name="text" value="text of feedback8"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130992"/>
             <column name="text" value="text of feedback9"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac135502"/>
             <column name="text" value="text of feedback10"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac134402"/>
             <column name="text" value="text of feedback11"/>
             <column name="is_displayed" value="1"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='admin@myhost.com')"/>
+            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
     </changeSet>
     <changeSet id="9" author="portnova.julia@gmail.com">
@@ -190,6 +206,7 @@
             <column name="middle_name" value="CustomerMiddleName"/>
             <column name="email" value="portnova.julia@gmail.com"/>
             <column name="password" value="$2y$12$Dm26lT0cVeSwqQJGTwb6AuCjHYlB2j/nE/.m1Pvj4ES0t/Ie8AiXC"/>
+            <column name="is_deleted" value="0"/>
             <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='CUSTOMER_USER')"/>
         </insert>
     </changeSet>
@@ -291,6 +308,7 @@
             <column name="middle_name" value="RestMiddleName"/>
             <column name="email" value="rest@myhost.com"/>
             <column name="password" value="$2y$12$Hbu6yaVtpk/MT3YmG3UIS.o2GAp4gMo5Y9lBh/zAxnYYnVzwRiq/K"/>
+            <column name="is_deleted" value="0"/>
             <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SECURE_REST_API')"/>
         </insert>
     </changeSet>
@@ -302,6 +320,7 @@
             <column name="middle_name" value="SaleMiddleName"/>
             <column name="email" value="sale@myhost.com"/>
             <column name="password" value="$2y$12$Km/M2NoUC3kZgzS.9CDtp.ak6gTwzlGQqYlRnPJUfNBd9nUtCiQNC"/>
+            <column name="is_deleted" value="0"/>
             <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
         </insert>
     </changeSet>
@@ -378,6 +397,7 @@
             <column name="description" type="varchar(200)">
                 <constraints nullable="false"/>"
             </column>
+            <column name="is_deleted" type="TINYINT(1)"/>
             <column name="group_id" type="bigint">
                 <constraints foreignKeyName="fk_item_group_item_id" references="ITEM_GROUP(id)"/>
             </column>
@@ -427,6 +447,7 @@
             <column name="name" value="TV_Samsung-55_09"/>
             <column name="description" value="Dolby Vison HDR Dolby Vision. TV supports HDR10+ and HLG high dynamic range formats.
             4K Ultra HD With over 8 million pixels, 4 times the resolution of 1080p."/>
+            <column name="is_deleted" value="0"/>
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
         </insert>
     </changeSet>
@@ -449,6 +470,7 @@
             <column name="name" value="TV_SONY-55_09"/>
             <column name="description" value="Dolby Vison HDR Dolby Vision. TV supports HDR10+ and HLG high dynamic range formats.
             4K Ultra HD With over 8 million pixels, 4 times the resolution of 1080p."/>
+            <column name="is_deleted" value="0"/>
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
         </insert>
     </changeSet>
@@ -471,6 +493,7 @@
             <column name="name" value="TV_LG-43_09"/>
             <column name="description" value="Full HD 1080p Resolution - Enjoy a viewing experience that is 2x the clarity of standard HD TVs.
             Smart TV - Get to your entertainment more intelligent way."/>
+            <column name="is_deleted" value="0"/>
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
         </insert>
     </changeSet>
@@ -492,6 +515,7 @@
             <column name="unique_number" value="SP-912345678987654"/>
             <column name="name" value="Marcy Magnetic Upright Bike"/>
             <column name="description" value="PREMIUM STEEL CONSTRUCTION, ADJUSTABLE SEAT POSITIONING, SMOOTH MAGNETIC RESISTANCE SYSTEM"/>
+            <column name="is_deleted" value="0"/>
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='SPORTS')"/>
         </insert>
     </changeSet>
@@ -513,6 +537,7 @@
             <column name="unique_number" value="FA-912345678903322"/>
             <column name="name" value="Skinny Jeans with Hole"/>
             <column name="description" value="MOST POPULAR STYLE-BOYFRIEND STYLE:Zip fly with button closure,classic cut just like that pair you used to steal from your boyfriend's closet,boyfriend trendy jeans make you look and feel amazing"/>
+            <column name="is_deleted" value="0"/>
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
         </insert>
     </changeSet>
@@ -534,6 +559,7 @@
             <column name="unique_number" value="HB-912345678966422"/>
             <column name="name" value="Dove Soothing Care Body Wash for Sensitive Skin"/>
             <column name="description" value="This body wash is PETA-certified cruelty-free and made in 100% recycled plastic bottles, so you can feel good about switching from everyday shower soap to Dove body wash"/>
+            <column name="is_deleted" value="0"/>
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='HEALTH_BEAUTY')"/>
         </insert>
     </changeSet>
@@ -557,6 +583,7 @@
             <column name="middle_name" value="Ivanovich"/>
             <column name="email" value="sale1@myhost.com"/>
             <column name="password" value="$2y$12$cHF/ufpp9ShPzuCRPdmRlu3aZ22G4RCWpl/QobqsHTGIOIoyxrnpS"/>
+            <column name="is_deleted" value="0"/>
             <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
         </insert>
     </changeSet>
@@ -572,6 +599,80 @@
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="44" author="portnova.julia@gmail.com">
+        <createTable tableName="ORDER_STATUS">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="status_name" type="ENUM ('NEW', 'IN_PROGRESS', 'DELIVERED', 'REJECTED')">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="45" author="portnova.julia@gmail.com">
+        <createTable tableName="ORDERS">
+            <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seller_id" type="bigint">
+                <constraints foreignKeyName="fk_orders_sale_user_id" references="USER(id)"/>
+            </column>
+            <column name="seller" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="bigint">
+                <constraints foreignKeyName="fk_orders_order_status_id" references="ORDER_STATUS(id)"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="46" author="portnova.julia@gmail.com">
+        <createTable tableName="ORDER_DETAIL">
+            <column name="order_id" type="bigint">
+                <constraints primaryKey="true" foreignKeyName="fk_orders_order_detail_id" references="ORDERS(id)"/>
+            </column>
+            <column name="item_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints foreignKeyName="fk_order_detail_customer_user_id" references="USER(id)"/>
+            </column>
+            <column name="customer_telephone" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_identifier" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="47" id="portnova.julia@gmail.com">
+        <insert tableName="ORDER_STATUS">
+            <column name="status_name" value="NEW"/>
+        </insert>
+        <insert tableName="ORDER_STATUS">
+            <column name="status_name" value="IN_PROGRESS"/>
+        </insert>
+        <insert tableName="ORDER_STATUS">
+            <column name="status_name" value="DELIVERED"/>
+        </insert>
+        <insert tableName="ORDER_STATUS">
+            <column name="status_name" value="REJECTED"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

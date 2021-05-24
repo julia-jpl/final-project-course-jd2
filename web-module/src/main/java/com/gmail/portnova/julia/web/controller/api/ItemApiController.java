@@ -32,8 +32,8 @@ public class ItemApiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteArticleByUuid(@PathVariable("id") String uuidString) {
-        itemApiService.deleteItemApiByUuidNotRelatedToSaleUser(uuidString);
+    public ResponseEntity<Void> deleteItemByUuid(@PathVariable("id") String uuidString) {
+        itemApiService.deleteItemByUuid(uuidString);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

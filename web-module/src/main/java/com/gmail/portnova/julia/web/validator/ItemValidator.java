@@ -1,17 +1,12 @@
 package com.gmail.portnova.julia.web.validator;
 
 import com.gmail.portnova.julia.service.model.ItemApiDTO;
-import com.gmail.portnova.julia.service.model.ItemDTO;
 import com.gmail.portnova.julia.service.model.ItemGroupNameEnumDTO;
-import com.gmail.portnova.julia.service.model.RoleNameEnumDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.gmail.portnova.julia.web.constant.ValidationConstant.BIG_DECIMAL_PATTERN;
 

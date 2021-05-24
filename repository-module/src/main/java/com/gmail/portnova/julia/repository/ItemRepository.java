@@ -13,4 +13,6 @@ public interface ItemRepository extends GenericRepository<Long, Item> {
     List<Item> findItemsWithLimitByUserUuid(int startPosition, int maxResult, UUID userUuid);
 
     List<Item> findAllWithoutRelationToSaleUser();
+
+    List<Item> findByUserUuid(UUID uuid);
 }

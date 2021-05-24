@@ -55,6 +55,14 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Long, Item> implem
         return items;
     }
 
+    @Override
+    public List<Item> findByUserUuid(UUID uuid) {
+        String hql = "SELECT i FROM Item i JOIN i.users U WHERE U.uuid = :id";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("id", uuid);
+        return query.getResultList();
+    }
+
     protected Item getItem(Object[] o) {
         Item item = new Item();
         Object[] objects = o;

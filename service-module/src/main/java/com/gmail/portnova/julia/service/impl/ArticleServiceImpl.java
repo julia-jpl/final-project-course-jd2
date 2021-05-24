@@ -1,7 +1,11 @@
 package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.ArticleRepository;
+import com.gmail.portnova.julia.repository.CommentRepository;
+import com.gmail.portnova.julia.repository.FeedbackRepository;
 import com.gmail.portnova.julia.repository.model.Article;
+import com.gmail.portnova.julia.repository.model.Comment;
+import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.ArticleService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ArticleNotFoundException;
@@ -23,6 +27,7 @@ import java.util.UUID;
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final GeneralConverter<Article, ArticleDTO> articleConverter;
+    private final CommentRepository commentRepository;
 
     @Override
     @Transactional
@@ -57,6 +62,12 @@ public class ArticleServiceImpl implements ArticleService {
         UUID uuid = UUID.fromString(uuidString);
         Article article = articleRepository.findByUuid(uuid);
         if (Objects.nonNull(article)) {
+            List<Comment> comments = commentRepository.findByArticleUuid(uuid);
+            if (!comments.isEmpty()) {
+                for (Comment comment : comments) {
+                    commentRepository.remove(comment);
+                }
+            }
             articleRepository.remove(article);
             return articleConverter.convertObjectToDTO(article);
         } else {

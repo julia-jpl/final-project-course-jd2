@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>News</title>
+    <title>Items</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/articles}">NEWS</a>
+                    <a class="nav-link" href="#" th:href="@{/articles}">NEWS</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/feedback}">FEEDBACK</a>
@@ -59,7 +59,7 @@
     </div>
 </nav>
 <div class="container">
-    <h2>News</h2>
+    <h2>Items</h2>
     <div th:if="${#lists.isEmpty(itemPage.objects)}">No items were found</div>
     <table class="table table-striped">
         <thead>
@@ -81,15 +81,7 @@
             <td th:text="${item.name}"></td>
             <td th:text="${item.uniqueNumber}"></td>
             <td th:text="${item.price}"></td>
-            <td>
-                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
-                    <a th:href="@{/items/{id}(id=${item.uuid})}" href="#">details</a>
-                </div>
-                <div sec:authorize="hasAuthority('SALE_USER')">
-                    <a th:href="@{sale/items/{id}(id=${item.uuid})}" href="#">details</a>
-                </div>
-
-            </td>
+            <td><a th:href="@{/items/{id}(id=${item.uuid})}" href="#">details</a></td>
             <div sec:authorize="hasAuthority('SALE_USER')">
                 <td>
                     <form action="#" th:action="@{/sale/items/delete/{uuid}(uuid=${item.uuid})}" method="post">

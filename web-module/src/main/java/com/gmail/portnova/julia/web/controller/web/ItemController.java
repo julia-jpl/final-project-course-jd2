@@ -21,6 +21,7 @@ import static com.gmail.portnova.julia.web.constant.RoleNameConstant.ROLE_NAME_S
 
 @Controller
 @RequiredArgsConstructor
+
 public class ItemController {
     private final ItemService itemService;
     private final UserService userService;
@@ -64,11 +65,11 @@ public class ItemController {
         return "redirect:/items";
     }
 
-    @GetMapping("/sale/items/{id}")
-    public String getArticle(@PathVariable String id, Model model) {
+    @GetMapping("/items/{id}")
+    public String getSaleItemPage(@PathVariable String id, Model model) {
         ItemSaleDTO item = itemSaleService.findByUuid(id);
         model.addAttribute("item", item);
-        return "sale_item";
+        return "item_page";
     }
 
     private UserDTO getCurrentUser() {

@@ -72,27 +72,4 @@ class ArticleApiServiceImplTest {
         assertThrows(ArticleNotFoundException.class, () -> articleApiService.findApiByUuid(id));
     }
 
-    @Test
-    void deleteArticleApiByUuid() {
-        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
-        UUID uuid = UUID.fromString(id);
-        Article article = new Article();
-        article.setUuid(uuid);
-        when(articleRepository.findByUuid(uuid)).thenReturn(article);
-
-        ArticleApiDTO articleApiDTO = new ArticleApiDTO();
-        articleApiDTO.setUuid(uuid);
-        when(articleApiConverter.convertObjectToDTO(article)).thenReturn(articleApiDTO);
-
-        ArticleApiDTO result = articleApiService.deleteArticleApiByUuid(id);
-        assertEquals(uuid, result.getUuid());
-    }
-    @Test
-    void shouldNotDeleteByUUID() {
-        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
-        UUID uuid = UUID.fromString(id);
-
-        when(articleRepository.findByUuid(uuid)).thenReturn(null);
-        assertThrows(ArticleNotFoundException.class, () -> articleApiService.deleteArticleApiByUuid(id));
-    }
 }

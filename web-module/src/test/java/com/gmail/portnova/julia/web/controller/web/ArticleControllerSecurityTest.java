@@ -1,6 +1,7 @@
 package com.gmail.portnova.julia.web.controller.web;
 
 import com.gmail.portnova.julia.service.ArticleService;
+import com.gmail.portnova.julia.service.ArticleUpdateService;
 import com.gmail.portnova.julia.service.CommentService;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.model.ArticleDTO;
@@ -30,7 +31,8 @@ class ArticleControllerSecurityTest {
     private ArticleService articleService;
     @MockBean
     private CommentService commentService;
-
+    @MockBean
+    private ArticleUpdateService articleUpdateService;
     @MockBean
     private UserService userService;
 

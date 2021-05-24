@@ -34,6 +34,12 @@
                         <a class="nav-link active" aria-current="page" href="#">PROFILE</a>
                     </li>
                 </div>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/feedback/add}">LEAVE FEEDBACK</a>
+                    </li>
+                </div>
             </ul>
             <div class="col-auto">
             <span class="navbar-text">

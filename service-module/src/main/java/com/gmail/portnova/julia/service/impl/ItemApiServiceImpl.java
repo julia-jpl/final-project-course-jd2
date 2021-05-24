@@ -5,7 +5,6 @@ import com.gmail.portnova.julia.repository.model.Item;
 import com.gmail.portnova.julia.repository.model.User;
 import com.gmail.portnova.julia.service.ItemApiService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
-import com.gmail.portnova.julia.service.exception.ImpossibleToDeleteItemException;
 import com.gmail.portnova.julia.service.exception.ItemNotFoundException;
 import com.gmail.portnova.julia.service.model.ItemApiDTO;
 import com.gmail.portnova.julia.service.model.ItemGroupNameEnumDTO;
@@ -18,8 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.IMPOSSIBLE_TO_DELETE_ITEM_EXCEPTION_MESSAGE;
-import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ITEM_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,26 +34,19 @@ public class ItemApiServiceImpl implements ItemApiService {
         if (Objects.nonNull(item)) {
             return itemApiConverter.convertObjectToDTO(item);
         } else {
-            throw new ItemNotFoundException(String.format(ITEM_NOT_FOUND_EXCEPTION_MESSAGE, uuidString));
+            throw new ItemNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, uuidString));
         }
     }
 
-    @Override
     @Transactional
-    public void deleteItemApiByUuidNotRelatedToSaleUser(String uuidString) {
+    public ItemApiDTO deleteItemByUuid(String uuidString) {
         UUID itemUuid = UUID.fromString(uuidString);
         Item item = itemRepository.findByUuid(itemUuid);
         if (Objects.nonNull(item)) {
             List<User> users = item.getUsers();
-            if (users.isEmpty()) {
-                itemRepository.remove(item);
-            } else {
-                String usersUuids = users.stream()
-                        .map(User::getUuid)
-                        .map(UUID::toString)
-                        .collect(Collectors.joining(","));
-                throw new ImpossibleToDeleteItemException(String.format(IMPOSSIBLE_TO_DELETE_ITEM_EXCEPTION_MESSAGE, uuidString, usersUuids));
-            }
+            users.clear();
+            itemRepository.remove(item);
+            return itemApiConverter.convertObjectToDTO(item);
         } else {
             throw new ItemNotFoundException(String.format(ITEM_NOT_FOUND_EXCEPTION_MESSAGE, uuidString));
         }
@@ -63,14 +54,16 @@ public class ItemApiServiceImpl implements ItemApiService {
 
     @Override
     @Transactional
-    public void addItemToDatabase(ItemApiDTO itemDTO) {
+    public ItemApiDTO addItemToDatabase(ItemApiDTO itemDTO) {
         UUID uuid = UUID.randomUUID();
         itemDTO.setUuid(uuid);
         String itemGroup = itemDTO.getItemGroup();
         String uniqueNumber = getItemUniqueNumber(itemGroup);
+        itemDTO.setDeleted(false);
         itemDTO.setUniqueNumber(uniqueNumber);
         Item item = itemApiConverter.convertDTOToObject(itemDTO);
         itemRepository.persist(item);
+        return itemDTO;
     }
 
     protected String getItemUniqueNumber(String itemGroup) {

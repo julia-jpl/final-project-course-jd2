@@ -30,6 +30,6 @@ public class ItemConverterImpl implements GeneralConverter<Item, ItemDTO> {
 
     @Override
     public Item convertDTOToObject(ItemDTO object) {
-        return null;
+        throw new UnsupportedOperationException("This method hasn't been implemented");
     }
 }

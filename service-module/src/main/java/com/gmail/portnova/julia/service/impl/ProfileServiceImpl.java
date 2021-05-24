@@ -9,6 +9,7 @@ import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.ProfileUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_NAME_NOT_FOUND_EXCEPTION_MESSAGE;
 
 import javax.transaction.Transactional;
 import java.util.Objects;
@@ -30,6 +31,7 @@ public class ProfileServiceImpl implements ProfileService {
             throw new UserNotFoundException(String.format("User with uuid %s was not found", uuid));
         }
     }
+
     @Transactional
     @Override
     public ProfileUserDTO changeUserAddress(String address, String id) {
@@ -70,5 +72,14 @@ public class ProfileServiceImpl implements ProfileService {
         } else {
             throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
         }
+    }
+
+    @Override
+    @Transactional
+    public ProfileUserDTO getUserProfileByEmail(String username) {
+        User user = userRepository.findByEmail(username);
+        if (Objects.nonNull(user)) {
+            return profileConverter.convertObjectToDTO(user);
+        } else throw new UserNotFoundException(String.format(ENTITY_WITH_NAME_NOT_FOUND_EXCEPTION_MESSAGE, User.class, username));
     }
 }

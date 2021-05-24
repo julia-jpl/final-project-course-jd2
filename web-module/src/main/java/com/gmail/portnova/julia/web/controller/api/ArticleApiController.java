@@ -1,6 +1,7 @@
 package com.gmail.portnova.julia.web.controller.api;
 
 import com.gmail.portnova.julia.service.ArticleApiService;
+import com.gmail.portnova.julia.service.ArticleService;
 import com.gmail.portnova.julia.service.UserService;
 import com.gmail.portnova.julia.service.exception.ArticleNotFoundException;
 import com.gmail.portnova.julia.service.model.ArticleApiDTO;
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class ArticleApiController {
     private final ArticleApiService articleApiService;
     private final UserService userService;
+    private final ArticleService articleService;
 
     @GetMapping
     public List<ArticleApiDTO> getArticles() {
@@ -60,7 +62,7 @@ public class ArticleApiController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticleByUuid(@PathVariable("id") String uuidString) {
         try {
-            articleApiService.deleteArticleApiByUuid(uuidString);
+            articleService.deleteArticleByUuid(uuidString);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ArticleNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

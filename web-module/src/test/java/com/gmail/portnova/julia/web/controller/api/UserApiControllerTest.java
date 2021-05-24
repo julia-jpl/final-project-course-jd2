@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(UserValidator.class)
 class UserApiControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
@@ -57,7 +57,7 @@ class UserApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @WithMockUser(username = "rest@myhost.com", password = "qwer", authorities = {"SECURE_REST_API"})
+    @WithMockUser(authorities = {"SECURE_REST_API"})
     @Test
     void whenNotValidUsername() throws Exception {
         UserDTO user = new UserDTO();

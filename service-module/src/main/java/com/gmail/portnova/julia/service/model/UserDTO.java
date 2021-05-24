@@ -16,5 +16,6 @@ public class UserDTO {
     private String middleName;
     private String email;
     private String password;
+    private Boolean deleted;
     private String roleName;
 }

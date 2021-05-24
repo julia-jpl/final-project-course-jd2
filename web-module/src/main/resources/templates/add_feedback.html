@@ -3,7 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Item</title>
+    <title>Leave feedback</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
@@ -28,18 +28,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">ORDERS</a>
                 </li>
-                <div sec:authorize="hasAuthority('SALE_USER')">
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"
-                           th:href="@{/sale/articles/add}">ADD ARTICLE</a>
+                        <a class="nav-link active" aria-current="page" href="#">PROFILE</a>
                     </li>
                 </div>
-                <div sec:authorize="hasAuthority('SALE_USER')">
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
                         <a class="nav-link" href="#"
-                           th:href="@{/sale/articles}">USER'S NEWS</a>
+                           th:href="@{/customer/feedback/add}">LEAVE FEEDBACK</a>
                     </li>
-                </div>
             </ul>
             <div class="col-auto">
             <span class="navbar-text">
@@ -51,16 +49,29 @@
         </div>
     </div>
 </nav>
+
 <div class="container">
-    <h3 th:text="${item.name}"></h3>
-    <span>Number:</span><p class="text-start fs-6" th:text="${item.uniqueNumber}"></p>
-    <span>Price:</span><p class="text-md-start fs-5" th:text="${item.price}"></p>
-    <span>Description:</span><p class="text-md-start" th:text="${item.description}"></p>
+    <h2>Fill the form to leave feedback</h2>
+    <form action="#" th:action="@{/customer/feedback/add}" th:object="${newFeedback}" method="post">
+        <div class="form-group row">
+            <label for="inputText" class="col-sm-2 col-form-label">Text of feedback</label>
+            <div class="col-sm-10">
+        <textarea rows="10" style="height:100%;" type="text" class="form-control" th:field="*{text}" id="inputText"
+                  placeholder="Enter the text of your feedback"
+                  maxlength="500" minlength="2" required></textarea>
+                <span th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Description Error</span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </div>
+    </form>
 </div>
+
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
-
-</html>

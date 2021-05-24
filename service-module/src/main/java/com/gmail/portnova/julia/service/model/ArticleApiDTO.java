@@ -29,4 +29,5 @@ public class ArticleApiDTO {
     private String content;
     private LocalDateTime createdAt;
     private UUID userUuid;
+    private String author;
 }
