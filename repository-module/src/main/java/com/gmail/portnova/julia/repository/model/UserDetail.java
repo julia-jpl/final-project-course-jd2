@@ -1,6 +1,7 @@
 package com.gmail.portnova.julia.repository.model;
 
 import liquibase.pro.packaged.E;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "USER_DETAIL")
+@EqualsAndHashCode(exclude = {"address", "address", "user"})
 public class UserDetail {
     @GenericGenerator(
             name = "generator",

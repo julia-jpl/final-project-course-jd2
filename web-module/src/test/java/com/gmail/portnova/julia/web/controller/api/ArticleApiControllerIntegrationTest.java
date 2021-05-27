@@ -9,14 +9,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ArticleApiControllerIntegrationTest extends BaseIT {
     @Sql({"/scripts/cleanFeedback.sql",
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
             "/scripts/cleanArticle.sql",
+            "/scripts/cleanItemUser.sql",
+            "/scripts/cleanOrderDetail.sql",
+            "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})
@@ -32,8 +35,6 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
                         request,
                         createParameterizedTypeReferenceListArticleApiDto()
                 );
-
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("title", response.getBody().get(0).getTitle());
     }
@@ -47,6 +48,9 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
             "/scripts/cleanArticle.sql",
+            "/scripts/cleanItemUser.sql",
+            "/scripts/cleanOrderDetail.sql",
+            "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})
@@ -63,11 +67,11 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
         ResponseEntity<String> response = testRestTemplate
                 .withBasicAuth("rest@myhost.com", "qwer")
                 .exchange(
-                "/api/articles",
-                HttpMethod.POST,
-                request,
-                String.class
-        );
+                        "/api/articles",
+                        HttpMethod.POST,
+                        request,
+                        String.class
+                );
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
@@ -76,6 +80,9 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
             "/scripts/cleanArticle.sql",
+            "/scripts/cleanItemUser.sql",
+            "/scripts/cleanOrderDetail.sql",
+            "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})
@@ -103,6 +110,9 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
             "/scripts/cleanArticle.sql",
+            "/scripts/cleanItemUser.sql",
+            "/scripts/cleanOrderDetail.sql",
+            "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})

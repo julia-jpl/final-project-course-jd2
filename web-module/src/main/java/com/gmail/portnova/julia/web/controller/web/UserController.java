@@ -79,8 +79,9 @@ public class UserController {
 
     @GetMapping("/users/change-password/{id}")
     public String changePassword(@PathVariable String id, Model model) {
-        UserDTO user = userAddService.changePassword(id);
-        model.addAttribute("user", user);
+        UserDTO savedUser = userAddService.saveNewPasswordInDatabase(id);
+        UserDTO userWithNewPassword =  userAddService.sendEmail(savedUser);
+        model.addAttribute("user", userWithNewPassword);
         return "change_password";
     }
 

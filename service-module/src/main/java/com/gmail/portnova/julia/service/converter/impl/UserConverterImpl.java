@@ -49,6 +49,7 @@ public class UserConverterImpl implements GeneralConverter<User, UserDTO> {
             user.setMiddleName(userDTO.getMiddleName());
             user.setEmail(userDTO.getEmail());
             user.setPassword(userDTO.getPassword());
+            user.setIsDeleted(userDTO.getDeleted());
             String roleString = userDTO.getRoleName();
             if (Objects.nonNull(roleString)) {
                 RoleNameEnum roleName = RoleNameEnum.valueOf(roleString);

@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 
@@ -22,15 +24,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = UserApiController.class)
+@Import(UserValidator.class)
 class UserApiControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
     private UserAddService userAddService;
-    @MockBean
-    private UserValidator userValidator;
     @MockBean
     private UserService userService;
 
@@ -56,7 +57,7 @@ class UserApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @WithMockUser(username = "rest@myhost.com", password = "qwer", authorities = {"SECURE_REST_API"})
+    @WithMockUser(authorities = {"SECURE_REST_API"})
     @Test
     void whenNotValidUsername() throws Exception {
         UserDTO user = new UserDTO();
@@ -99,6 +100,29 @@ class UserApiControllerTest {
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isCreated());
 
-        verify(userAddService, times(1)).sendEmail(user);
+        verify(userAddService, times(1)).addUserToDatabase(user);
+        verify(userAddService, times(1)).sendEmail(null);
+    }
+
+    @WithMockUser(username = "rest@myhost.com", password = "qwer", authorities = {"SECURE_REST_API"})
+    @Test
+    void shouldReturn400_whenNotValidUserName() throws Exception {
+        UserDTO user = new UserDTO();
+        String lastName = "test";
+        user.setLastName(lastName);
+        String firstName = "test";
+        user.setFirstName(firstName);
+        String middleName = "test";
+        user.setMiddleName(middleName);
+        String email = "test.com";
+        user.setEmail(email);
+        String roleName = RoleNameEnumDTO.ADMINISTRATOR.name();
+        user.setRoleName(roleName);
+
+        mockMvc.perform(
+                post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isBadRequest());
     }
 }

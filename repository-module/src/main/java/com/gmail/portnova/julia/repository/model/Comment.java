@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "OPINION")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode (exclude = {"author", "user", "article"})
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,8 @@ public class Comment {
     private UUID uuid;
     @Column
     private String content;
+    @Column
+    String author;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @ManyToOne(fetch = FetchType.LAZY)

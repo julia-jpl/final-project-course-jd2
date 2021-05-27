@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>error page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container-fluid">
+    <h5>Error occurred</h5>
+    <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body"><span>while requesting</span>
+            <p class="card-text" th:text="${url}"></p>
+        </div>
+        <div class="card-footer">Please contact administrator. We are working to solve the problem</div>
+    </div>
+</div>
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

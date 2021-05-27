@@ -2,18 +2,21 @@ package com.gmail.portnova.julia.web.controller.web;
 
 import com.gmail.portnova.julia.service.FeedbackService;
 import com.gmail.portnova.julia.service.UserService;
-import com.gmail.portnova.julia.service.model.*;
+import com.gmail.portnova.julia.service.model.FeedbackDTO;
+import com.gmail.portnova.julia.service.model.PageDTO;
+import com.gmail.portnova.julia.service.model.RoleNameEnumDTO;
+import com.gmail.portnova.julia.service.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -69,13 +72,40 @@ public class FeedbackController {
             return "redirect:/feedback";
         } else
             feedbackService.updateIsDisplayedStatus(idsAtPage);
-            return "redirect:/feedback";
+        return "redirect:/feedback";
     }
 
     @PostMapping("/users/feedback/delete/{uuid}")
     public String deleteFeedback(@PathVariable String uuid) {
         feedbackService.deleteByUuid(uuid);
         return "redirect:/feedback";
+    }
+
+    @GetMapping("/customer/feedback/add")
+    public String getAddFeedbackPage(@ModelAttribute("newFeedback") FeedbackDTO feedback) {
+        return "add_feedback";
+    }
+
+    @PostMapping("/customer/feedback/add")
+    public String addFeedback(@Valid @ModelAttribute("newFeedback") FeedbackDTO feedback,
+                              BindingResult result) {
+        if (result.hasErrors()) {
+            return "add_feedback";
+        } else {
+            UserDTO currentUser = getCurrentUser();
+            if (Objects.nonNull(currentUser)) {
+                feedback.setUserUuid(currentUser.getUuid());
+                feedbackService.addFeedbackToDatabase(feedback);
+                return "redirect:/feedback";
+            }
+            return "redirect:/feedback";
+        }
+    }
+    private UserDTO getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        return userService.findUserByEmail(username);
     }
 }
 

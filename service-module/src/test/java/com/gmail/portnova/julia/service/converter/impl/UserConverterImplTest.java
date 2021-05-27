@@ -4,7 +4,6 @@ import com.gmail.portnova.julia.repository.RoleRepository;
 import com.gmail.portnova.julia.repository.model.Role;
 import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
-import com.gmail.portnova.julia.service.converter.impl.UserConverterImpl;
 import com.gmail.portnova.julia.service.model.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +37,15 @@ class UserConverterImplTest {
 
         User user = userConverter.convertDTOToObject(userDTO);
         assertEquals(firstName, user.getFirstName());
+    }
+
+    @Test
+    void shouldConvertUserDTOtoUserAndReturnRightIsDeletedStatus() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setDeleted(false);
+
+        User user = userConverter.convertDTOToObject(userDTO);
+        assertFalse(user.getIsDeleted());
     }
 
     @Test
@@ -103,6 +111,7 @@ class UserConverterImplTest {
         User user = userConverter.convertDTOToObject(userDTO);
         assertEquals(password, user.getPassword());
     }
+
     @Test
     void shouldConvertUserDTOtoUserAndReturnNotNullObject() {
         UserDTO userDTO = new UserDTO();
@@ -110,6 +119,7 @@ class UserConverterImplTest {
 
         assertNotNull(user);
     }
+
     @Test
     void shouldConvertUserToUserDTOAndReturnNotNullObject() {
         User user = new User();
@@ -138,6 +148,7 @@ class UserConverterImplTest {
         UserDTO userDTO = userConverter.convertObjectToDTO(user);
         assertEquals(email, userDTO.getEmail());
     }
+
     @Test
     void shouldConvertUserToUserDTOAndReturnRightUuid() {
         User user = new User();
@@ -147,6 +158,7 @@ class UserConverterImplTest {
         UserDTO userDTO = userConverter.convertObjectToDTO(user);
         assertEquals(uuid, userDTO.getUuid());
     }
+
     @Test
     void shouldConvertUserToUserDTOAndReturnRightLastName() {
         User user = new User();
@@ -156,6 +168,7 @@ class UserConverterImplTest {
         UserDTO userDTO = userConverter.convertObjectToDTO(user);
         assertEquals(lastName, userDTO.getLastName());
     }
+
     @Test
     void shouldConvertUserToUserDTOAndReturnRightFirstName() {
         User user = new User();
@@ -165,6 +178,7 @@ class UserConverterImplTest {
         UserDTO userDTO = userConverter.convertObjectToDTO(user);
         assertEquals(firstName, userDTO.getFirstName());
     }
+
     @Test
     void shouldConvertUserToUserDTOAndReturnRightMiddleName() {
         User user = new User();
@@ -174,6 +188,7 @@ class UserConverterImplTest {
         UserDTO userDTO = userConverter.convertObjectToDTO(user);
         assertEquals(middleName, userDTO.getMiddleName());
     }
+
     @Test
     void shouldConvertUserToUserDTOAndReturnRightPassword() {
         User user = new User();

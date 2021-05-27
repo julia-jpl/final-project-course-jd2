@@ -10,4 +10,6 @@ public interface ProfileService {
     ProfileUserDTO changeUserAddress(String address, String id);
 
     ProfileUserDTO changeUserTelephone(String telephone, String id);
+
+    ProfileUserDTO getUserProfileByEmail(String username);
 }

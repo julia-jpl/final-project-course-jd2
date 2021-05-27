@@ -10,6 +10,4 @@ public interface ArticleApiService {
     void addApiArticle(ArticleApiDTO apiArticle);
 
     ArticleApiDTO findApiByUuid(String uuidString);
-
-    ArticleApiDTO deleteArticleApiByUuid(String uuidString);
 }

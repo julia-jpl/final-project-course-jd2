@@ -1,18 +1,26 @@
 package com.gmail.portnova.julia.service.converter.impl;
 
+import com.gmail.portnova.julia.repository.UserRepository;
 import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 class FeedbackConverterImplTest {
-    private final FeedbackConverterImpl feedbackConverter = new FeedbackConverterImpl();
+    @Mock
+    private UserRepository userRepository;
+    @InjectMocks
+    private FeedbackConverterImpl feedbackConverter;
     private Feedback feedback;
 
     @BeforeEach
@@ -43,15 +51,6 @@ class FeedbackConverterImplTest {
         FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
 
         assertEquals(uuid, feedbackDTO.getUuid());
-    }
-
-    @Test
-    void shouldConvertFeedbackToFeedbackDTOAndReturnRightId() {
-        Long id = 1l;
-        feedback.setId(id);
-        FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
-
-        assertEquals(id, feedbackDTO.getId());
     }
 
     @Test

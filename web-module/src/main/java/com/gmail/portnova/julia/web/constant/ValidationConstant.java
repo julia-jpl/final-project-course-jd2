@@ -7,6 +7,7 @@ public class ValidationConstant {
     public static final String TELEPHONE_PATTERN = "[+][0-9]{1,3}-[0-9]{2,3}-[0-9]{3}-[0-9]{2}-[0-9]{2}";
     public static final int ADDRESS_MAX_LENGTH_VALUE = 100;
     public static final int ADDRESS_MIN_LENGTH_VALUE = 5;
+    public static final String BIG_DECIMAL_PATTERN = "^[0-9]{1,10}([.]{1}[0-9]{1,})?$";
 
     private ValidationConstant() {
     }

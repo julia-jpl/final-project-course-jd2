@@ -16,4 +16,6 @@ public interface FeedbackService {
     PageDTO<FeedbackDTO> getFeedbackByDisplayedTruePage(int pageNumber, int maxResult);
 
     List<FeedbackDTO> updateIsDisplayedStatus(List<String> idsAtPage);
+
+    FeedbackDTO addFeedbackToDatabase(FeedbackDTO feedback);
 }

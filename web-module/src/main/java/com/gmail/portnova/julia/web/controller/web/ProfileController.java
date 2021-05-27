@@ -11,7 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -43,7 +46,8 @@ public class ProfileController {
     public String changePassword(@PathVariable("uuid") String uuid,
                                  @RequestParam(name = "changePassword", defaultValue = "false") boolean changePassword) {
         if (changePassword) {
-            userAddService.changePassword(uuid);
+            UserDTO savedUser = userAddService.saveNewPasswordInDatabase(uuid);
+            userAddService.sendEmail(savedUser);
             return "redirect:/profile";
         }
         return "redirect:/profile";

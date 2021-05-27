@@ -24,7 +24,7 @@
                     <a class="nav-link" href="#" th:href="@{/feedback}">FEEDBACK</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CATALOG</a>
+                    <a class="nav-link" href="#" th:href="@{/items}">CATALOG</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">ORDERS</a>
@@ -32,6 +32,12 @@
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">PROFILE</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/feedback/add}">LEAVE FEEDBACK</a>
                     </li>
                 </div>
             </ul>

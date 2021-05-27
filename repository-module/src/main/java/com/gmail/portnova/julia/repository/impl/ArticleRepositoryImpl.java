@@ -18,7 +18,7 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
 
     @Override
     public List<Article> findAllWithLimit(int startPosition, int maxResult) {
-        String hql = "SELECT a.id, a.uuid, a.createdAt, a.title, SUBSTRING(a.content, 1, 200), a.user FROM Article a ORDER BY a.createdAt DESC";
+        String hql = "SELECT a.id, a.uuid, a.createdAt, a.updatedAt, a.author, a.title, SUBSTRING(a.content, 1, 200), a.user FROM Article a ORDER BY a.createdAt DESC";
         Query query = entityManager.createQuery(hql);
         query.setFirstResult(startPosition);
         query.setMaxResults(maxResult);
@@ -26,6 +26,31 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
         List<Article> articles = new ArrayList<>();
         for (Object o : resultList) {
             Article article = getArticle((Object[]) o);
+            articles.add(article);
+        }
+        return articles;
+    }
+
+    @Override
+    public Long countArticleByUserUuid(UUID userUuid) {
+        String hql = "SELECT COUNT (a.id) FROM Article a JOIN a.user u WHERE u.uuid = :id";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("id", userUuid);
+        return (Long) query.getSingleResult();
+    }
+
+    @Override
+    public List<Article> findArticlesWithLimitByUserUuid(int startPosition, int maxResult, UUID userUuid) {
+        String hql = "SELECT a.id, a.uuid, a.createdAt, a.updatedAt, a.author, a.title, SUBSTRING(a.content, 1, 200), a.user FROM Article a " +
+                "JOIN a.user u WHERE u.uuid = :id ORDER BY a.createdAt DESC";
+        Query query = entityManager.createQuery(hql);
+        query.setFirstResult(startPosition);
+        query.setMaxResults(maxResult);
+        query.setParameter("id", userUuid);
+        List<Object> resultList = query.getResultList();
+        List<Article> articles = new ArrayList<>();
+        for (Object object : resultList) {
+            Article article = getArticle((Object[]) object);
             articles.add(article);
         }
         return articles;
@@ -40,11 +65,15 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
         article.setUuid(uuid);
         LocalDateTime date = (LocalDateTime) objects[2];
         article.setCreatedAt(date);
-        String title = (String) objects[3];
+        LocalDateTime updatedAt = (LocalDateTime) objects[3];
+        article.setUpdatedAt(updatedAt);
+        String author = (String) objects[4];
+        article.setAuthor(author);
+        String title = (String) objects[5];
         article.setTitle(title);
-        String summary = (String) objects[4];
+        String summary = (String) objects[6];
         article.setContent(summary);
-        User user = (User) objects[5];
+        User user = (User) objects[7];
         article.setUser(user);
         return article;
     }

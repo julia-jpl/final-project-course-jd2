@@ -23,7 +23,7 @@
                     <a class="nav-link" href="#" th:href="@{/feedback}">FEEDBACK</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CATALOG</a>
+                    <a class="nav-link" href="#" th:href="@{/items}">CATALOG</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">ORDERS</a>
@@ -32,6 +32,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#"
                            th:href="@{/profile}">PROFILE</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles/add}">ADD ARTICLE</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                           th:href="@{/sale/articles}">USER'S NEWS</a>
                     </li>
                 </div>
             </ul>
@@ -47,7 +59,8 @@
 </nav>
 <div class="container-fluid">
     <h3 th:text="${article.title}"></h3>
-    <p class="text-start fs-6" th:text="${article.createdAt}"></p>
+    <span>Post date</span><p class="text-start fs-6" th:text="${article.createdAt}"></p>
+    <div th:if="${article.updatedAt != null}"><span>Updated</span><p class="text-start fs-6" th:text="${article.updatedAt}"></p></div>
     <p class="text-md-start fs-5" th:text="${article.userLastAndFirstName}"></p>
     <p class="text-md-start" th:text="${article.content}"></p>
 </div>
@@ -61,21 +74,23 @@
         <div class="card-footer" th:text="${comment.createdAt}"></div>
     </div>
 </div>
-<div class="container-fluid">
-    <h5>Add comment</h5>
-    <form action="#" th:action="@{/articles/comments/{uuid}(uuid=${article.uuid})}" method="post">
-        <div class="card" th:object="${userComment}">
-            <div class="card-header">your comment</div>
-            <div class="card-body">
-                <input type="text" class="form-control" th:field="*{content}" id="inputContent"
-                       maxlength="200" required>
-                <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Description Error</span>
+<div sec:authorize="hasAuthority('CUSTOMER_USER')">
+    <div class="container-fluid">
+        <h5>Add comment</h5>
+        <form action="#" th:action="@{/customer/articles/comments/{uuid}(uuid=${article.uuid})}" method="post">
+            <div class="card" th:object="${userComment}">
+                <div class="card-header">your comment</div>
+                <div class="card-body">
+                    <input type="text" class="form-control" th:field="*{content}" id="inputContent"
+                           maxlength="200" required>
+                    <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Description Error</span>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-lg">Save comment</button>
+                </div>
             </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-lg">Save comment</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>

@@ -44,6 +44,7 @@ public class UserAddServiceImpl implements UserAddService {
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         user.setUuid(UUID.randomUUID());
+        user.setDeleted(false);
         User newUser = userConverter.convertDTOToObject(user);
         userRepository.persist(newUser);
         UserDTO savedUser = userConverter.convertObjectToDTO(newUser);
@@ -51,17 +52,9 @@ public class UserAddServiceImpl implements UserAddService {
         return savedUser;
     }
 
-    @Override
-    public UserDTO changePassword(String id) {
-        UserDTO userWithNewPassword = saveNewPasswordInDatabase(id);
-        emailService.sendSimpleMessage(userWithNewPassword.getEmail(), userWithNewPassword.getPassword());
-        String encodedPassword = passwordEncoder.encode(userWithNewPassword.getPassword());
-        userWithNewPassword.setPassword(encodedPassword);
-        return userWithNewPassword;
-    }
-
     @Transactional
-    protected UserDTO saveNewPasswordInDatabase(String id) {
+    @Override
+    public UserDTO saveNewPasswordInDatabase(String id) {
         UUID uuid = UUID.fromString(id);
         User user = userRepository.findByUuid(uuid);
         if (Objects.nonNull(user)) {
