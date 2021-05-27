@@ -20,7 +20,7 @@ public class FeedbackDTO {
     @NotBlank
     @Size(max = 500)
     private String text;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private Boolean displayed;
     private UUID userUuid;
 }

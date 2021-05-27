@@ -58,7 +58,7 @@ public class UserConverterImpl implements GeneralConverter<User, UserDTO> {
             }
             return user;
         } else {
-            throw new UserNotFoundException("User doesn't exist");
+            return null;
         }
     }
 

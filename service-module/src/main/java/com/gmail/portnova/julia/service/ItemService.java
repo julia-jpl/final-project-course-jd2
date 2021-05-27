@@ -14,7 +14,7 @@ public interface ItemService {
 
     List<UserDTO> deleteItemFromSaleUserCatalog(String uuid, UUID currentUserUuid);
 
-    String copyItemTOClipboard(String uuid);
+    ItemDTO copyItem(String uuid, UUID currentUserUuid);
 
     List<ItemDTO> getAllItems();
 }

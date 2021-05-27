@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "ITEM_DETAIL")
-@EqualsAndHashCode(exclude = {"price"})
+@EqualsAndHashCode(exclude = {"price", "item"})
 public class ItemDetail {
 
     @GenericGenerator(

@@ -1,10 +1,14 @@
 package com.gmail.portnova.julia.web.controller.api;
 
+import com.gmail.portnova.julia.service.impl.UserDetailsServiceImpl;
 import com.gmail.portnova.julia.service.model.ArticleApiDTO;
 import com.gmail.portnova.julia.web.controller.api.config.BaseIT;
+import com.gmail.portnova.julia.web.controller.api.config.TestUserDetailsConfig;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -13,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ArticleApiControllerIntegrationTest extends BaseIT {
+
     @Sql({"/scripts/cleanFeedback.sql",
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
@@ -21,6 +26,8 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanOrderDetail.sql",
             "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
+            "/scripts/cleanRole.sql",
+            "/scripts/initRole.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})
     @Test
@@ -44,6 +51,7 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
         };
     }
 
+
     @Sql({"/scripts/cleanFeedback.sql",
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
@@ -52,6 +60,8 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanOrderDetail.sql",
             "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
+            "/scripts/cleanRole.sql",
+            "/scripts/initRole.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})
     @Test
@@ -84,6 +94,8 @@ class ArticleApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanOrderDetail.sql",
             "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
+            "/scripts/cleanRole.sql",
+            "/scripts/initRole.sql",
             "/scripts/initUser.sql",
             "/scripts/initArticle.sql"})
     @Test

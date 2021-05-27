@@ -15,7 +15,7 @@ import javax.persistence.Query;
 public class ItemGroupRepositoryImpl extends GenericRepositoryImpl<Long, ItemGroup> implements ItemGroupRepository {
     @Override
     public ItemGroup findByName(ItemGroupNameEnum itemGroupNameEnum) {
-        String hql = "FROM ItemGroup IG WHERE IG.itemGroupNameEnum = :name";
+        String hql = "FROM ItemGroup IG WHERE IG.itemGroupName = :name";
         Query query = entityManager.createQuery(hql);
         query.setParameter("name", itemGroupNameEnum);
         try {

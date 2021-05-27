@@ -2,10 +2,8 @@ package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.ArticleRepository;
 import com.gmail.portnova.julia.repository.CommentRepository;
-import com.gmail.portnova.julia.repository.FeedbackRepository;
 import com.gmail.portnova.julia.repository.model.Article;
 import com.gmail.portnova.julia.repository.model.Comment;
-import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.ArticleService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ArticleNotFoundException;
@@ -14,13 +12,16 @@ import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.PageableArticle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import static com.gmail.portnova.julia.service.util.PageUtil.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.util.PageUtil.getNumberOfPages;
+import static com.gmail.portnova.julia.service.util.PageUtil.getStartPosition;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,8 @@ public class ArticleServiceImpl implements ArticleService {
             ArticleDTO articleDTO = articleConverter.convertObjectToDTO(article);
             return articleDTO;
         } else {
-            throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", id));
+            throw new ArticleNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Article.class, id));
         }
     }
 
@@ -71,7 +73,8 @@ public class ArticleServiceImpl implements ArticleService {
             articleRepository.remove(article);
             return articleConverter.convertObjectToDTO(article);
         } else {
-            throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", uuidString));
+            throw new ArticleNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Article.class, uuidString));
         }
     }
 

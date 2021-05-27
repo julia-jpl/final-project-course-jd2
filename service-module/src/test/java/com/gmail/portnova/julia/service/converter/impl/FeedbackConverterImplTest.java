@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,8 +31,10 @@ class FeedbackConverterImplTest {
 
     @Test
     void shouldConvertFeedbackToFeedbackDTOAndReturnNotNullResult() {
-        FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        feedback.setCreatedAt(localDateTime);
 
+        FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
         assertNotNull(feedbackDTO);
     }
 
@@ -39,6 +42,8 @@ class FeedbackConverterImplTest {
     void shouldConvertFeedbackToFeedbackDTOAndReturnRightText() {
         String text = "test text";
         feedback.setText(text);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        feedback.setCreatedAt(localDateTime);
         FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
 
         assertEquals(text, feedbackDTO.getText());
@@ -48,6 +53,8 @@ class FeedbackConverterImplTest {
     void shouldConvertFeedbackToFeedbackDTOAndReturnRightUuid() {
         UUID uuid = UUID.randomUUID();
         feedback.setUuid(uuid);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        feedback.setCreatedAt(localDateTime);
         FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
 
         assertEquals(uuid, feedbackDTO.getUuid());
@@ -59,12 +66,14 @@ class FeedbackConverterImplTest {
         feedback.setCreatedAt(localDateTime);
         FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
 
-        assertEquals(localDateTime, feedbackDTO.getCreatedAt());
+        assertEquals(localDateTime.format(DATE_TIME_FORMATTER), feedbackDTO.getCreatedAt());
     }
 
     @Test
     void shouldConvertFeedbackToFeedbackDTOAndReturnRightIsDisplayedStatus() {
         feedback.setIsDisplayed(true);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        feedback.setCreatedAt(localDateTime);
         FeedbackDTO feedbackDTO = feedbackConverter.convertObjectToDTO(feedback);
 
         assertTrue(feedbackDTO.getDisplayed());

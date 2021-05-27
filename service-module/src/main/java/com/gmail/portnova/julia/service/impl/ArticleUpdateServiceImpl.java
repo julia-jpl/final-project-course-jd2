@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleUpdateServiceImpl implements ArticleUpdateService {
@@ -37,7 +39,8 @@ public class ArticleUpdateServiceImpl implements ArticleUpdateService {
             article.setUpdatedAt(updatedAt);
             return articleConverter.convertObjectToDTO(article);
         } else {
-            throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", uuid));
+            throw new ArticleNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Article.class, uuid));
         }
     }
 }

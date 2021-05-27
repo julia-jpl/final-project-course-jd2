@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,6 +35,8 @@ class CommentConverterImplTest {
         Comment comment = new Comment();
         Long id = 1L;
         comment.setId(id);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        comment.setCreatedAt(localDateTime);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertEquals(id, commentDTO.getId());
@@ -44,6 +47,8 @@ class CommentConverterImplTest {
         Comment comment = new Comment();
         UUID uuid = UUID.randomUUID();
         comment.setUuid(uuid);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        comment.setCreatedAt(localDateTime);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertEquals(uuid, commentDTO.getCommentUuid());
@@ -56,7 +61,7 @@ class CommentConverterImplTest {
         comment.setCreatedAt(date);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
-        assertEquals(date, commentDTO.getCreatedAt());
+        assertEquals(date.format(DATE_TIME_FORMATTER), commentDTO.getCreatedAt());
     }
 
     @Test
@@ -64,6 +69,8 @@ class CommentConverterImplTest {
         Comment comment = new Comment();
         String content = "content";
         comment.setContent(content);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        comment.setCreatedAt(localDateTime);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertEquals(content, commentDTO.getContent());
@@ -79,6 +86,8 @@ class CommentConverterImplTest {
         user.setLastName(lastName);
         comment.setUser(user);
         String lastAndFirstName = String.join(" ", lastName, firstName);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        comment.setCreatedAt(localDateTime);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertEquals(lastAndFirstName, commentDTO.getUserLastAndFirstName());
@@ -86,6 +95,8 @@ class CommentConverterImplTest {
     @Test
     void shouldConvertCommentToCommentDTOAndReturnNotNullObject() {
         Comment comment = new Comment();
+        LocalDateTime localDateTime = LocalDateTime.now();
+        comment.setCreatedAt(localDateTime);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertNotNull(commentDTO);
@@ -102,6 +113,8 @@ class CommentConverterImplTest {
         User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
+        LocalDateTime date = LocalDateTime.now();
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
 
         when(articleRepository.findByUuid(uuid)).thenReturn(article);
         when(userRepository.findByUuid(uuid)).thenReturn(user);
@@ -114,7 +127,7 @@ class CommentConverterImplTest {
     void shouldConvertCommentDTOToCommentAndReturnRightCreatedAt() {
         CommentDTO commentDTO = new CommentDTO();
         LocalDateTime date = LocalDateTime.now();
-        commentDTO.setCreatedAt(date);
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
         Article article = new Article();
         UUID uuid = UUID.randomUUID();
         article.setUuid(uuid);
@@ -127,7 +140,7 @@ class CommentConverterImplTest {
         when(userRepository.findByUuid(uuid)).thenReturn(user);
 
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
-        assertEquals(date, comment.getCreatedAt());
+        assertEquals(date.format(DATE_TIME_FORMATTER), comment.getCreatedAt().format(DATE_TIME_FORMATTER));
     }
 
     @Test
@@ -142,6 +155,8 @@ class CommentConverterImplTest {
         User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
+        LocalDateTime date = LocalDateTime.now();
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
 
         when(articleRepository.findByUuid(uuid)).thenReturn(article);
         when(userRepository.findByUuid(uuid)).thenReturn(user);
@@ -160,6 +175,8 @@ class CommentConverterImplTest {
         User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
+        LocalDateTime date = LocalDateTime.now();
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
 
         when(articleRepository.findByUuid(uuid)).thenReturn(article);
         when(userRepository.findByUuid(uuid)).thenReturn(user);
@@ -177,6 +194,8 @@ class CommentConverterImplTest {
         User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
+        LocalDateTime date = LocalDateTime.now();
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
 
         when(articleRepository.findByUuid(uuid)).thenReturn(article);
         when(userRepository.findByUuid(uuid)).thenReturn(user);
@@ -194,6 +213,8 @@ class CommentConverterImplTest {
         User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
+        LocalDateTime date = LocalDateTime.now();
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
 
         when(articleRepository.findByUuid(uuid)).thenReturn(article);
         when(userRepository.findByUuid(uuid)).thenReturn(user);
@@ -211,6 +232,8 @@ class CommentConverterImplTest {
         User user = new User();
         user.setUuid(uuid);
         commentDTO.setUserUuid(uuid);
+        LocalDateTime date = LocalDateTime.now();
+        commentDTO.setCreatedAt(date.format(DATE_TIME_FORMATTER));
 
         String lastname = "last";
         user.setLastName(lastname);
@@ -233,6 +256,8 @@ class CommentConverterImplTest {
         String lastName = "last";
         String author = String.join(" ", lastName, firstName);
         comment.setAuthor(author);
+        LocalDateTime date = LocalDateTime.now();
+        comment.setCreatedAt(date);
 
         CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
         assertEquals(author, commentDTO.getUserLastAndFirstName());

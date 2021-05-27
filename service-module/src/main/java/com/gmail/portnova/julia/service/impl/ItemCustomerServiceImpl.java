@@ -8,10 +8,11 @@ import com.gmail.portnova.julia.service.exception.ItemNotFoundException;
 import com.gmail.portnova.julia.service.model.ItemCustomerDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,8 @@ public class ItemCustomerServiceImpl implements ItemCustomerService {
         if (Objects.nonNull(item)) {
             return itemCustomerConverter.convertObjectToDTO(item);
         } else {
-            throw new ItemNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, id));
+            throw new ItemNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, id));
         }
     }
 }

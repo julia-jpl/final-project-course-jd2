@@ -71,9 +71,5 @@ class ItemServiceImplTest {
         List<ItemDTO> resultListItemDTOS = itemService.getItemDTOList(items);
         assertEquals(itemDTO, resultListItemDTOS.get(0));
     }
-    @Test
-    void deleteItemFromSaleUserCatalog(){
-
-    }
 
 }

@@ -9,7 +9,9 @@ import com.gmail.portnova.julia.service.model.FeedbackDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Component
@@ -22,7 +24,7 @@ public class FeedbackConverterImpl implements GeneralConverter<Feedback, Feedbac
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setUuid(feedback.getUuid());
         feedbackDTO.setText(feedback.getText());
-        feedbackDTO.setCreatedAt(feedback.getCreatedAt());
+        feedbackDTO.setCreatedAt(feedback.getCreatedAt().format(DATE_TIME_FORMATTER));
         feedbackDTO.setDisplayed(feedback.getIsDisplayed());
         User user = feedback.getUser();
         if (Objects.nonNull(user)) {
@@ -40,7 +42,8 @@ public class FeedbackConverterImpl implements GeneralConverter<Feedback, Feedbac
         Feedback feedback = new Feedback();
         feedback.setUuid(feedbackDTO.getUuid());
         feedback.setIsDisplayed(feedbackDTO.getDisplayed());
-        feedback.setCreatedAt(feedbackDTO.getCreatedAt());
+        LocalDateTime createdAt = LocalDateTime.parse(feedbackDTO.getCreatedAt(), DATE_TIME_FORMATTER);
+        feedback.setCreatedAt(createdAt);
         feedback.setText(feedbackDTO.getText());
         User user = userRepository.findByUuid(feedbackDTO.getUserUuid());
         if (Objects.nonNull(user)) {

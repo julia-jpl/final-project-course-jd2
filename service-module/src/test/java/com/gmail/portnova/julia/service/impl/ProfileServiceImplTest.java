@@ -6,6 +6,7 @@ import com.gmail.portnova.julia.repository.model.UserDetail;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.ProfileUserDTO;
+import com.gmail.portnova.julia.service.model.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -69,7 +70,7 @@ class ProfileServiceImplTest {
         profileUserDTO.setTelephone(newTelephone);
         when(profileConverter.convertObjectToDTO(user)).thenReturn(profileUserDTO);
 
-        ProfileUserDTO resultProfileUser = profileService.changeUserTelephone(newTelephone, id);
+        ProfileUserDTO resultProfileUser = profileService.changeUserTelephone(newTelephone, uuid);
         assertEquals(newTelephone, resultProfileUser.getTelephone());
     }
 
@@ -93,7 +94,7 @@ class ProfileServiceImplTest {
         profileUserDTO.setTelephone(newTelephone);
         when(profileConverter.convertObjectToDTO(user)).thenReturn(profileUserDTO);
 
-        ProfileUserDTO resultProfileUser = profileService.changeUserTelephone(newTelephone, id);
+        ProfileUserDTO resultProfileUser = profileService.changeUserTelephone(newTelephone, uuid);
         assertEquals(newTelephone, resultProfileUser.getTelephone());
     }
 
@@ -104,7 +105,7 @@ class ProfileServiceImplTest {
         String newTelephone = "1234";
         when(userRepository.findByUuid(uuid)).thenReturn(null);
 
-        assertThrows(UserNotFoundException.class, () -> profileService.changeUserTelephone(newTelephone, id));
+        assertThrows(UserNotFoundException.class, () -> profileService.changeProfileTelephone(newTelephone, id));
     }
 
     @Test
@@ -162,6 +163,65 @@ class ProfileServiceImplTest {
         when(userRepository.findByUuid(uuid)).thenReturn(null);
 
         assertThrows(UserNotFoundException.class, () -> profileService.changeUserAddress(newAddress, id));
+    }
+    @Test
+    void shouldChangeUserLastname() {
+        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
+        UUID uuid = UUID.fromString(id);
+        User user = new User();
+        user.setUuid(uuid);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
+
+        String newName = "name";
+        user.setLastName(newName);
+
+       ProfileUserDTO profileUserDTO = new ProfileUserDTO();
+        profileUserDTO.setUuid(uuid);
+        profileUserDTO.setLastName(newName);
+        when(profileConverter.convertObjectToDTO(user)).thenReturn(profileUserDTO);
+
+        ProfileUserDTO resultProfile = profileService.changeUserLastname(newName, id);
+        assertEquals(newName, resultProfile.getLastName());
+    }
+
+    @Test
+    void shouldNotChangeUserLastname() {
+        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
+        UUID uuid = UUID.fromString(id);
+        String newName = "name";
+
+        when(userRepository.findByUuid(uuid)).thenReturn(null);
+        assertThrows(UserNotFoundException.class, () -> profileService.changeUserLastname(newName, id));
+    }
+
+    @Test
+    void shouldChangeUserFirstname() {
+        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
+        UUID uuid = UUID.fromString(id);
+        User user = new User();
+        user.setUuid(uuid);
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
+
+        String newName = "name";
+        user.setFirstName(newName);
+
+        ProfileUserDTO profileUserDTO = new ProfileUserDTO();
+        profileUserDTO.setUuid(uuid);
+        profileUserDTO.setFirstName(newName);
+        when(profileConverter.convertObjectToDTO(user)).thenReturn(profileUserDTO);
+
+        ProfileUserDTO resultProfile = profileService.changeUserFirstName(newName, uuid);
+        assertEquals(newName, resultProfile.getFirstName());
+    }
+
+    @Test
+    void shouldNotChangeUserFirstname() {
+        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
+        UUID uuid = UUID.fromString(id);
+        String newName = "name";
+
+        when(userRepository.findByUuid(uuid)).thenReturn(null);
+        assertThrows(UserNotFoundException.class, () -> profileService.changeProfileFirstName(newName, id));
     }
 
 }

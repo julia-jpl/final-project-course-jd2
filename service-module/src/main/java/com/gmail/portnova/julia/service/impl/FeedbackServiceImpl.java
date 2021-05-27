@@ -10,12 +10,19 @@ import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.PageableFeedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import static com.gmail.portnova.julia.service.util.PageUtil.*;
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.util.PageUtil.getNumberOfPages;
+import static com.gmail.portnova.julia.service.util.PageUtil.getStartPosition;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +75,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         UUID uuid = UUID.randomUUID();
         feedbackDTO.setUuid(uuid);
         LocalDateTime localDateTime = LocalDateTime.now();
-        feedbackDTO.setCreatedAt(localDateTime);
+        String date = localDateTime.format(DATE_TIME_FORMATTER);
+        feedbackDTO.setCreatedAt(date);
         feedbackDTO.setDisplayed(false);
         Feedback feedback = feedbackConverter.convertDTOToObject(feedbackDTO);
         feedbackRepository.persist(feedback);
@@ -96,7 +104,8 @@ public class FeedbackServiceImpl implements FeedbackService {
             feedbackRepository.remove(feedback);
             return feedbackConverter.convertObjectToDTO(feedback);
         } else {
-            throw new FeedbackNotFoundException(String.format("Feedback with uuid %s was not found", uuidString));
+            throw new FeedbackNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Feedback.class, uuidString));
         }
     }
 
@@ -124,7 +133,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return pageDTO;
     }
 
-    private void setPageDTOList(PageableFeedback pageDTO, List<Feedback> feedback) {
+    protected void setPageDTOList(PageableFeedback pageDTO, List<Feedback> feedback) {
         List<FeedbackDTO> feedbackDTO = new ArrayList<>();
         if (!feedback.isEmpty()) {
             feedbackDTO.addAll(feedback.stream()

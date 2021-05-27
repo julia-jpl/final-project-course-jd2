@@ -35,6 +35,20 @@ public class OrderPageServiceImpl implements OrderPageService {
         pageDTO.getObjects().addAll(orderDTOS);
         return pageDTO;
     }
+
+    @Override
+    public PageDTO<OrderDTO> getSaleUserOrderPage(int pageNumber, int maxResult, UUID sellerUuid) {
+        Long numberOfRows = orderRepository.countOrdersBySellerUuid(sellerUuid);
+        PageableOrder pageDTO = new PageableOrder();
+        Long numberOfPages = getNumberOfPages(numberOfRows, maxResult);
+        pageDTO.setTotalPages(numberOfPages);
+        int startPosition = getStartPosition(pageNumber, maxResult);
+        List<Order> orders = orderRepository.findOrdersWithLimitBySellerUuid(startPosition, maxResult, sellerUuid);
+        List<OrderDTO> orderDTOS = getOrderDTOList(orders);
+        pageDTO.getObjects().addAll(orderDTOS);
+        return pageDTO;
+    }
+
     protected List<OrderDTO> getOrderDTOList(List<Order> orders) {
         List<OrderDTO> orderDTOS = new ArrayList<>();
         if (!orders.isEmpty()) {

@@ -10,13 +10,13 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ItemNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.FormOrderDTO;
-import liquibase.pro.packaged.V;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
+
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Component
@@ -24,9 +24,10 @@ import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant
 public class FormOrderConverterImpl implements GeneralConverter<Order, FormOrderDTO> {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+
     @Override
     public FormOrderDTO convertObjectToDTO(Order object) {
-        return null;
+        throw new UnsupportedOperationException("This method hasn't been implemented");
     }
 
     @Override
@@ -59,12 +60,13 @@ public class FormOrderConverterImpl implements GeneralConverter<Order, FormOrder
             BigDecimal totalPrice = getBigDecimal(formOrder, item);
             orderDetail.setTotalPrice(totalPrice);
         } else {
-            throw new ItemNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, itemUuid));
+            throw new ItemNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, itemUuid));
         }
         User customer = userRepository.findByUuid(formOrder.getCustomerUuid());
         if (Objects.nonNull(customer)) {
             orderDetail.setCustomer(customer);
-            String customerIdentifier = String.join(" ", customer.getLastName(), customer.getFirstName());
+            String customerIdentifier = customer.getFirstName();
             orderDetail.setCustomerIdentifier(customerIdentifier);
 
         } else {

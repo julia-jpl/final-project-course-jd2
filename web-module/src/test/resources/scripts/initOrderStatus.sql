@@ -1,0 +1,1 @@
+INSERT INTO ORDER_STATUS (status_name) VALUES ('NEW');

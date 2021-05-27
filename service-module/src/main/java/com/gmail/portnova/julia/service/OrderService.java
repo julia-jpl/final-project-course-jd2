@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface OrderService {
     void addOrderToDatabase(FormOrderDTO formOrder);
+
+    void changeOrderStatus(String orderUuid, Long newStatusId);
 }

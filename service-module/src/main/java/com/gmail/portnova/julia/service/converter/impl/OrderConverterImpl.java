@@ -9,16 +9,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
-
 @Component
 public class OrderConverterImpl implements GeneralConverter<Order, OrderDTO> {
     @Override
     public OrderDTO convertObjectToDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(order.getId());
         orderDTO.setOrderUuid(order.getUuid().toString());
         orderDTO.setNumber(order.getNumber());
-        orderDTO.setDate(order.getCreatedAt().format(DATE_TIME_FORMATTER));
         OrderStatus status = order.getStatus();
         if (Objects.nonNull(status)) {
             String statusName = status.getStatusName().name();
@@ -36,6 +34,6 @@ public class OrderConverterImpl implements GeneralConverter<Order, OrderDTO> {
 
     @Override
     public Order convertDTOToObject(OrderDTO object) {
-        return null;
+        throw new UnsupportedOperationException("This method hasn't been implemented");
     }
 }

@@ -6,11 +6,8 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.model.ItemSaleDTO;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+
 @Component
 public class ItemSaleConverterImpl implements GeneralConverter<Item, ItemSaleDTO> {
     @Override

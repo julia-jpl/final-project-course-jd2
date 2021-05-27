@@ -7,7 +7,6 @@ import com.gmail.portnova.julia.service.ItemApiService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ItemNotFoundException;
 import com.gmail.portnova.julia.service.model.ItemApiDTO;
-import com.gmail.portnova.julia.service.model.ItemGroupNameEnumDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +14,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.*;
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.util.ItemNumberGenerator.getItemUniqueNumber;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,8 @@ public class ItemApiServiceImpl implements ItemApiService {
         if (Objects.nonNull(item)) {
             return itemApiConverter.convertObjectToDTO(item);
         } else {
-            throw new ItemNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, uuidString));
+            throw new ItemNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, uuidString));
         }
     }
 
@@ -48,7 +48,8 @@ public class ItemApiServiceImpl implements ItemApiService {
             itemRepository.remove(item);
             return itemApiConverter.convertObjectToDTO(item);
         } else {
-            throw new ItemNotFoundException(String.format(ITEM_NOT_FOUND_EXCEPTION_MESSAGE, uuidString));
+            throw new ItemNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, uuidString));
         }
     }
 
@@ -66,26 +67,5 @@ public class ItemApiServiceImpl implements ItemApiService {
         return itemDTO;
     }
 
-    protected String getItemUniqueNumber(String itemGroup) {
-        Long numberCode = System.nanoTime();
-        String groupCode = null;
-        ItemGroupNameEnumDTO itemGroupNameEnumDTO = ItemGroupNameEnumDTO.valueOf(itemGroup);
-        switch (itemGroupNameEnumDTO) {
-            case ELECTRONICS:
-                groupCode = "EL";
-                break;
-            case FASHION:
-                groupCode = "FA";
-                break;
-            case SPORTS:
-                groupCode = "SP";
-                break;
-            case HEALTH_BEAUTY:
-                groupCode = "HB";
-                break;
-            default:
-                break;
-        }
-        return String.join("-", groupCode, numberCode.toString());
-    }
+
 }

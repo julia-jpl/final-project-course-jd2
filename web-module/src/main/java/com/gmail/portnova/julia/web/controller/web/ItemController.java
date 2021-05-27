@@ -10,9 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -59,9 +61,11 @@ public class ItemController {
         itemService.deleteItemFromSaleUserCatalog(uuid, currentUserUuid);
         return "redirect:/items";
     }
+
     @PostMapping("/sale/items/copy/{uuid}")
     public String copyItem(@PathVariable String uuid) {
-        itemService.copyItemTOClipboard(uuid);
+        UserDTO currentUser = getCurrentUser();
+        itemService.copyItem(uuid, currentUser.getUuid());
         return "redirect:/items";
     }
 
