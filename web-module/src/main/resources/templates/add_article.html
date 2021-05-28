@@ -74,7 +74,7 @@
       <div class="col-sm-10">
         <input type="text" class="form-control" th:field="*{title}" id="inputTitle"
                placeholder="Enter the title"
-               maxlength="100" minlength="2" required>
+               maxlength="100" minlength="2">
         <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Description Error</span>
       </div>
     </div>
@@ -83,7 +83,7 @@
       <div class="col-sm-10">
         <textarea rows="10" style="height:100%;" type="text" class="form-control" th:field="*{content}" id="inputContent"
                placeholder="Enter the content"
-                  maxlength="1000" minlength="10" required></textarea>
+                  maxlength="1000" minlength="10"></textarea>
         <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Description Error</span>
       </div>
     </div>
