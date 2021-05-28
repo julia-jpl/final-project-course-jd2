@@ -3,6 +3,7 @@ package com.gmail.portnova.julia.web.controller.api.config;
 import com.gmail.portnova.julia.service.model.RoleNameEnumDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.Collections;
-
+@Profile("security")
 @Configuration
 public class TestUserDetailsConfig {
 

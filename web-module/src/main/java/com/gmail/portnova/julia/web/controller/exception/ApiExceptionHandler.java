@@ -2,7 +2,7 @@ package com.gmail.portnova.julia.web.controller.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmail.portnova.julia.service.exception.EntityWithUuidNotFoundException;
+import com.gmail.portnova.julia.service.exception.ServiceEntityException;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,15 +17,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ApiExceptionHandler {
     private final ObjectMapper objectMapper;
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) throws JsonProcessingException {
-        String exceptionValue = objectMapper.writeValueAsString(e.getMessage());
-        log.error(e.getMessage(), e);
-        return new ResponseEntity<>(exceptionValue, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(EntityWithUuidNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityWithUuidNotFoundException e) throws JsonProcessingException {
+    @ExceptionHandler(ServiceEntityException.class)
+    public ResponseEntity<String> handleEntityNotFoundException(ServiceEntityException e) throws JsonProcessingException {
         String exceptionValue = objectMapper.writeValueAsString(e.getMessage());
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(exceptionValue, HttpStatus.NOT_FOUND);

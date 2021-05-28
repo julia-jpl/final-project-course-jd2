@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.USER_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
 @Component
@@ -65,7 +65,8 @@ public class ArticleConverterImpl implements GeneralConverter<Article, ArticleDT
                 article.setAuthor(String.join(" ", user.getLastName(), user.getFirstName()));
                 return article;
             } else {
-                throw new UserNotFoundException(String.format(USER_NOT_FOUND_EXCEPTION_MESSAGE, articleDTO.getUserUuid()));
+                throw new UserNotFoundException(String.format(
+                        ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, User.class, articleDTO.getUserUuid()));
             }
         } else {
             return null;

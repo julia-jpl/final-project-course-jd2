@@ -38,7 +38,7 @@ public class ItemApiConverterImpl implements GeneralConverter<Item, ItemApiDTO> 
             }
             ItemGroup itemGroup = item.getItemGroup();
             if (Objects.nonNull(itemGroup)) {
-                String groupName = itemGroup.getItemGroupNameEnum().name();
+                String groupName = itemGroup.getItemGroupName().name();
                 itemApiDTO.setItemGroup(groupName);
             }
             List<User> users = item.getUsers();
@@ -73,7 +73,8 @@ public class ItemApiConverterImpl implements GeneralConverter<Item, ItemApiDTO> 
             if (Objects.nonNull(itemGroup)) {
                 item.setItemGroup(itemGroup);
             } else {
-                throw new ItemGroupNotFoundException(String.format(ENTITY_WITH_NAME_NOT_FOUND_EXCEPTION_MESSAGE, ItemGroup.class, itemGroupName));
+                throw new ItemGroupNotFoundException(String.format(
+                        ENTITY_WITH_NAME_NOT_FOUND_EXCEPTION_MESSAGE, ItemGroup.class, itemGroupName));
             }
         }
         List<User> users = getUsers(itemApiDTO);

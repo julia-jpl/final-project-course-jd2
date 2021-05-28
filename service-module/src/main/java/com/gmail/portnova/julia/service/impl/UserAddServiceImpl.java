@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.gmail.portnova.julia.service.constant.PasswordGenerationConstant.*;
 
 @RequiredArgsConstructor
@@ -67,7 +68,7 @@ public class UserAddServiceImpl implements UserAddService {
             userWithNewPassword.setPassword(password);
             return userWithNewPassword;
         } else {
-            throw new UserNotFoundException(String.format("User with uuid %s was not found", id));
+            throw new UserNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, User.class, id));
         }
     }
 }

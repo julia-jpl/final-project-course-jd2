@@ -1,17 +1,17 @@
 package com.gmail.portnova.julia.service.impl;
 
+import com.gmail.portnova.julia.repository.ItemRepository;
 import com.gmail.portnova.julia.repository.RoleRepository;
 import com.gmail.portnova.julia.repository.UserRepository;
+import com.gmail.portnova.julia.repository.model.Item;
 import com.gmail.portnova.julia.repository.model.Role;
 import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
-import com.gmail.portnova.julia.repository.model.UserDetail;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.exception.UserRoleNotFoundException;
 import com.gmail.portnova.julia.service.model.PageDTO;
 import com.gmail.portnova.julia.service.model.PageableUser;
-import com.gmail.portnova.julia.service.model.ProfileUserDTO;
 import com.gmail.portnova.julia.service.model.UserDTO;
 import com.gmail.portnova.julia.service.util.PageUtil;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +35,8 @@ class UserServiceTest {
     private GeneralConverter<User, UserDTO> userConverter;
     @Mock
     private RoleRepository roleRepository;
+    @Mock
+    private ItemRepository itemRepository;
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -143,12 +144,17 @@ class UserServiceTest {
         UUID uuid = UUID.fromString(id);
         User user = new User();
         user.setUuid(uuid);
-        when(userRepository.findByUuid(uuid)).thenReturn(user);
-        String roleName = "ADMINISTRATOR";
-        RoleNameEnum roleNameEnum = RoleNameEnum.valueOf(roleName);
+        Role role = new Role();
+        RoleNameEnum roleNameEnum = RoleNameEnum.CUSTOMER_USER;
+        role.setRoleName(roleNameEnum);
+        user.setRole(role);
 
-        when(roleRepository.findByName(roleNameEnum)).thenReturn(null);
-        assertThrows(UserRoleNotFoundException.class, () -> userService.changeUserRole(id, roleName));
+        when(userRepository.findByUuid(uuid)).thenReturn(user);
+        String newRoleName = "ADMINISTRATOR";
+        RoleNameEnum roleName = RoleNameEnum.valueOf(newRoleName);
+
+        when(roleRepository.findByName(roleName)).thenReturn(null);
+        assertThrows(UserRoleNotFoundException.class, () -> userService.changeUserRole(id, newRoleName));
     }
 
     @Test
@@ -213,63 +219,5 @@ class UserServiceTest {
         assertEquals(Collections.emptyList(), resultUserDTOS);
     }
 
-    @Test
-    void shouldChangeUserLastname() {
-        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
-        UUID uuid = UUID.fromString(id);
-        User user = new User();
-        user.setUuid(uuid);
-        when(userRepository.findByUuid(uuid)).thenReturn(user);
 
-        String newName = "name";
-        user.setLastName(newName);
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUuid(uuid);
-        userDTO.setLastName(newName);
-        when(userConverter.convertObjectToDTO(user)).thenReturn(userDTO);
-
-        UserDTO resultUser = userService.changeUserLastname(newName, id);
-        assertEquals(newName, resultUser.getLastName());
-    }
-
-    @Test
-    void shouldNotChangeUserLastname() {
-        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
-        UUID uuid = UUID.fromString(id);
-        String newName = "name";
-
-        when(userRepository.findByUuid(uuid)).thenReturn(null);
-        assertThrows(UserNotFoundException.class, () -> userService.changeUserLastname(newName, id));
-    }
-
-    @Test
-    void shouldChangeUserFirstname() {
-        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
-        UUID uuid = UUID.fromString(id);
-        User user = new User();
-        user.setUuid(uuid);
-        when(userRepository.findByUuid(uuid)).thenReturn(user);
-
-        String newName = "name";
-        user.setFirstName(newName);
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUuid(uuid);
-        userDTO.setFirstName(newName);
-        when(userConverter.convertObjectToDTO(user)).thenReturn(userDTO);
-
-        UserDTO resultUser = userService.changeUserFirstName(newName, id);
-        assertEquals(newName, resultUser.getFirstName());
-    }
-
-    @Test
-    void shouldNotChangeUserFirstname() {
-        String id = "1cc8a402-aaaa-11eb-bcbc-0242ac135502";
-        UUID uuid = UUID.fromString(id);
-        String newName = "name";
-
-        when(userRepository.findByUuid(uuid)).thenReturn(null);
-        assertThrows(UserNotFoundException.class, () -> userService.changeUserFirstName(newName, id));
-    }
 }

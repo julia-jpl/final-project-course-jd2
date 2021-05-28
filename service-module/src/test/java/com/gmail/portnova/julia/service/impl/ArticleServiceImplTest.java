@@ -1,7 +1,9 @@
 package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.ArticleRepository;
+import com.gmail.portnova.julia.repository.CommentRepository;
 import com.gmail.portnova.julia.repository.model.Article;
+import com.gmail.portnova.julia.repository.model.Comment;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.ArticleNotFoundException;
 import com.gmail.portnova.julia.service.model.ArticleDTO;
@@ -26,6 +28,8 @@ import static org.mockito.Mockito.when;
 class ArticleServiceImplTest {
     @Mock
     private ArticleRepository articleRepository;
+    @Mock
+    private CommentRepository commentRepository;
     @Mock
     private GeneralConverter<Article, ArticleDTO> articleConverter;
     @InjectMocks
@@ -115,6 +119,10 @@ class ArticleServiceImplTest {
 
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setUuid(uuid);
+
+        List<Comment> comments = Collections.emptyList();
+        when(commentRepository.findByArticleUuid(uuid)).thenReturn(comments);
+
         when(articleConverter.convertObjectToDTO(article)).thenReturn(articleDTO);
 
         ArticleDTO result = articleService.deleteArticleByUuid(id);

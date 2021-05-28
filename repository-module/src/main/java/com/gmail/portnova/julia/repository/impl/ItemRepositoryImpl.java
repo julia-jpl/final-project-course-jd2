@@ -44,15 +44,9 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Long, Item> implem
 
     @Override
     public List<Item> findAllWithoutRelationToSaleUser() {
-        String hql = "SELECT i.id, i.uuid, i.uniqueNumber, i.name, i.itemDetail FROM Item i JOIN i.itemDetail";
+        String hql = "SELECT i FROM Item i";
         Query query = entityManager.createQuery(hql);
-        List<Object> resultList = query.getResultList();
-        List<Item> items = new ArrayList<>();
-        for (Object o : resultList) {
-            Item item = getItem((Object[]) o);
-            items.add(item);
-        }
-        return items;
+        return query.getResultList();
     }
 
     @Override

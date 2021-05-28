@@ -12,8 +12,10 @@ import com.gmail.portnova.julia.service.model.CommentDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.*;
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setCommentUuid(comment.getUuid());
-        commentDTO.setCreatedAt(comment.getCreatedAt());
+        commentDTO.setCreatedAt(comment.getCreatedAt().format(DATE_TIME_FORMATTER));
         commentDTO.setContent(comment.getContent());
         User user = comment.getUser();
         if (Objects.nonNull(user)) {
@@ -47,7 +49,8 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
             Comment comment = new Comment();
             comment.setUuid(commentDTO.getCommentUuid());
             comment.setContent(commentDTO.getContent());
-            comment.setCreatedAt(commentDTO.getCreatedAt());
+            LocalDateTime createdAt = LocalDateTime.parse(commentDTO.getCreatedAt(), DATE_TIME_FORMATTER);
+            comment.setCreatedAt(createdAt);
             User user = userRepository.findByUuid(commentDTO.getUserUuid());
             if (Objects.nonNull(user)) {
                 comment.setUser(user);
@@ -61,13 +64,16 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
                         comment.setArticle(article);
                         return comment;
                     } else {
-                        throw new ArticleNotFoundException(String.format(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE, articleUuidString));
+                        throw new ArticleNotFoundException(String.format(
+                                ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Article.class, articleUuidString));
                     }
                 } else {
-                    throw new ArticleNotFoundException(String.format(ARTICLE_NOT_FOUND_EXCEPTION_MESSAGE, commentDTO.getArticleUuid()));
+                    throw new ArticleNotFoundException(String.format(
+                            ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Article.class, commentDTO.getArticleUuid()));
                 }
             } else {
-                throw new UserNotFoundException(String.format(USER_NOT_FOUND_EXCEPTION_MESSAGE, commentDTO.getUserUuid()));
+                throw new UserNotFoundException(String.format(
+                        ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, User.class, commentDTO.getUserUuid()));
             }
         } else {
             return null;

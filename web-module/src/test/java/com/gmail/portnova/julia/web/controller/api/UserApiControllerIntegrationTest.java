@@ -5,6 +5,7 @@ import com.gmail.portnova.julia.service.model.UserDTO;
 import com.gmail.portnova.julia.web.controller.api.config.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +15,14 @@ class UserApiControllerIntegrationTest extends BaseIT {
             "/scripts/cleanUserDetail.sql",
             "/scripts/cleanOpinion.sql",
             "/scripts/cleanArticle.sql",
+            "/scripts/cleanItemUser.sql",
+            "/scripts/cleanOrderDetail.sql",
+            "/scripts/cleanOrder.sql",
             "/scripts/cleanUser.sql",
-            "/scripts/initUser.sql"})
+            "/scripts/cleanRole.sql",
+            "/scripts/initRole.sql",
+            "/scripts/initUser.sql",
+            "/scripts/initArticle.sql"})
     @Test
     void shouldAddUser() {
         UserDTO userDTO = new UserDTO();

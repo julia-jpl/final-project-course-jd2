@@ -1,7 +1,6 @@
 package com.gmail.portnova.julia.service.impl;
 
 import com.gmail.portnova.julia.repository.CommentRepository;
-import com.gmail.portnova.julia.repository.model.Article;
 import com.gmail.portnova.julia.repository.model.Comment;
 import com.gmail.portnova.julia.service.CommentService;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
@@ -13,6 +12,7 @@ import com.gmail.portnova.julia.service.model.CommentDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -48,7 +51,8 @@ public class CommentServiceImpl implements CommentService {
         UUID uuid = UUID.randomUUID();
         commentDTO.setCommentUuid(uuid);
         LocalDateTime date = LocalDateTime.now();
-        commentDTO.setCreatedAt(date);
+        String createdAt = date.format(DATE_TIME_FORMATTER);
+        commentDTO.setCreatedAt(createdAt);
         try {
             Comment comment = commentConverter.convertDTOToObject(commentDTO);
             commentRepository.persist(comment);
@@ -69,7 +73,8 @@ public class CommentServiceImpl implements CommentService {
             commentRepository.remove(comment);
             return commentConverter.convertObjectToDTO(comment);
         } else {
-            throw new CommentNotFoundException(String.format("Comment with uuid %s was not found", uuidString));
+            throw new CommentNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Comment.class, uuidString));
         }
     }
 }

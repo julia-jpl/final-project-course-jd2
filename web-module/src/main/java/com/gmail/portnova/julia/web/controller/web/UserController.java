@@ -1,5 +1,6 @@
 package com.gmail.portnova.julia.web.controller.web;
 
+import antlr.StringUtils;
 import com.gmail.portnova.julia.service.RoleService;
 import com.gmail.portnova.julia.service.UserAddService;
 import com.gmail.portnova.julia.service.UserService;
@@ -10,6 +11,7 @@ import com.gmail.portnova.julia.web.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mockito.internal.util.StringUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -96,16 +98,21 @@ public class UserController {
 
     @PostMapping("/users/change-role/{id}")
     public String changeUserRole(@PathVariable String id,
-                                 @ModelAttribute("newRole") String newRole,
+                                 @RequestParam(required = false, name = "newRole") String newRole,
                                  Model model) {
-        UserDTO user = userService.changeUserRole(id, newRole);
-        if (Objects.nonNull(user)) {
-            model.addAttribute("isRoleChanged", true);
-            return "redirect:/users/change-role/{id}";
+        if ((Objects.nonNull(newRole)) && (!newRole.isEmpty())) {
+            UserDTO user = userService.changeUserRole(id, newRole);
+            if (Objects.nonNull(user)) {
+                model.addAttribute("isRoleChanged", true);
+                return "redirect:/users/change-role/{id}";
+            } else {
+                model.addAttribute("isRoleChanged", false);
+                return "change_role";
+            }
         } else {
-            model.addAttribute("isRoleChanged", false);
-            return "change_role";
+            return "redirect:/users/change-role/{id}";
         }
+
     }
 
     @GetMapping("/403")

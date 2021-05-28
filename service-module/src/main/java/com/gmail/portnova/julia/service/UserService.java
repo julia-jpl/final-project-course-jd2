@@ -16,8 +16,4 @@ public interface UserService {
     UserDTO changeUserRole(String id, String newRole);
 
     PageDTO<UserDTO> getUsersPage(String email, int pageNumber, int maxResult);
-
-    UserDTO changeUserLastname(String lastName, String id);
-
-    UserDTO changeUserFirstName(String firstName, String id);
 }

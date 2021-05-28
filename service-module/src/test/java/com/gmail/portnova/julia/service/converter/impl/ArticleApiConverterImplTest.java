@@ -27,7 +27,12 @@ class ArticleApiConverterImplTest {
     void shouldConvertArticleApiDTOtoArticleAndReturnRightUuid() {
         ArticleApiDTO articleApiDTO = new ArticleApiDTO();
         UUID uuid = UUID.randomUUID();
+        UUID userUuid = UUID.randomUUID();
         articleApiDTO.setUuid(uuid);
+        articleApiDTO.setUserUuid(userUuid);
+        User user = new User();
+        user.setUuid(userUuid);
+        when(userRepository.findByUuid(userUuid)).thenReturn(user);
 
         Article article = articleApiConverter.convertDTOToObject(articleApiDTO);
         assertEquals(uuid, article.getUuid());
@@ -38,6 +43,12 @@ class ArticleApiConverterImplTest {
         String title = "title";
         articleApiDTO.setTitle(title);
 
+        UUID userUuid = UUID.randomUUID();
+        articleApiDTO.setUserUuid(userUuid);
+        User user = new User();
+        user.setUuid(userUuid);
+        when(userRepository.findByUuid(userUuid)).thenReturn(user);
+
         Article article = articleApiConverter.convertDTOToObject(articleApiDTO);
         assertEquals(title, article.getTitle());
     }
@@ -46,6 +57,11 @@ class ArticleApiConverterImplTest {
         ArticleApiDTO articleApiDTO = new ArticleApiDTO();
         String content = "content";
         articleApiDTO.setContent(content);
+        UUID userUuid = UUID.randomUUID();
+        articleApiDTO.setUserUuid(userUuid);
+        User user = new User();
+        user.setUuid(userUuid);
+        when(userRepository.findByUuid(userUuid)).thenReturn(user);
 
         Article article = articleApiConverter.convertDTOToObject(articleApiDTO);
         assertEquals(content, article.getContent());
@@ -56,6 +72,11 @@ class ArticleApiConverterImplTest {
         ArticleApiDTO articleApiDTO = new ArticleApiDTO();
         LocalDateTime date = LocalDateTime.now();
         articleApiDTO.setCreatedAt(date);
+        UUID userUuid = UUID.randomUUID();
+        articleApiDTO.setUserUuid(userUuid);
+        User user = new User();
+        user.setUuid(userUuid);
+        when(userRepository.findByUuid(userUuid)).thenReturn(user);
 
         Article article = articleApiConverter.convertDTOToObject(articleApiDTO);
         assertEquals(date, article.getCreatedAt());
@@ -78,15 +99,15 @@ class ArticleApiConverterImplTest {
     @Test
     void shouldConvertArticleApiDTOtoArticleAndReturnNotNullArticle() {
         ArticleApiDTO articleApiDTO = new ArticleApiDTO();
-
+        UUID userUuid = UUID.randomUUID();
+        articleApiDTO.setUserUuid(userUuid);
+        User user = new User();
+        user.setUuid(userUuid);
+        when(userRepository.findByUuid(userUuid)).thenReturn(user);
         Article article = articleApiConverter.convertDTOToObject(articleApiDTO);
         assertNotNull(article);
     }
-    @Test
-    void shouldConvertArticleApiDTOtoArticleWhenArticleApiDTOisNull() {
-        Article article = articleApiConverter.convertDTOToObject(null);
-        assertNull(article);
-    }
+
     @Test
     void shouldConvertArticleToArticleApiDTOAndReturnRightUuid() {
         Article article = new Article();

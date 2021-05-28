@@ -18,5 +18,5 @@ public class ItemGroup {
     private Long id;
     @Column(name = "group_name")
     @Enumerated(EnumType.STRING)
-    private ItemGroupNameEnum itemGroupNameEnum;
+    private ItemGroupNameEnum itemGroupName;
 }

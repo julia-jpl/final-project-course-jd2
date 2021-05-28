@@ -87,7 +87,7 @@ class ItemApiConverterImplTest {
         Item item = new Item();
         ItemGroup itemGroup = new ItemGroup();
         ItemGroupNameEnum itemGroupNameEnum = ItemGroupNameEnum.FASHION;
-        itemGroup.setItemGroupNameEnum(itemGroupNameEnum);
+        itemGroup.setItemGroupName(itemGroupNameEnum);
         item.setItemGroup(itemGroup);
 
         ItemApiDTO itemDTO = itemApiConverter.convertObjectToDTO(item);
@@ -182,12 +182,12 @@ class ItemApiConverterImplTest {
         ItemGroupNameEnum itemGroupNameEnum = ItemGroupNameEnum.FASHION;
         itemApiDTO.setItemGroup(itemGroupNameEnum.name());
         ItemGroup itemGroup = new ItemGroup();
-        itemGroup.setItemGroupNameEnum(itemGroupNameEnum);
+        itemGroup.setItemGroupName(itemGroupNameEnum);
 
         when(itemGroupRepository.findByName(ItemGroupNameEnum.FASHION)).thenReturn(itemGroup);
 
         Item item = itemApiConverter.convertDTOToObject(itemApiDTO);
-        assertEquals(itemGroupNameEnum, item.getItemGroup().getItemGroupNameEnum());
+        assertEquals(itemGroupNameEnum, item.getItemGroup().getItemGroupName());
     }
 
     @Test

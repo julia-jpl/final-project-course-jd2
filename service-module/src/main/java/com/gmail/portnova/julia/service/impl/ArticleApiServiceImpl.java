@@ -10,13 +10,14 @@ import com.gmail.portnova.julia.service.model.ArticleApiDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,8 @@ public class ArticleApiServiceImpl implements ArticleApiService {
         if (Objects.nonNull(article)) {
             return articleApiConverter.convertObjectToDTO(article);
         } else {
-            throw new ArticleNotFoundException(String.format("Article with uuid %s was not found", uuid));
+            throw new ArticleNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Article.class, uuid));
         }
     }
 }

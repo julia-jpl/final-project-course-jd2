@@ -25,9 +25,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/items}">CATALOG</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">ORDERS</a>
-                </li>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#" th:href="@{/customer/orders}">ORDERS</a>
+                    </li>
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/sale/orders}">ORDERS</a>
+                    </li>
+                </div>
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
                         <a class="nav-link" href="#"
@@ -75,7 +82,6 @@
             <th scope="col">Quantity of item</th>
             <th scope="col">Total price</th>
             <th scope="col">Seller</th>
-            <th scope="col">Date of order</th>
         </tr>
         </thead>
         <tbody>
@@ -86,7 +92,6 @@
             <td th:text="${order.itemQuantity}"></td>
             <td th:text="${order.totalPrice}"></td>
             <td th:text="${order.seller}"></td>
-            <td th:text="${order.date}"></td>
         </tr>
         </tbody>
     </table>

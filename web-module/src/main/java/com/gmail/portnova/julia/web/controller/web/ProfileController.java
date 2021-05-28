@@ -57,7 +57,7 @@ public class ProfileController {
     public String changeLastName(@PathVariable("uuid") String uuid,
                                  @RequestParam(name = "lastName", required = false) String lastName) {
         if (!lastName.isEmpty() && lastName.matches(LAST_AND_MIDDLE_NAME_PATTERN)) {
-            userService.changeUserLastname(lastName, uuid);
+            profileService.changeUserLastname(lastName, uuid);
             return "redirect:/profile";
         }
         return "redirect:/profile";
@@ -67,7 +67,7 @@ public class ProfileController {
     public String changeFirstName(@PathVariable("uuid") String uuid,
                                   @RequestParam(name = "firstName", required = false) String firstName) {
         if (Objects.nonNull(firstName) && !firstName.isEmpty() && firstName.matches(FIRST_NAME_PATTERN)) {
-            userService.changeUserFirstName(firstName, uuid);
+            profileService.changeProfileFirstName(firstName, uuid);
             return "redirect:/profile";
         }
         return "redirect:/profile";
@@ -87,7 +87,7 @@ public class ProfileController {
     public String changeTelephone(@PathVariable("uuid") String uuid,
                                   @RequestParam(name = "telephone", required = false) String telephone) {
         if (!telephone.isEmpty() && telephone.matches(TELEPHONE_PATTERN)) {
-            profileService.changeUserTelephone(telephone, uuid);
+            profileService.changeProfileTelephone(telephone, uuid);
             return "redirect:/profile";
         }
         return "redirect:/profile";

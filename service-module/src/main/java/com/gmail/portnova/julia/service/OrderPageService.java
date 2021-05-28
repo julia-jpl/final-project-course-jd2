@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface OrderPageService {
     PageDTO<OrderDTO> getCustomerUserOrderPage(int pageNumber, int maxResult, UUID uuid);
+
+    PageDTO<OrderDTO> getSaleUserOrderPage(int pageNumber, int maxResult, UUID uuid);
 }

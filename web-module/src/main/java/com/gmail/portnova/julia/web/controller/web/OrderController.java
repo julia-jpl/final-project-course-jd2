@@ -1,9 +1,6 @@
 package com.gmail.portnova.julia.web.controller.web;
 
-import com.gmail.portnova.julia.service.ItemCustomerService;
-import com.gmail.portnova.julia.service.OrderPageService;
-import com.gmail.portnova.julia.service.OrderService;
-import com.gmail.portnova.julia.service.ProfileService;
+import com.gmail.portnova.julia.service.*;
 import com.gmail.portnova.julia.service.model.*;
 import com.gmail.portnova.julia.web.validator.FormOrderWithTelephoneValidator;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -25,7 +23,8 @@ public class OrderController {
     private final FormOrderWithTelephoneValidator formOrderWithTelephoneValidator;
     private final OrderService orderService;
     private final OrderPageService orderPageService;
-
+    private final OrderSaleService orderSaleService;
+    private final OrderStatusService orderStatusService;
 
     @GetMapping("/customer/order/{id}")
     public String getOrderFormPage(@PathVariable String id,
@@ -75,6 +74,42 @@ public class OrderController {
             return "redirect:/403";
         }
     }
+
+    @GetMapping("/sale/orders")
+    public String getSaleOrdersPage(
+            @RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+            @RequestParam(name = "maxResult", defaultValue = "10") int maxResult,
+            Model model) {
+        ProfileUserDTO currentUser = getCurrentUser();
+        if (Objects.nonNull(currentUser)) {
+            PageDTO<OrderDTO> page = orderPageService.getSaleUserOrderPage(pageNumber, maxResult, currentUser.getUuid());
+            model.addAttribute("page", page);
+            model.addAttribute("currentPage", pageNumber);
+            return "sale_orders";
+        } else {
+            return "redirect:/403";
+        }
+    }
+
+    @GetMapping("sale/orders/{id}")
+    public String getSaleOrderDetailPage(@PathVariable("id") String orderUuid,
+                                         Model model) {
+        OrderSaleDTO orderSale = orderSaleService.getOrderByUuid(orderUuid);
+        model.addAttribute("order", orderSale);
+        List<StatusDTO> statuses = orderStatusService.findAll();
+        model.addAttribute("statuses", statuses);
+        return "sale_order_detail";
+    }
+
+    @PostMapping("sale/orders/{id}")
+    public String changeOrderStatus(@PathVariable("id") String orderUuid,
+                                    @RequestParam(name = "newStatusID", required = false) Long newStatusId) {
+        if (Objects.nonNull(newStatusId)) {
+            orderService.changeOrderStatus(orderUuid, newStatusId);
+        }
+        return "redirect:/sale/orders/{id}";
+    }
+
 
     private ProfileUserDTO getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

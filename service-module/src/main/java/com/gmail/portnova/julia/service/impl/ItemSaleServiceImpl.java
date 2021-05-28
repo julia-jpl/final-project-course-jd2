@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.UUID;
+
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Service
@@ -25,11 +26,12 @@ public class ItemSaleServiceImpl implements ItemSaleService {
     public ItemSaleDTO findByUuid(String id) {
         UUID itemUuid = UUID.fromString(id);
         Item item = itemRepository.findByUuid(itemUuid);
-        if(Objects.nonNull(item)) {
+        if (Objects.nonNull(item)) {
             ItemSaleDTO itemSaleDTO = itemSaleConverter.convertObjectToDTO(item);
             return itemSaleDTO;
-        }else {
-            throw new ItemNotFoundException(String.format(ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, id));
+        } else {
+            throw new ItemNotFoundException(String.format(
+                    ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE, Item.class, id));
         }
     }
 }

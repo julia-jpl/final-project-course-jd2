@@ -9,7 +9,11 @@ public interface ProfileService {
 
     ProfileUserDTO changeUserAddress(String address, String id);
 
-    ProfileUserDTO changeUserTelephone(String telephone, String id);
+    void changeProfileTelephone(String telephone, String id);
 
     ProfileUserDTO getUserProfileByEmail(String username);
+
+    ProfileUserDTO changeUserLastname(String lastName, String id);
+
+    void changeProfileFirstName(String firstName, String id);
 }

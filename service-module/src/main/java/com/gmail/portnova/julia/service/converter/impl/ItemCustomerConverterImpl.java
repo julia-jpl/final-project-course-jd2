@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+
 @Component
 public class ItemCustomerConverterImpl implements GeneralConverter<Item, ItemCustomerDTO> {
     @Override
@@ -38,6 +39,6 @@ public class ItemCustomerConverterImpl implements GeneralConverter<Item, ItemCus
 
     @Override
     public Item convertDTOToObject(ItemCustomerDTO object) {
-        return null;
+        throw new UnsupportedOperationException("This method hasn't been implemented");
     }
 }

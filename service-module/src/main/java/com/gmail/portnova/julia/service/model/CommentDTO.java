@@ -23,7 +23,7 @@ public class CommentDTO {
     @Size(max = 200, message = "the length of comment should be under 200 letters")
     private String content;
     private String userLastAndFirstName;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private String articleUuid;
     private UUID userUuid;
 }
