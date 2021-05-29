@@ -83,15 +83,17 @@
             <button type="button" class="btn btn-primary disabled" th:text="${number}"></button>
                 </span>
                 <span th:unless="${currentPage == number}">
-                 <input th:name="pageNumber" type="hidden" th:value="${number}"/>
+                 <input th:name="pageNumber" type="hidden" th:value="${number}">
                 <button type="submit" class="btn btn-primary" th:text="${number}"></button>
 
      </span>
             </th:block>
         </form>
+    </div>
+</div>
 
-        <script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
-        <script th:src="@{/js/popper.min.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/jquery-3.6.0.slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>l>

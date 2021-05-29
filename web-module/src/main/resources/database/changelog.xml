@@ -55,9 +55,9 @@
     <changeSet id="4" author="portnova.julia@gmail.com">
         <insert tableName="USER">
             <column name="unique_number" value="3422b448-2460-4fd2-9183-8000de6f8343"/>
-            <column name="last_name" value="AdminLastName"/>
-            <column name="first_name" value="AdminFirstName"/>
-            <column name="middle_name" value="AdminMiddleName"/>
+            <column name="last_name" value="Stark"/>
+            <column name="first_name" value="Arya"/>
+            <column name="middle_name" value="Eddard"/>
             <column name="email" value="admin@myhost.com"/>
             <column name="password" value="$2y$12$0fpDrfezgN2rr.K31HAWMu/r8p90sJonQYgeCSAiG1jcmVGjtI4hK"/>
             <column name="is_deleted" value="0"/>
@@ -65,6 +65,54 @@
         </insert>
     </changeSet>
     <changeSet id="5" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b111-2860-4fd2-9163-8000de6f8343"/>
+            <column name="last_name" value="Lannister"/>
+            <column name="first_name" value="Cersei"/>
+            <column name="middle_name" value="Tywin"/>
+            <column name="email" value="sale1@myhost.com"/>
+            <column name="password" value="$2y$12$cHF/ufpp9ShPzuCRPdmRlu3aZ22G4RCWpl/QobqsHTGIOIoyxrnpS"/>
+            <column name="is_deleted" value="0"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="6" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b498-2460-4fd2-9183-8000de6f8443"/>
+            <column name="last_name" value="Targaryen"/>
+            <column name="first_name" value="Daenerys"/>
+            <column name="middle_name" value="Aerys"/>
+            <column name="email" value="portnova.julia@gmail.com"/>
+            <column name="password" value="$2y$12$Dm26lT0cVeSwqQJGTwb6AuCjHYlB2j/nE/.m1Pvj4ES0t/Ie8AiXC"/>
+            <column name="is_deleted" value="0"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='CUSTOMER_USER')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="7" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b448-2900-4fd2-9183-8000de6f8343"/>
+            <column name="last_name" value="Mormont"/>
+            <column name="first_name" value="Jorah"/>
+            <column name="middle_name" value="Ben"/>
+            <column name="email" value="rest@myhost.com"/>
+            <column name="password" value="$2y$12$Hbu6yaVtpk/MT3YmG3UIS.o2GAp4gMo5Y9lBh/zAxnYYnVzwRiq/K"/>
+            <column name="is_deleted" value="0"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SECURE_REST_API')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="8" author="portnova.julia@gmail.com">
+        <insert tableName="USER">
+            <column name="unique_number" value="3422b478-2860-4fd2-9163-8000de6f8343"/>
+            <column name="last_name" value="Snow"/>
+            <column name="first_name" value="John"/>
+            <column name="middle_name" value="SJ"/>
+            <column name="email" value="sale@myhost.com"/>
+            <column name="password" value="$2y$12$Km/M2NoUC3kZgzS.9CDtp.ak6gTwzlGQqYlRnPJUfNBd9nUtCiQNC"/>
+            <column name="is_deleted" value="0"/>
+            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="9" author="portnova.julia@gmail.com">
         <createTable tableName="FEEDBACK">
             <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
                 <constraints primaryKey="true"/>
@@ -89,90 +137,90 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="6" author="portnova.julia@gmail.com">
+    <changeSet id="10" author="portnova.julia@gmail.com">
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="29be0ee3-fe77-331e-a1bf-9494ec18c0ba"/>
-            <column name="text" value="text of feedback1"/>
-            <column name="is_displayed" value="0"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="text" value="The full and true description of the item"/>
+            <column name="is_displayed" value="1"/>
+            <column name="author" value="Targaryen Daenerys Aerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="33b06619-1ee7-3db5-827d-0dc85df1f759"/>
-            <column name="text" value="text of feedback2"/>
+            <column name="text" value="This doesn’t work, please fix."/>
             <column name="is_displayed" value="0"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="author" value="Targaryen Daenerys Aerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="4896c91b-9e61-3129-87b6-8aa299028058"/>
-            <column name="text" value="text of feedback3"/>
-            <column name="is_displayed" value="0"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="text" value="It’s a pleasure to deal with."/>
+            <column name="is_displayed" value="1"/>
+            <column name="author" value="Targaryen Daenerys Aerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
     </changeSet>
-    <changeSet id="7" author="portnova.julia@gmail.com">
+    <changeSet id="11" author="portnova.julia@gmail.com">
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130002"/>
-            <column name="text" value="text of feedback4"/>
+            <column name="text" value="The item corresponds with description."/>
             <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="author" value="Lannister Cersei Tywin"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
         </insert>
     </changeSet>
-    <changeSet id="8" author="portnova.julia@gmail.com">
+    <changeSet id="12" author="portnova.julia@gmail.com">
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130044"/>
-            <column name="text" value="text of feedback5"/>
+            <column name="text" value="The item was delivered very fast."/>
             <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="author" value="Lannister Cersei Tywin"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac144002"/>
-            <column name="text" value="text of feedback6"/>
-            <column name="is_displayed" value="0"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="text" value="I recommend everyone."/>
+            <column name="is_displayed" value="1"/>
+            <column name="author" value="Lannister Cersei Tywin"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130222"/>
-            <column name="text" value="text of feedback7"/>
-            <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="text" value="I have received an item that doesn’t correspond with the seller’s description."/>
+            <column name="is_displayed" value="0"/>
+            <column name="author" value="Targaryen Daenerys Aerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130882"/>
-            <column name="text" value="text of feedback8"/>
-            <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="text" value="I advice to avoid this site."/>
+            <column name="is_displayed" value="0"/>
+            <column name="author" value="Targaryen Daenerys Aerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac130992"/>
-            <column name="text" value="text of feedback9"/>
+            <column name="text" value="Great communication."/>
             <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="author" value="Snow John SJ"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac135502"/>
-            <column name="text" value="text of feedback10"/>
+            <column name="text" value="Thank you for your service"/>
             <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="author" value="Snow John SJ"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
         </insert>
         <insert tableName="FEEDBACK">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0242ac134402"/>
-            <column name="text" value="text of feedback11"/>
+            <column name="text" value="Great communication. Will buy again"/>
             <column name="is_displayed" value="1"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="author" value="Snow John SJ"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
         </insert>
     </changeSet>
-    <changeSet id="9" author="portnova.julia@gmail.com">
+    <changeSet id="13" author="portnova.julia@gmail.com">
         <createTable tableName="ARTICLE">
             <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
                 <constraints primaryKey="true"/>
@@ -198,23 +246,11 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="10" author="portnova.julia@gmail.com">
-        <insert tableName="USER">
-            <column name="unique_number" value="3422b498-2460-4fd2-9183-8000de6f8443"/>
-            <column name="last_name" value="CustomerLastName"/>
-            <column name="first_name" value="CustomerFirstName"/>
-            <column name="middle_name" value="CustomerMiddleName"/>
-            <column name="email" value="portnova.julia@gmail.com"/>
-            <column name="password" value="$2y$12$Dm26lT0cVeSwqQJGTwb6AuCjHYlB2j/nE/.m1Pvj4ES0t/Ie8AiXC"/>
-            <column name="is_deleted" value="0"/>
-            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='CUSTOMER_USER')"/>
-        </insert>
-    </changeSet>
-    <changeSet id="11" author="portnova.julia@gmail.com">
+    <changeSet id="14" author="portnova.julia@gmail.com">
         <insert tableName="ARTICLE">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0442ac137044"/>
             <column name="title" value="A bottle of French wine has been orbited the Earth for more than a year"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="author" value="Targaryen Daenerys"/>
             <column name="content" value="A bottle of French wine that orbited the Earth for more than a year has been put up for sale.
             The bottle of Pétrus 2000 - made from merlot grapes in the Bordeaux region - spent 14 months in orbit as part of a privately funded research study on food and agriculture. On Tuesday Christie's announced the wine is now available through its private sales.
             The auction house estimates a sale price of $1m (£720,000; €830,000).
@@ -226,26 +262,26 @@
         <insert tableName="ARTICLE">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0272ac144002"/>
             <column name="title" value="Liverpool cafe finds menu from 1913 during refurb"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="author" value="Snow John"/>
             <column name="content" value="From Irish stew to grilled kidneys and boiled fowl, a menu dating back more than 100 years has been found during renovation work at a cafe.
             Workmen peeling back old walls discovered the delicate piece of culinary history at the eatery in Liverpool.
             The menu, from Wednesday 15 January 1913, is from the former Yamen Cafe in Bold Street.
             Staff at the cafe standing at the same site said it had blown their minds.
             The menu offers a selection of appetising refreshments, luncheons and afternoon teas.
             The cafe which is currently based at the site, called LEAF, now plans to recreate some of the dishes in tribute to the Yamen."/>
-            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
         </insert>
         <insert tableName="ARTICLE">
             <column name="unique_number" value="1cc8a402-aaaa-11eb-bcbc-0262ac130222"/>
             <column name="title" value="How the busiest people do 'deep work'"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="author" value="Targaryen Daenerys"/>
             <column name="content" value="For busy people, finding time for uninterrupted work may feel utterly unrealistic. But there are methods we can use to optimise what limited ‘deep work’ time we have.
             Like many parents, when schools shut down due to Covid-19, Elizabeth Hunter found herself with more caregiving responsibilities as her three children transitioned to 100% remote classes.
            Hunter started getting everyone to bed early and working late into the night to eke out some quiet time for creative work composing her curriculum, while tackling the more practical tasks during the day."/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
         </insert>
     </changeSet>
-    <changeSet id="12" author="portnova.julia@gmail.com">
+    <changeSet id="15" author="portnova.julia@gmail.com">
         <createTable tableName="USER_DETAIL">
             <column name="user_id" type="bigint">
                 <constraints primaryKey="true" foreignKeyName="fk_user_detail_user_id" references="USER(id)"/>
@@ -256,7 +292,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="13" author="portnova.julia@gmail.com">
+    <changeSet id="16" author="portnova.julia@gmail.com">
         <createTable tableName="OPINION">
             <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
                 <constraints primaryKey="true"/>
@@ -280,12 +316,12 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="14" author="portnova.julia@gmail.com">
+    <changeSet id="17" author="portnova.julia@gmail.com">
         <insert tableName="OPINION">
             <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac130222"/>
             <column name="content"
                     value="We have always known this is a historic building but having the menu in our hands has made it all feel real, something dating back to before the First World War"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="author" value="Targaryen Daenerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
             <column name="article_id"
                     valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
@@ -294,68 +330,39 @@
             <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac199922"/>
             <column name="content"
                     value="Foreign dishes and the greater use of vegetables illustrated cosmopolitanism and, in turn, Liverpool's status as a major city of empire."/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+            <column name="author" value="Targaryen Daenerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
             <column name="article_id"
                     valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a402-aaaa-11eb-bcbc-0272ac144002')"/>
         </insert>
     </changeSet>
-    <changeSet id="15" author="portnova.julia@gmail.com">
-        <insert tableName="USER">
-            <column name="unique_number" value="3422b448-2900-4fd2-9183-8000de6f8343"/>
-            <column name="last_name" value="RestLastName"/>
-            <column name="first_name" value="RestFirstName"/>
-            <column name="middle_name" value="RestMiddleName"/>
-            <column name="email" value="rest@myhost.com"/>
-            <column name="password" value="$2y$12$Hbu6yaVtpk/MT3YmG3UIS.o2GAp4gMo5Y9lBh/zAxnYYnVzwRiq/K"/>
-            <column name="is_deleted" value="0"/>
-            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SECURE_REST_API')"/>
-        </insert>
-    </changeSet>
-    <changeSet id="16" author="portnova.julia@gmail.com">
-        <insert tableName="USER">
-            <column name="unique_number" value="3422b478-2860-4fd2-9163-8000de6f8343"/>
-            <column name="last_name" value="SaleLastName"/>
-            <column name="first_name" value="SaleFirstName"/>
-            <column name="middle_name" value="SaleMiddleName"/>
-            <column name="email" value="sale@myhost.com"/>
-            <column name="password" value="$2y$12$Km/M2NoUC3kZgzS.9CDtp.ak6gTwzlGQqYlRnPJUfNBd9nUtCiQNC"/>
-            <column name="is_deleted" value="0"/>
-            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
-        </insert>
-    </changeSet>
-    <changeSet id="17" author="portnova.julia@gmail.com">
+    <changeSet id="18" author="portnova.julia@gmail.com">
         <insert tableName="ARTICLE">
             <column name="unique_number" value="1cc8a452-aaaa-18eb-bcbc-0442ac137044"/>
-            <column name="title" value="A bottle of French wine has been orbited the Earth for more than a year"/>
-            <column name="author" value="SaleLastName SaleFirstName"/>
-            <column name="content" value="A bottle of French wine that orbited the Earth for more than a year has been put up for sale.
-            The bottle of Pétrus 2000 - made from merlot grapes in the Bordeaux region - spent 14 months in orbit as part of a privately funded research study on food and agriculture. On Tuesday Christie's announced the wine is now available through its private sales.
-            The auction house estimates a sale price of $1m (£720,000; €830,000).
-            Tim Triptree, a Master of Wine who works at Christie's, told the BBC a regular bottle of Pétrus 2000 will also be sold alongside the space-aged bottle,so the lucky buyer will be able to compare the two.
-            Space Cargo Unlimited sent 12 bottles of the wine to the International Space Station (ISS) in November 2019.
-            After more than 400 days in space, travelling around 300 million km (186 million miles) in zero gravity, the wine returned to Earth in January 2021."/>
+            <column name="title" value="How France is testing free public transport"/>
+            <column name="author" value="Snow John"/>
+            <column name="content" value="In September 2018, the northern French city of Dunkirk underwent a quietly radical transformation: it made its public transport system free.
+            The policy helped reduce carbon emissions, according to a study commissioned by the city and carried out by the independent Observatory of Free Transport Cities.
+            Researchers found that after the move, which was funded by a small increase in business tax, passengers increased by 60% during the week and doubled on weekends – with nearly 50,000 trips made per day. Of the new users, 48% said they regularly used the public transport network instead of cars. "/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
         </insert>
         <insert tableName="ARTICLE">
             <column name="unique_number" value="1cc8a772-aaaa-11eb-bcbc-0272ac149902"/>
-            <column name="title" value="Liverpool cafe finds menu from 1913 during refurb"/>
-            <column name="author" value="SaleLastName SaleFirstName"/>
-            <column name="content" value="From Irish stew to grilled kidneys and boiled fowl, a menu dating back more than 100 years has been found during renovation work at a cafe.
-            Workmen peeling back old walls discovered the delicate piece of culinary history at the eatery in Liverpool.
-            The menu, from Wednesday 15 January 1913, is from the former Yamen Cafe in Bold Street.
-            Staff at the cafe standing at the same site said it had blown their minds.
-            The menu offers a selection of appetising refreshments, luncheons and afternoon teas.
-            The cafe which is currently based at the site, called LEAF, now plans to recreate some of the dishes in tribute to the Yamen."/>
+            <column name="title" value="Films to watch this June"/>
+            <column name="author" value="Snow John"/>
+            <column name="content" value="Including Lin-Manuel Miranda’s In the Heights, Dream Horse these are the films not to miss this month.
+            In the Heights. This year promises two musicals about immigrant life in New York City. In the meantime, we have In the Heights, adapted from the Tony-winning, hip-hop-infused Broadway show by Lin-Manuel Miranda (Hamilton) and Quiara Alegria Hudes, and directed by John M Chu (Crazy Rich Asians).
+            Dream Horse. Jan Vokes (Toni Collette) runs a shop in a small, deprived town in Wales.
+            Business is slow, so when she overhears an accountant (Damian Lewis) discussing how profitable horse-racing can be, she has the sort of idea that British comedy dramas are made of. She will form a syndicate with her friends, and together they will use what little cash they have to breed and train a racehorse of their own."/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
         </insert>
     </changeSet>
-    <changeSet id="18" author="portnova.julia@gmail.com">
+    <changeSet id="19" author="portnova.julia@gmail.com">
         <insert tableName="OPINION">
             <column name="unique_number" value="1cc8a552-aaaa-01eb-bcbc-0262ac134322"/>
             <column name="content"
-                    value="We have always known this is a historic building but having the menu in our hands has made it all feel real, something dating back to before the First World War"/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+                    value="Strasbourg, France’s ninth largest city, will implement the same policy this September."/>
+            <column name="author" value="Targaryen Daenerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
             <column name="article_id"
                     valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a452-aaaa-18eb-bcbc-0442ac137044')"/>
@@ -363,14 +370,14 @@
         <insert tableName="OPINION">
             <column name="unique_number" value="1cc8a552-aaaa-11eb-bcbc-0262ac094422"/>
             <column name="content"
-                    value="Foreign dishes and the greater use of vegetables illustrated cosmopolitanism and, in turn, Liverpool's status as a major city of empire."/>
-            <column name="author" value="CustomerLastName CustomerFirstName"/>
+                    value="It’s a sign that free public transport could work on a larger scale"/>
+            <column name="author" value="Targaryen Daenerys"/>
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='portnova.julia@gmail.com')"/>
             <column name="article_id"
                     valueComputed="(SELECT id FROM ARTICLE WHERE unique_number='1cc8a452-aaaa-18eb-bcbc-0442ac137044')"/>
         </insert>
     </changeSet>
-    <changeSet id="19" author="portnova.julia@gmail.com">
+    <changeSet id="20" author="portnova.julia@gmail.com">
         <createTable tableName="ITEM_GROUP">
             <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
                 <constraints primaryKey="true"/>
@@ -380,7 +387,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="20" author="portnova.julia@gmail.com">
+    <changeSet id="21" author="portnova.julia@gmail.com">
         <createTable tableName="ITEM">
             <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
                 <constraints primaryKey="true"/>
@@ -403,7 +410,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="21" author="portnova.julia@gmail.com">
+    <changeSet id="22" author="portnova.julia@gmail.com">
         <createTable tableName="ITEM_DETAIL">
             <column name="item_id" type="bigint">
                 <constraints primaryKey="true" foreignKeyName="fk_item_detail_item_id" references="ITEM(id)"/>
@@ -413,7 +420,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="22" author="portnova.julia@gmail.com">
+    <changeSet id="23" author="portnova.julia@gmail.com">
         <createTable tableName="ITEM_USER">
             <column name="id" type="bigint" autoIncrement="true" incrementBy="1">
                 <constraints primaryKey="true"/>
@@ -426,7 +433,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="23" id="portnova.julia@gmail.com">
+    <changeSet author="24" id="portnova.julia@gmail.com">
         <insert tableName="ITEM_GROUP">
             <column name="group_name" value="ELECTRONICS"/>
         </insert>
@@ -440,7 +447,7 @@
             <column name="group_name" value="HEALTH_BEAUTY"/>
         </insert>
     </changeSet>
-    <changeSet id="24" author="portnova.julia@gmail.com">
+    <changeSet id="25" author="portnova.julia@gmail.com">
         <insert tableName="ITEM">
             <column name="uuid" value="3422b448-2900-4fd2-9183-6780de6f8343"/>
             <column name="unique_number" value="EL-912345678901235"/>
@@ -451,19 +458,19 @@
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
         </insert>
     </changeSet>
-    <changeSet id="25" author="portnova.julia@gmail.com">
+    <changeSet id="26" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_DETAIL">
             <column name="price" value="354.54"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-2900-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="26" author="portnova.julia@gmail.com">
+    <changeSet id="27" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-2900-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="27" author="portnova.julia@gmail.com">
+    <changeSet id="28" author="portnova.julia@gmail.com">
         <insert tableName="ITEM">
             <column name="uuid" value="3422b448-9830-4fd2-9183-6780de6f8343"/>
             <column name="unique_number" value="EL-912345678901205"/>
@@ -474,19 +481,19 @@
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
         </insert>
     </changeSet>
-    <changeSet id="28" author="portnova.julia@gmail.com">
+    <changeSet id="29" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_DETAIL">
             <column name="price" value="499.99"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-9830-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="29" author="portnova.julia@gmail.com">
+    <changeSet id="30" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3422b448-9830-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="30" author="portnova.julia@gmail.com">
+    <changeSet id="31" author="portnova.julia@gmail.com">
         <insert tableName="ITEM">
             <column name="uuid" value="3999b448-2900-4fd2-9183-6780de6f8343"/>
             <column name="unique_number" value="EL-912345678901222"/>
@@ -497,19 +504,19 @@
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='ELECTRONICS')"/>
         </insert>
     </changeSet>
-    <changeSet id="31" author="portnova.julia@gmail.com">
+    <changeSet id="32" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_DETAIL">
             <column name="price" value="229.99"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="32" author="portnova.julia@gmail.com">
+    <changeSet id="33" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="33" author="portnova.julia@gmail.com">
+    <changeSet id="34" author="portnova.julia@gmail.com">
         <insert tableName="ITEM">
             <column name="uuid" value="3999b448-2900-4fd2-9183-6780de6f1233"/>
             <column name="unique_number" value="SP-912345678987654"/>
@@ -519,19 +526,19 @@
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='SPORTS')"/>
         </insert>
     </changeSet>
-    <changeSet id="34" author="portnova.julia@gmail.com">
+    <changeSet id="35" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_DETAIL">
             <column name="price" value="199.99"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f1233')"/>
         </insert>
     </changeSet>
-    <changeSet id="35" author="portnova.julia@gmail.com">
+    <changeSet id="36" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-6780de6f1233')"/>
         </insert>
     </changeSet>
-    <changeSet id="36" author="portnova.julia@gmail.com">
+    <changeSet id="37" author="portnova.julia@gmail.com">
         <insert tableName="ITEM">
             <column name="uuid" value="3999b448-2900-4fd2-9183-1230de6f8343"/>
             <column name="unique_number" value="FA-912345678903322"/>
@@ -541,19 +548,19 @@
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
         </insert>
     </changeSet>
-    <changeSet id="37" author="portnova.julia@gmail.com">
+    <changeSet id="38" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_DETAIL">
             <column name="price" value="49.99"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-1230de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="38" author="portnova.julia@gmail.com">
+    <changeSet id="39" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3999b448-2900-4fd2-9183-1230de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="39" author="portnova.julia@gmail.com">
+    <changeSet id="40" author="portnova.julia@gmail.com">
         <insert tableName="ITEM">
             <column name="uuid" value="3123b448-2900-4fd2-9183-6780de6f8343"/>
             <column name="unique_number" value="HB-912345678966422"/>
@@ -563,30 +570,19 @@
             <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='HEALTH_BEAUTY')"/>
         </insert>
     </changeSet>
-    <changeSet id="40" author="portnova.julia@gmail.com">
+    <changeSet id="41" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_DETAIL">
             <column name="price" value="4.99"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="41" author="portnova.julia@gmail.com">
+    <changeSet id="42" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
             <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-6780de6f8343')"/>
         </insert>
     </changeSet>
-    <changeSet id="42" author="portnova.julia@gmail.com">
-        <insert tableName="USER">
-            <column name="unique_number" value="3422b111-2860-4fd2-9163-8000de6f8343"/>
-            <column name="last_name" value="Ivanov"/>
-            <column name="first_name" value="Petr"/>
-            <column name="middle_name" value="Ivanovich"/>
-            <column name="email" value="sale1@myhost.com"/>
-            <column name="password" value="$2y$12$cHF/ufpp9ShPzuCRPdmRlu3aZ22G4RCWpl/QobqsHTGIOIoyxrnpS"/>
-            <column name="is_deleted" value="0"/>
-            <column name="role_id" valueComputed="(SELECT id FROM ROLE WHERE role_name='SALE_USER')"/>
-        </insert>
-    </changeSet>
+
     <changeSet id="43" author="portnova.julia@gmail.com">
         <insert tableName="ITEM_USER">
             <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale1@myhost.com')"/>
@@ -673,6 +669,72 @@
         </insert>
         <insert tableName="ORDER_STATUS">
             <column name="status_name" value="REJECTED"/>
+        </insert>
+    </changeSet>
+    <changeSet id="48" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3123b448-2900-4fd2-9183-0080de6f8343"/>
+            <column name="unique_number" value="FA-91234567833322"/>
+            <column name="name" value="Barzel 18K Gold Plated Flat Marina Elephant Anklet"/>
+            <column name="description" value="PERFECT GIFT IDEA. Comes with an elegant jewelry gift box, perfect for any gift giving occasion. Shop great gifts for girlfriend, wife, sister, daughter, mom"/>
+            <column name="is_deleted" value="0"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="49" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="19.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-0080de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="50" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-0080de6f8343')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="51" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3123b448-2900-4fd2-9183-0080de6f8000"/>
+            <column name="unique_number" value="SP-91234567833996"/>
+            <column name="name" value="Sunny Health_Fitness Stair Stepper Machine with Handlebar"/>
+            <column name="description" value="The convenient digital monitor displays: count, time, calories, total count and scan. Height modified handlebar allows for quick, easy, and simple adjustments."/>
+            <column name="is_deleted" value="0"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="52" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="109.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-0080de6f8000')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="53" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-0080de6f8000')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="54" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM">
+            <column name="uuid" value="3123b448-2900-4fd2-9183-0080de6f8220"/>
+            <column name="unique_number" value="SP-91234567830056"/>
+            <column name="name" value="Speedo Unisex-Adult Swim Goggles Mirrored Vanquisher 2.0"/>
+            <column name="description" value="Lenses resist fogging for clear underwater vision. Maximum visibility, minimum glare; ideal for outdoor use."/>
+            <column name="is_deleted" value="0"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="55" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_DETAIL">
+            <column name="price" value="109.99"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-0080de6f8220')"/>
+        </insert>
+    </changeSet>
+    <changeSet id="56" author="portnova.julia@gmail.com">
+        <insert tableName="ITEM_USER">
+            <column name="user_id" valueComputed="(SELECT id FROM USER WHERE email='sale@myhost.com')"/>
+            <column name="item_id" valueComputed="(SELECT id FROM ITEM WHERE uuid='3123b448-2900-4fd2-9183-0080de6f8220')"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

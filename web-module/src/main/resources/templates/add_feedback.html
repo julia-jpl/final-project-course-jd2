@@ -37,12 +37,12 @@
                 </div>
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">PROFILE</a>
+                        <a class="nav-link" th:href="@{/profile}" href="#">PROFILE</a>
                     </li>
                 </div>
                 <div sec:authorize="hasAuthority('CUSTOMER_USER')">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"
+                        <a class="nav-link active" aria-current="page" href="#"
                            th:href="@{/customer/feedback/add}">LEAVE FEEDBACK</a>
                     </li>
             </ul>
