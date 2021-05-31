@@ -3,19 +3,19 @@ package com.gmail.portnova.julia.service.converter.impl;
 import com.gmail.portnova.julia.repository.UserRepository;
 import com.gmail.portnova.julia.repository.model.Feedback;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 class FeedbackConverterImplTest {
     @Mock

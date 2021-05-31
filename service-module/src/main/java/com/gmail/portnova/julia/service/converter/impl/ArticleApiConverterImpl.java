@@ -7,13 +7,16 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.ArticleApiDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Objects;
 
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class ArticleApiConverterImpl implements GeneralConverter<Article, ArticleApiDTO> {
     private final UserRepository userRepository;
@@ -27,13 +30,15 @@ public class ArticleApiConverterImpl implements GeneralConverter<Article, Articl
             articleApiDTO.setTitle(article.getTitle());
             articleApiDTO.setContent(article.getContent());
             articleApiDTO.setCreatedAt(article.getCreatedAt());
-            User user = article.getUser();
-            if (Objects.nonNull(user)) {
-                articleApiDTO.setUserUuid(user.getUuid());
-                String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
-                articleApiDTO.setAuthor(userLastAndFirstName);
-            }
-            else {
+            try {
+                User user = article.getUser();
+                if (Objects.nonNull(user)) {
+                    articleApiDTO.setUserUuid(user.getUuid());
+                    String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
+                    articleApiDTO.setAuthor(userLastAndFirstName);
+                }
+            } catch (EntityNotFoundException e) {
+                log.error(e.getMessage());
                 articleApiDTO.setAuthor(article.getAuthor());
             }
             return articleApiDTO;
