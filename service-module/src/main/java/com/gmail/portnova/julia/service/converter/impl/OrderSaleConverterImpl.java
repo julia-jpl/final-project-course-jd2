@@ -6,12 +6,15 @@ import com.gmail.portnova.julia.repository.model.OrderStatus;
 import com.gmail.portnova.julia.repository.model.User;
 import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.model.OrderSaleDTO;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Objects;
 
 
 @Component
+@Log4j2
 public class OrderSaleConverterImpl implements GeneralConverter<Order, OrderSaleDTO> {
 
     @Override
@@ -29,11 +32,14 @@ public class OrderSaleConverterImpl implements GeneralConverter<Order, OrderSale
             orderDTO.setItemName(orderDetail.getItemName());
             orderDTO.setItemQuantity(orderDetail.getItemQuantity());
             orderDTO.setTotalPrice(orderDetail.getTotalPrice());
-            User customer = orderDetail.getCustomer();
-            if (Objects.nonNull(customer)) {
-                String customerIdentifier = customer.getFirstName();
-                orderDTO.setCustomerIdentifier(customerIdentifier);
-            } else {
+            try {
+                User customer = orderDetail.getCustomer();
+                if (Objects.nonNull(customer)) {
+                    String customerIdentifier = customer.getFirstName();
+                    orderDTO.setCustomerIdentifier(customerIdentifier);
+                }
+            } catch (EntityNotFoundException e) {
+                log.error(e.getMessage(), e);
                 orderDTO.setCustomerIdentifier(orderDetail.getCustomerIdentifier());
             }
             orderDTO.setCustomerTelephone(orderDetail.getCustomerTelephone());

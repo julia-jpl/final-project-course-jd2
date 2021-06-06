@@ -114,22 +114,6 @@ class OrderSaleConverterImplTest {
     }
 
     @Test
-    void shouldConvertOrderToOrderSaleDTOAndReturnRightCustomerIdentifierWhenCustomerIsNull() {
-        Order order = new Order();
-        OrderDetail orderDetail = new OrderDetail();
-        String name = "name";
-        orderDetail.setCustomerIdentifier(name);
-        order.setOrderDetail(orderDetail);
-
-        UUID uuid = UUID.randomUUID();
-        order.setUuid(uuid);
-
-
-        OrderSaleDTO orderSaleDTO = orderSaleConverter.convertObjectToDTO(order);
-        assertEquals(name, orderSaleDTO.getCustomerIdentifier());
-    }
-
-    @Test
     void shouldConvertOrderToOrderSaleDTOAndReturnRightCustomerTelephone() {
         Order order = new Order();
         OrderDetail orderDetail = new OrderDetail();

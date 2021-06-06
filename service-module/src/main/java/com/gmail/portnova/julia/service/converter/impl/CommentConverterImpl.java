@@ -12,6 +12,9 @@ import com.gmail.portnova.julia.service.model.CommentDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityNotFoundException;
+
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
@@ -33,11 +36,14 @@ public class CommentConverterImpl implements GeneralConverter<Comment, CommentDT
         commentDTO.setCommentUuid(comment.getUuid());
         commentDTO.setCreatedAt(comment.getCreatedAt().format(DATE_TIME_FORMATTER));
         commentDTO.setContent(comment.getContent());
-        User user = comment.getUser();
-        if (Objects.nonNull(user)) {
-            String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
-            commentDTO.setUserLastAndFirstName(userLastAndFirstName);
-        } else {
+        try {
+            User user = comment.getUser();
+            if (Objects.nonNull(user)) {
+                String userLastAndFirstName = String.join(" ", user.getLastName(), user.getFirstName());
+                commentDTO.setUserLastAndFirstName(userLastAndFirstName);
+            }
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
             commentDTO.setUserLastAndFirstName(comment.getAuthor());
         }
         return commentDTO;

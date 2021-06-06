@@ -125,17 +125,6 @@ class ArticleConverterImplTest {
         assertEquals(lastAndFirstName, articleDTO.getUserLastAndFirstName());
     }
 
-    @Test
-    void shouldConvertArticleToArticleDTOAndReturnRightUserNameWhenUserIsNull() {
-        Article article = new Article();
-        String author = "name";
-        article.setAuthor(author);
-        LocalDateTime createdAt = LocalDateTime.now();
-        article.setCreatedAt(createdAt);
-
-        ArticleDTO articleDTO = articleConverter.convertObjectToDTO(article);
-        assertEquals(author, articleDTO.getUserLastAndFirstName());
-    }
 
     @Test
     void shouldConvertArticleToArticleDTOAndReturnNotNullObject() {
