@@ -1,7 +1,6 @@
 package com.gmail.portnova.julia.repository.impl;
 
 import com.gmail.portnova.julia.repository.UserRepository;
-import com.gmail.portnova.julia.repository.model.RoleNameEnum;
 import com.gmail.portnova.julia.repository.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +11,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implements UserRepository {
@@ -25,7 +23,7 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         query.setParameter("usernameParam", username);
         try {
             return (User) query.getSingleResult();
-        } catch (NonUniqueResultException | NoResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             logger.error(e.getMessage(), e);
             return null;
         }

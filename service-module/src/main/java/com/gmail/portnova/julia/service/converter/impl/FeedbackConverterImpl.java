@@ -7,7 +7,11 @@ import com.gmail.portnova.julia.service.converter.GeneralConverter;
 import com.gmail.portnova.julia.service.exception.UserNotFoundException;
 import com.gmail.portnova.julia.service.model.FeedbackDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityNotFoundException;
+
 import static com.gmail.portnova.julia.service.constant.ExceptionMessageConstant.ENTITY_WITH_UUID_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.gmail.portnova.julia.service.constant.TimeFormatterConstant.DATE_TIME_FORMATTER;
 
@@ -15,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class FeedbackConverterImpl implements GeneralConverter<Feedback, FeedbackDTO> {
     private final UserRepository userRepository;
@@ -26,12 +31,15 @@ public class FeedbackConverterImpl implements GeneralConverter<Feedback, Feedbac
         feedbackDTO.setText(feedback.getText());
         feedbackDTO.setCreatedAt(feedback.getCreatedAt().format(DATE_TIME_FORMATTER));
         feedbackDTO.setDisplayed(feedback.getIsDisplayed());
-        User user = feedback.getUser();
-        if (Objects.nonNull(user)) {
-            String userFullName = String.join(" ", user.getLastName(), user.getFirstName(), user.getMiddleName());
-            feedbackDTO.setUserFullName(userFullName);
-            feedbackDTO.setUserUuid(user.getUuid());
-        } else {
+        try {
+            User user = feedback.getUser();
+            if (Objects.nonNull(user)) {
+                String userFullName = String.join(" ", user.getLastName(), user.getFirstName(), user.getMiddleName());
+                feedbackDTO.setUserFullName(userFullName);
+                feedbackDTO.setUserUuid(user.getUuid());
+            }
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
             feedbackDTO.setUserFullName(feedback.getAuthor());
         }
         return feedbackDTO;

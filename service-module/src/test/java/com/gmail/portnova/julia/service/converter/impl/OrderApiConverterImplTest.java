@@ -166,22 +166,7 @@ class OrderApiConverterImplTest {
         OrderApiDTO orderApiDTO = orderApiConverter.convertObjectToDTO(order);
         assertEquals(name, orderApiDTO.getCustomerIdentifier());
     }
-    @Test
-    void shouldConvertOrderToOrderApiDTOAndReturnRightCustomerIdentifierWhenCustomerIsNull() {
-        Order order = new Order();
-        OrderDetail orderDetail = new OrderDetail();
-        String name = "name";
-        orderDetail.setCustomerIdentifier(name);
-        order.setOrderDetail(orderDetail);
 
-        UUID uuid = UUID.randomUUID();
-        order.setUuid(uuid);
-        LocalDateTime date = LocalDateTime.now();
-        order.setCreatedAt(date);
-
-        OrderApiDTO orderApiDTO = orderApiConverter.convertObjectToDTO(order);
-        assertEquals(name, orderApiDTO.getCustomerIdentifier());
-    }
     @Test
     void shouldConvertOrderToOrderApiDTOAndReturnRightCustomerTelephone() {
         Order order = new Order();

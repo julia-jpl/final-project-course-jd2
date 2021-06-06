@@ -700,7 +700,7 @@
             <column name="name" value="Sunny Health_Fitness Stair Stepper Machine with Handlebar"/>
             <column name="description" value="The convenient digital monitor displays: count, time, calories, total count and scan. Height modified handlebar allows for quick, easy, and simple adjustments."/>
             <column name="is_deleted" value="0"/>
-            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='SPORTS')"/>
         </insert>
     </changeSet>
     <changeSet id="52" author="portnova.julia@gmail.com">
@@ -722,7 +722,7 @@
             <column name="name" value="Speedo Unisex-Adult Swim Goggles Mirrored Vanquisher 2.0"/>
             <column name="description" value="Lenses resist fogging for clear underwater vision. Maximum visibility, minimum glare; ideal for outdoor use."/>
             <column name="is_deleted" value="0"/>
-            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='FASHION')"/>
+            <column name="group_id" valueComputed="(SELECT id FROM ITEM_GROUP WHERE group_name='SPORTS')"/>
         </insert>
     </changeSet>
     <changeSet id="55" author="portnova.julia@gmail.com">

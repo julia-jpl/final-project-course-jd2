@@ -248,18 +248,4 @@ class CommentConverterImplTest {
         Comment comment = commentConverter.convertDTOToObject(commentDTO);
         assertEquals(author, comment.getAuthor());
     }
-
-    @Test
-    void shouldConvertCommentToCommentDTOAndReturnRightUserNameWhenUserIsNull() {
-        Comment comment = new Comment();
-        String firstName = "first";
-        String lastName = "last";
-        String author = String.join(" ", lastName, firstName);
-        comment.setAuthor(author);
-        LocalDateTime date = LocalDateTime.now();
-        comment.setCreatedAt(date);
-
-        CommentDTO commentDTO = commentConverter.convertObjectToDTO(comment);
-        assertEquals(author, commentDTO.getUserLastAndFirstName());
-    }
 }
